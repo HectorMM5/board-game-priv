@@ -7,6 +7,7 @@ import javafx.stage.Stage;
 public class Main extends Application {
     @Override
     public void start(Stage primaryStage){
+        primaryStage.setMaximized(true);
         StartScreenView ui = new StartScreenView(primaryStage);
         ui.init();
         ui.start();

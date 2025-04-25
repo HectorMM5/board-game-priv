@@ -1,17 +1,15 @@
 package boardgame.visual.scenes;
 
-import boardgame.controller.SnakesAndLaddersInitController;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
+import boardgame.controller.GameBuilding.GameInitController;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
 import javafx.scene.control.Button;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 public class StartScreenView {
+
     private final Stage primaryStage;
 
     public StartScreenView(Stage primaryStage) {
@@ -19,33 +17,41 @@ public class StartScreenView {
     }
 
     public void init() {
-
-        primaryStage.setTitle("primaryStage");
-
         VBox menuWrapper = new VBox();
+        menuWrapper.setSpacing(30);
+
         GridPane menuPane = new GridPane();
         menuWrapper.getChildren().add(menuPane);
         menuPane.setAlignment(Pos.CENTER);
-        menuWrapper.setMargin(menuPane, new Insets(50,50,50,50));
 
-        Button b1 = new Button("Snakes & ladders");
-        Button b2 = new Button("Goose game???");
-        Button b3 = new Button("Ludo!");
+        GameInitController gameInitController = new GameInitController(primaryStage);
 
-        b1.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
-                new SnakesAndLaddersInitController(primaryStage).start();
-            }
+        Button SnLButton = new Button("Snakes & Ladders");
+
+        SnLButton.setOnAction(e -> {
+            gameInitController.init("Snakes & Ladders");
         });
 
+        Button LudoButton = new Button("Ludo");
+        LudoButton.setOnAction(e -> {
+            gameInitController.init("Ludo");
+
+        });
+
+        Button HorseRaceButton = new Button("Horse race");
+        HorseRaceButton.setOnAction(e -> {
+            gameInitController.init("Horse race");
+
+        });
+
+        menuPane.add(SnLButton, 0, 0);
+        menuPane.add(LudoButton, 1, 0);
+        menuPane.add(HorseRaceButton, 2, 0);
 
         Scene menu = new Scene(menuWrapper, 600, 600);
-        menuPane.getChildren().addAll(b1, b2, b3);
-        GridPane.setColumnIndex(b1,0);
-        GridPane.setColumnIndex(b2,1);
-        GridPane.setColumnIndex(b3,2);
 
         primaryStage.setScene(menu);
+        primaryStage.setMaximized(true);
     }
 
     public void start() {
