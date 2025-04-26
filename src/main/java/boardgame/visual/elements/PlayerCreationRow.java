@@ -109,7 +109,7 @@ public class PlayerCreationRow extends HBox {
         popupStage.setScene(popupScene);
         popupStage.setTitle("Select Icon");
         popupStage.setResizable(false);
-        popupStage.initOwner(this.getScene().getWindow()); // Set the owner of the popup to the main stage
+        popupStage.initOwner(this.getScene().getWindow()); 
         popupStage.centerOnScreen();
         popupStage.show();
     }

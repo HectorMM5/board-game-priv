@@ -6,12 +6,12 @@ import java.util.List;
 import boardgame.model.boardFiles.Tile;
 import boardgame.model.effectFiles.LadderEffect;
 import boardgame.model.effectFiles.SnakeEffect;
+import boardgame.utils.ScreenDimension;
 import boardgame.visual.elements.BoardVisual;
 import boardgame.visual.elements.TileVisual;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
 import javafx.scene.transform.Rotate;
 
 /**
@@ -26,6 +26,9 @@ import javafx.scene.transform.Rotate;
 public class LadderLayer extends Pane {
 
     private final BoardVisual boardVisual;
+    final double TILE_SIZE = (ScreenDimension.getScreenHeight() - 200) / 10; 
+    final int GAP = 4;
+    final double spacing = TILE_SIZE + GAP;
 
     /**
      * Constructs the ladder layer using the board visual and lists of tiles that
@@ -38,9 +41,8 @@ public class LadderLayer extends Pane {
     public LadderLayer(BoardVisual boardVisual, List<Tile> tilesWithLadders, List<Tile> tilesWithSnakes) {
         this.boardVisual = boardVisual;
 
-        this.setPrefSize(536, 482);
-        this.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
-        this.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+        this.prefWidthProperty().bind(boardVisual.getTileGrid().widthProperty());
+        this.prefHeightProperty().bind(boardVisual.getTileGrid().heightProperty());
 
         for (Tile tile : tilesWithLadders) {
             renderLadder((LadderEffect) tile.getEffect());
@@ -63,16 +65,11 @@ public class LadderLayer extends Pane {
 
         Iterator<Node> tileIterator = boardVisual.getTileGrid().getChildren().iterator();
 
-        final int TILE_SIZE = 50;
-        final int GAP = 4;
-        final int spacing = TILE_SIZE + GAP;
-
         while (((baseX == null) || (targetX == null)) && tileIterator.hasNext()) {
             Node tileNode = tileIterator.next();
 
             if (tileNode instanceof TileVisual tileVisual) {
                 if (tileVisual.getTile().getNumber() == ladder.getBaseTileIndex()) {
-                    boardVisual.getTileGrid();
                     baseX = GridPane.getColumnIndex(tileVisual);
                     baseY = GridPane.getRowIndex(tileVisual);
                 } else if (tileVisual.getTile().getNumber() == ladder.getTargetTileIndex()) {
@@ -86,9 +83,9 @@ public class LadderLayer extends Pane {
         int dy = targetY - baseY;
         double hypotenuse = Math.sqrt((dx * dx) + (dy * dy));
 
-        ladderVisual = new LadderVisual(hypotenuse * spacing - TILE_SIZE / 2);
-        ladderVisual.setLayoutX(baseX * spacing);
-        ladderVisual.setLayoutY(baseY * spacing + TILE_SIZE / 2.0);
+        ladderVisual = new LadderVisual(hypotenuse * spacing);
+        ladderVisual.setLayoutX(baseX * spacing + 12.5);
+        ladderVisual.setLayoutY(baseY * spacing + TILE_SIZE / 2);
 
         double angle = Math.toDegrees(Math.atan2(dx, dy));
         ladderVisual.getTransforms().add(new Rotate(-angle, 25, 0));
@@ -108,10 +105,6 @@ public class LadderLayer extends Pane {
 
         Iterator<Node> tileIterator = boardVisual.getTileGrid().getChildren().iterator();
 
-        final int TILE_SIZE = 50;
-        final int GAP = 4;
-        final int spacing = TILE_SIZE + GAP;
-
         while (((baseX == null) || (targetX == null)) && tileIterator.hasNext()) {
             Node tileNode = tileIterator.next();
 
@@ -130,9 +123,9 @@ public class LadderLayer extends Pane {
         int dy = targetY - baseY;
         double hypotenuse = Math.sqrt((dx * dx) + (dy * dy));
 
-        snakeVisual = new SnakeVisual(hypotenuse * spacing - TILE_SIZE / 2);
-        snakeVisual.setLayoutX(baseX * spacing);
-        snakeVisual.setLayoutY(baseY * spacing + TILE_SIZE / 2.0);
+        snakeVisual = new SnakeVisual(hypotenuse * spacing);
+        snakeVisual.setLayoutX(baseX * spacing + 12.5);
+        snakeVisual.setLayoutY(baseY * spacing + TILE_SIZE / 2);
 
         double angle = Math.toDegrees(Math.atan2(dx, dy));
         snakeVisual.getTransforms().add(new Rotate(-angle, 25, 0));

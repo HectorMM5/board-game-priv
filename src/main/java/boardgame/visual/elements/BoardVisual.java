@@ -23,10 +23,10 @@ public class BoardVisual extends StackPane {
     private final Board board;
     private final ArrayList<Tile> tileLogic;
     private final ArrayList<TileVisual> tileViews;
-    private final double xDimension; // Example dimension, adjust as needed
-    private final double yDimension; // Example dimension, adjust as needed
+    private final double dimension = ScreenDimension.getScreenHeight() - 200; // Example dimension, adjust as needed
     private final LadderLayer ladderLayer;
     private final GridPane tileGrid = new GridPane();
+    
 
     /**
      * Constructs a new visual board based on the provided {@link Board} logic.
@@ -38,14 +38,9 @@ public class BoardVisual extends StackPane {
         this.board = board;
         this.tileLogic = board.getTiles();
         this.tileViews = new ArrayList<>();
-   
-        xDimension = (ScreenDimension.getScreenHeight() - 100) / 10;
-        yDimension = (ScreenDimension.getScreenHeight() - 100) / 10;
 
         initializeBoard();
-
-        this.ladderLayer = new LadderLayer(this, board.getTilesWithLadders(), board.getTilesWithSnakes());
-
+        this.ladderLayer = new LadderLayer(this, board.getTilesWithLadders(), board.getTilesWithSnakes());     
         this.getChildren().addAll(tileGrid, ladderLayer);
     }
 
@@ -62,7 +57,7 @@ public class BoardVisual extends StackPane {
 
         for (int i = 0; i < board.getTileCount(); i++) {
             Tile tile = tileLogic.get(i);
-            TileVisual tileVisual = new TileVisual(tile, xDimension, yDimension);
+            TileVisual tileVisual = new TileVisual(tile, dimension / 10, dimension / 10);
             tileViews.add(tileVisual);
         
             if ((i % board.getBoardWidth()) == 0) {
@@ -96,4 +91,9 @@ public class BoardVisual extends StackPane {
     public GridPane getTileGrid() {
         return tileGrid;
     }
+
+    public double getDimension() {
+        return dimension;
+    }
+
 }

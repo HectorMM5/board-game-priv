@@ -6,7 +6,6 @@ import java.util.List;
 import boardgame.controller.BoardJSON;
 import boardgame.model.boardFiles.Board;
 import boardgame.model.boardFiles.Player;
-import boardgame.utils.ScreenDimension;
 import boardgame.visual.elements.BoardVisual;
 import boardgame.visual.elements.PlayerCreationRow;
 import boardgame.visual.gameLayers.SnakesNLadders.LadderLayer;
@@ -17,7 +16,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
@@ -38,11 +36,7 @@ public class GameInitVisual {
         this.playerRowsContainer = new VBox(10);
         playerRowsContainer.setStyle("-fx-padding: 20;");
 
-        double xDimension = (ScreenDimension.getScreenHeight() - 100);
-        double yDimension = (ScreenDimension.getScreenHeight() - 100);
-        boardChoiceHolder.setPrefSize(xDimension, yDimension);
-        boardChoiceHolder.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
-        boardChoiceHolder.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+        loadBoard(0);
 
     }
 
