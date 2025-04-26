@@ -89,6 +89,7 @@ public class PlayerCreationRow extends HBox {
     private void changeDisplayIcon(String iconName) {
         InputStream is = getClass().getResourceAsStream("/PlayerIcons/" + iconName + ".png");
         if (is != null) {
+            this.selectedIconName = iconName;
             iconDisplay.setImage(new Image(is));
         } else {
             System.out.println("Icon not found: " + iconName);
