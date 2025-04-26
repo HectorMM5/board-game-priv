@@ -1,10 +1,9 @@
 package boardgame;
 
 import boardgame.controller.SceneManager;
+import boardgame.utils.ScreenDimension;
 import boardgame.visual.scenes.StartScreenView;
 import javafx.application.Application;
-import javafx.geometry.Rectangle2D;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -15,13 +14,11 @@ public class Main extends Application {
 
         SceneManager sceneManager = SceneManager.getInstance();
 
-        Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
-
-        primaryStage.setWidth(bounds.getWidth());
-        primaryStage.setHeight(bounds.getHeight());
+        primaryStage.setWidth(ScreenDimension.getScreenWidth());
+        primaryStage.setHeight(ScreenDimension.getScreenHeight());
 
         sceneManager.setPrimaryStage(primaryStage);
-        sceneManager.changeScene(new StartScreenView(primaryStage).getScene());
+        sceneManager.changeScene(StartScreenView.getScene());
 
     }
 

@@ -9,6 +9,7 @@ import boardgame.model.effectFiles.SnakeEffect;
 import boardgame.visual.elements.BoardVisual;
 import boardgame.visual.elements.TileVisual;
 import javafx.scene.Node;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.transform.Rotate;
@@ -60,7 +61,7 @@ public class LadderLayer extends Pane {
         Integer baseX = null, baseY = null;
         Integer targetX = null, targetY = null;
 
-        Iterator<Node> tileIterator = boardVisual.getChildren().iterator();
+        Iterator<Node> tileIterator = boardVisual.getTileGrid().getChildren().iterator();
 
         final int TILE_SIZE = 50;
         final int GAP = 4;
@@ -71,11 +72,12 @@ public class LadderLayer extends Pane {
 
             if (tileNode instanceof TileVisual tileVisual) {
                 if (tileVisual.getTile().getNumber() == ladder.getBaseTileIndex()) {
-                    baseX = BoardVisual.getColumnIndex(tileVisual);
-                    baseY = BoardVisual.getRowIndex(tileVisual);
+                    boardVisual.getTileGrid();
+                    baseX = GridPane.getColumnIndex(tileVisual);
+                    baseY = GridPane.getRowIndex(tileVisual);
                 } else if (tileVisual.getTile().getNumber() == ladder.getTargetTileIndex()) {
-                    targetX = BoardVisual.getColumnIndex(tileVisual);
-                    targetY = BoardVisual.getRowIndex(tileVisual);
+                    targetX = GridPane.getColumnIndex(tileVisual);
+                    targetY = GridPane.getRowIndex(tileVisual);
                 }
             }
         }
@@ -104,7 +106,7 @@ public class LadderLayer extends Pane {
         Integer baseX = null, baseY = null;
         Integer targetX = null, targetY = null;
 
-        Iterator<Node> tileIterator = boardVisual.getChildren().iterator();
+        Iterator<Node> tileIterator = boardVisual.getTileGrid().getChildren().iterator();
 
         final int TILE_SIZE = 50;
         final int GAP = 4;
@@ -115,11 +117,11 @@ public class LadderLayer extends Pane {
 
             if (tileNode instanceof TileVisual tileVisual) {
                 if (tileVisual.getTile().getNumber() == snake.getBaseTileIndex()) {
-                    baseX = BoardVisual.getColumnIndex(tileVisual);
-                    baseY = BoardVisual.getRowIndex(tileVisual);
+                    baseX = GridPane.getColumnIndex(tileVisual);
+                    baseY = GridPane.getRowIndex(tileVisual);
                 } else if (tileVisual.getTile().getNumber() == snake.getTargetTileIndex()) {
-                    targetX = BoardVisual.getColumnIndex(tileVisual);
-                    targetY = BoardVisual.getRowIndex(tileVisual);
+                    targetX = GridPane.getColumnIndex(tileVisual);
+                    targetY = GridPane.getRowIndex(tileVisual);
                 }
             }
         }

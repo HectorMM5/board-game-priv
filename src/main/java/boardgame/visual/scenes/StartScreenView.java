@@ -7,17 +7,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 public class StartScreenView {
 
-    private final Stage primaryStage;
-
-    public StartScreenView(Stage primaryStage) {
-        this.primaryStage = primaryStage;
-    }
-
-    public Scene getScene() {
+    public static Scene getScene() {
         VBox root = new VBox();
         root.setSpacing(30);
 

@@ -1,15 +1,11 @@
 package boardgame.visual.scenes;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import boardgame.controller.GameController;
 import boardgame.model.boardFiles.Board;
 import boardgame.model.boardFiles.Player;
-import boardgame.model.boardFiles.Tile;
 import boardgame.model.diceFiles.Dice;
-import boardgame.model.effectFiles.LadderEffect;
-import boardgame.model.effectFiles.SnakeEffect;
 import boardgame.utils.GameSetup;
 import boardgame.visual.elements.BoardVisual;
 import boardgame.visual.elements.DiceButtonVisual;
@@ -66,29 +62,12 @@ public class Ingame {
         StackPane centerPane = new StackPane();
         centerPane.getChildren().add(boardVisual);
 
-        ArrayList<Tile> tilesWithLadders = new ArrayList<>();
-        for (Tile tile : board.getTiles()) {
-            if (tile.getEffect() instanceof LadderEffect) {
-                tilesWithLadders.add(tile);
-            }
-            if (tile.getEffect() != null) {
-                System.out.println("EFFECT IN: " + tile.getNumber());
-            }
-        }
-
-        ArrayList<Tile> tilesWithSnakes = new ArrayList<>();
-        for (Tile tile : board.getTiles()) {
-            if (tile.getEffect() instanceof SnakeEffect) {
-                tilesWithSnakes.add(tile);
-            }
-        }
-
         BorderPane root = new BorderPane();
         root.setLeft(sideColumn);
 
         Scene scene = new Scene(root, 600, 600);
 
-        LadderLayer ladders = new LadderLayer(boardVisual, tilesWithLadders, tilesWithSnakes);
+        LadderLayer ladders = new LadderLayer(boardVisual, board.getTilesWithLadders(), board.getTilesWithSnakes());
         centerPane.getChildren().add(ladders);
         centerPane.getChildren().add(playerTokenLayer);
         root.setCenter(centerPane);

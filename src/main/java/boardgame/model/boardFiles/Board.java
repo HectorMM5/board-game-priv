@@ -2,10 +2,13 @@ package boardgame.model.boardFiles;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
 
 import boardgame.model.effectFiles.Effect;
+import boardgame.model.effectFiles.LadderEffect;
+import boardgame.model.effectFiles.SnakeEffect;
 
 /**
  * Represents the game board consisting of a grid of {@link Tile} objects.
@@ -75,6 +78,28 @@ public class Board {
     public Tile getTileInIndex(int index) {
         return tiles.get(index);
     }
+
+    public List<Tile> getTilesWithLadders() {
+        List<Tile> tilesWithLadders = new ArrayList<>();
+        for (Tile tile : tiles) {
+            if (tile.getEffect() instanceof LadderEffect) {
+                tilesWithLadders.add(tile);
+            }
+        }
+        return tilesWithLadders;
+    }
+    
+
+    public List<Tile> getTilesWithSnakes() {
+        List<Tile> tilesWithSnakes = new ArrayList<>();
+        for (Tile tile : tiles) {
+            if (tile.getEffect() instanceof SnakeEffect) {
+                tilesWithSnakes.add(tile);
+            }
+        }
+        return tilesWithSnakes;
+    }
+
 
     /**
      * Returns the map of tile-effect associations.

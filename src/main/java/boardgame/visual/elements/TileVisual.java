@@ -53,9 +53,10 @@ public class TileVisual extends StackPane {
      *
      * @param tile the {@code Tile} object this visual represents
      */
-    public TileVisual(Tile tile) {
+    public TileVisual(Tile tile, double xDimension, double yDimension) {
         this.tile = tile;
-        this.background = new Rectangle(50, 50);
+        
+        this.background = new Rectangle(xDimension, yDimension);
         background.setFill(Color.rgb(255, 255, 224));
 
         this.iconView = new ImageView();
