@@ -1,11 +1,16 @@
 package boardgame.visual.elements;
 
 import java.io.InputStream;
+import java.util.List;
+import java.util.stream.IntStream;
 
+import boardgame.controller.PlayerCSV;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -17,6 +22,8 @@ public class PlayerCreationRow extends HBox {
 
     private final TextField nameField;
     private final Button saveButton;
+    private final MenuButton fetchButton;
+    private final PlayerCSV playerCSV;
     private StackPane iconWrapper;
     private ImageView iconDisplay;
 
@@ -26,12 +33,14 @@ public class PlayerCreationRow extends HBox {
         this.setSpacing(10);
         this.setPadding(new Insets(10));
         this.setAlignment(Pos.CENTER);
+        this.playerCSV = PlayerCSV.instance();
         nameField = new TextField();
         saveButton = new Button("Save Player");
+        fetchButton = new MenuButton("->");
 
         init();
 
-        this.getChildren().addAll(iconWrapper, nameField, saveButton);
+        this.getChildren().addAll(fetchButton, iconWrapper, nameField, saveButton);
 
     }
 
@@ -53,6 +62,25 @@ public class PlayerCreationRow extends HBox {
         nameField.setPrefWidth(200);
 
         saveButton.setOnAction(e -> {
+            try {
+                playerCSV.registerNewPlayer(nameField.getText(), selectedIconName);
+
+            } catch (IllegalArgumentException ex) {
+                PopUpAlert alert = new PopUpAlert(ex.getMessage());
+                alert.show();
+            }
+
+        });
+
+        List<String[]> playerNames = PlayerCSV.getCSVContent();
+        IntStream.range(0, playerNames.size()).forEach(i -> {
+            MenuItem userOption = new MenuItem(playerNames.get(i)[0]);
+            userOption.setOnAction(e -> {
+                nameField.setText(playerNames.get(i)[0]);
+                changeDisplayIcon(playerNames.get(i)[1]);
+            });
+
+            fetchButton.getItems().add(userOption);
 
         });
 
@@ -73,7 +101,6 @@ public class PlayerCreationRow extends HBox {
         SelectIconPopUp popup = new SelectIconPopUp(selectedIcon -> {
             this.selectedIconName = selectedIcon;
             changeDisplayIcon(selectedIconName);
-            refreshIconDisplay();
             popupStage.close();
         });
 
@@ -86,12 +113,6 @@ public class PlayerCreationRow extends HBox {
         popupStage.show();
     }
 
-    private void refreshIconDisplay() {
-        InputStream is = getClass().getResourceAsStream("/PlayerIcons/" + selectedIconName + ".png");
-        iconDisplay = new ImageView(new Image(is));
-        iconDisplay.setFitWidth(50);
-        iconDisplay.setFitHeight(50);
-    }
 
     public String getPlayerName() {
         return nameField.getText();

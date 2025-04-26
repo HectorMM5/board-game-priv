@@ -23,9 +23,6 @@ public class Main extends Application {
         sceneManager.setPrimaryStage(primaryStage);
         sceneManager.changeScene(new StartScreenView(primaryStage).getScene());
 
-
-
-
     }
 
     public static void main(String[] args) {
