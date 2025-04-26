@@ -4,10 +4,10 @@ import java.util.List;
 
 import boardgame.controller.BoardJSON;
 import boardgame.controller.GameController;
+import boardgame.controller.SceneManager;
 import boardgame.model.boardFiles.Board;
 import boardgame.model.boardFiles.Player;
 import boardgame.visual.scenes.Ingame;
-import javafx.stage.Stage;
 
 /**
  * Sets up and initializes a new game session, including the board, players,
@@ -73,7 +73,9 @@ public class GameSetup {
      *
      * @param primaryStage the JavaFX stage to attach the game scene to
      */
-    public void start(Stage primaryStage) {
-        ingame.createGameScene(primaryStage);
+    public void startGame() {
+        SceneManager sceneManager = SceneManager.getInstance();
+        sceneManager.changeScene(ingame.getScene());
+        
     }
 }

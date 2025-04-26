@@ -13,25 +13,21 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 public class GameInitController {
 
     private final PlayerDataAccess playerDataAccess = new PlayerDataAccess();
-    private final Stage primaryStage;
     private final VBox playerRowsContainer;
     private final Button addPlayerButton = new Button("Add Player");
     private final Button startGameButton = new Button("Start Game");
 
-    public GameInitController(Stage primaryStage) {
-        this.primaryStage = primaryStage;
+    public GameInitController() {
         this.playerRowsContainer = new VBox(10); 
         playerRowsContainer.setStyle("-fx-padding: 20;");  
-        primaryStage.setMaximized(true);
 
     }
 
-    public void init(String chosenGame) {
+    public Scene getScene(String chosenGame) {
         Label titleLabel;
 
         Label subtitleLabel = new Label("Create your players!");
@@ -66,10 +62,11 @@ public class GameInitController {
                     players.add(new Player(iconName, playerName));
                 }
             });
+            
+            new GameSetup("Snl", 0, players).startGame();
         
-            new GameSetup("Snl", 0, players);
         
-        });
+        }); 
             
 
         VBox root = new VBox(20);
@@ -77,16 +74,17 @@ public class GameInitController {
         root.setAlignment(Pos.TOP_CENTER);
         root.setPadding(new Insets(20));
         VBox.setMargin(subtitleLabel, new Insets(0, 0, 50, 0));
+         
 
         Scene scene = new Scene(root);
+        
 
         // Show the first row by default
         addEmptyPlayerRow();
 
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Player Setup");
-        primaryStage.show();
         
+
+        return scene;
 
     }
 

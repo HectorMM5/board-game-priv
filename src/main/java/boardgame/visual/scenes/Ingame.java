@@ -20,7 +20,6 @@ import javafx.animation.PauseTransition;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
 /**
@@ -61,7 +60,7 @@ public class Ingame {
      *
      * @param primaryStage the stage to display the scene in
      */
-    public void createGameScene(Stage primaryStage) {
+    public Scene getScene() {
         gameController.setIngame(this);
 
         StackPane centerPane = new StackPane();
@@ -88,9 +87,6 @@ public class Ingame {
         root.setLeft(sideColumn);
 
         Scene scene = new Scene(root, 600, 600);
-        primaryStage.setTitle("Board Game");
-        primaryStage.setScene(scene);
-        primaryStage.show();
 
         LadderLayer ladders = new LadderLayer(boardVisual, tilesWithLadders, tilesWithSnakes);
         centerPane.getChildren().add(ladders);
@@ -99,6 +95,8 @@ public class Ingame {
 
         gameController.start();
         boardVisual.updateEntireBoard();
+
+        return scene;
     }
 
     /**
