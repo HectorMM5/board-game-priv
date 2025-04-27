@@ -48,6 +48,8 @@ public class PlayerTokenLayer extends Pane {
             ImageView token = new ImageView(new Image(player.getIcon()));
             token.setFitWidth(50);
             token.setFitHeight(50);
+            token.setLayoutX(boardVisual.getSpacing() / 2 - 25);
+            token.setLayoutY(boardVisual.getSpacing() / 2 - 25);
             playerTokens.put(player, token);
             this.getChildren().add(token);
         }
@@ -83,8 +85,8 @@ public class PlayerTokenLayer extends Pane {
         int col = cols.get(tileNumber);
         int row = rows.get(tileNumber);
 
-        double targetX = col * boardVisual.getSpacing();
-        double targetY = row * boardVisual.getSpacing();
+        double targetX = col * boardVisual.getSpacing() + boardVisual.getSpacing() / 2 - 25;
+        double targetY = row * boardVisual.getSpacing() + boardVisual.getSpacing() / 2 - 25;
 
         token.setLayoutX(0);
         token.setLayoutY(0);
