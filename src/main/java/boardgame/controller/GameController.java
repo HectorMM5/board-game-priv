@@ -70,7 +70,7 @@ public class GameController {
                 targetTile.getEffect().execute(player, this);
 
                 if (targetTile.getEffect() instanceof MovementEffect movementEffect) {
-                    ingame.moveToken(player, movementEffect.getTargetTileIndex());
+                    ingame.getIngameController().moveToken(player, movementEffect.getTargetTileIndex());
                 }
             });
             pause.play();

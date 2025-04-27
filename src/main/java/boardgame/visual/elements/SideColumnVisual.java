@@ -45,7 +45,7 @@ public class SideColumnVisual extends VBox {
         this.rollButton = new DiceButtonVisual();
 
         rollButton.setOnAction(e -> {
-            ingame.handleRollDice(rollButton);
+            ingame.getIngameController().handleRollDice(rollButton);
             rollButton.setDisable(true);
         });
 
