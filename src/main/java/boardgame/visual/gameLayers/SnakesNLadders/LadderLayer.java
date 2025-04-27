@@ -59,8 +59,13 @@ public class LadderLayer extends Pane {
         }
     
     }
-    
 
+    /**
+     * Generalized method to render either a ladder or a snake visual.
+     *
+     * @param effect the effect object (either LadderEffect or SnakeEffect)
+     * @param type the type of effect (ladder or snake)
+     */
     private void renderEffect(MovementEffect effect, EffectType type) {
         Integer baseX = null, baseY = null;
         Integer targetX = null, targetY = null;
