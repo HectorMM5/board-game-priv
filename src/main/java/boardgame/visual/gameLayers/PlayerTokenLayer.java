@@ -7,12 +7,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.IntStream;
 
 import boardgame.model.boardFiles.Player;
+import boardgame.visual.elements.BoardVisual;
 import javafx.animation.PauseTransition;
 import javafx.animation.TranslateTransition;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
 import javafx.util.Duration;
 
 /**
@@ -30,6 +30,7 @@ public class PlayerTokenLayer extends Pane {
     private final Map<Player, ImageView> playerTokens = new HashMap<>();
     private final Map<Integer, Integer> cols = new HashMap<>();
     private final Map<Integer, Integer> rows = new HashMap<>();
+    private final BoardVisual boardVisual;
 
     /**
      * Constructs the token layer for a given list of players.
@@ -37,11 +38,12 @@ public class PlayerTokenLayer extends Pane {
      *
      * @param players the list of players whose tokens should be displayed
      */
-    public PlayerTokenLayer(List<Player> players) {
-        this.setPrefSize(536, 482);
-        this.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
-        this.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
-
+    public PlayerTokenLayer(BoardVisual boardVisual, List<Player> players) {
+        this.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-background-color: transparent;");
+        this.boardVisual = boardVisual;
+        this.prefWidthProperty().bind(boardVisual.getTileGrid().widthProperty());   
+        this.prefHeightProperty().bind(boardVisual.getTileGrid().heightProperty());
+        
         for (Player player : players) {
             ImageView token = new ImageView(new Image(player.getIcon()));
             token.setFitWidth(50);
@@ -66,7 +68,6 @@ public class PlayerTokenLayer extends Pane {
             cols.put(i + 1, col);
             rows.put(i + 1, row);
 
-            System.out.println("Row: " + row + " Col: " + col + " Tile: " + (i + 1));
         });
     }
 
@@ -79,12 +80,11 @@ public class PlayerTokenLayer extends Pane {
     public void moveToken(Player player, int tileNumber) {
         ImageView token = playerTokens.get(player);
 
-        int spacing = 54; // TILE_SIZE (50) + GAP (4)
         int col = cols.get(tileNumber);
         int row = rows.get(tileNumber);
 
-        double targetX = col * spacing;
-        double targetY = row * spacing;
+        double targetX = col * boardVisual.getSpacing();
+        double targetY = row * boardVisual.getSpacing();
 
         token.setLayoutX(0);
         token.setLayoutY(0);

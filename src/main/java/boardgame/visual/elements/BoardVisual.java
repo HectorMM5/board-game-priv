@@ -26,6 +26,8 @@ public class BoardVisual extends StackPane {
     private final double dimension = ScreenDimension.getScreenHeight() - 200; // Example dimension, adjust as needed
     private final LadderLayer ladderLayer;
     private final GridPane tileGrid = new GridPane();
+    private final double TILE_SIZE = dimension / 10; 
+    private final double spacing = TILE_SIZE + 4;
     
 
     /**
@@ -40,7 +42,10 @@ public class BoardVisual extends StackPane {
         this.tileViews = new ArrayList<>();
 
         initializeBoard();
-        this.ladderLayer = new LadderLayer(this, board.getTilesWithLadders(), board.getTilesWithSnakes());     
+        this.ladderLayer = new LadderLayer(this, board.getTilesWithLadders(), board.getTilesWithSnakes()); 
+        this.prefWidthProperty().bind(tileGrid.widthProperty());
+        this.prefHeightProperty().bind(tileGrid.heightProperty());    
+        this.setMaxSize(USE_PREF_SIZE, USE_PREF_SIZE);
         this.getChildren().addAll(tileGrid, ladderLayer);
     }
 
@@ -51,13 +56,13 @@ public class BoardVisual extends StackPane {
     private void initializeBoard() {
         tileGrid.setHgap(4); // horizontal gap between tiles
         tileGrid.setVgap(4); // vertical gap between tiles
-        tileGrid.setStyle("-fx-background-color: lightblue;"); // background visible in gaps
+        tileGrid.setStyle("-fx-background-color: green;"); // background visible in gaps
 
         Boolean movesRight = false;
 
         for (int i = 0; i < board.getTileCount(); i++) {
             Tile tile = tileLogic.get(i);
-            TileVisual tileVisual = new TileVisual(tile, dimension / 10, dimension / 10);
+            TileVisual tileVisual = new TileVisual(tile, TILE_SIZE, TILE_SIZE);
             tileViews.add(tileVisual);
         
             if ((i % board.getBoardWidth()) == 0) {
@@ -92,8 +97,8 @@ public class BoardVisual extends StackPane {
         return tileGrid;
     }
 
-    public double getDimension() {
-        return dimension;
+    public double getSpacing() {
+        return spacing;
     }
 
 }
