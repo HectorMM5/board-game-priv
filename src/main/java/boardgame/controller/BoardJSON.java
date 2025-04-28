@@ -76,28 +76,23 @@ public class BoardJSON {
         int target;
 
         switch (effectType) {
-            case "Ladder":
+            case "Ladder" -> {
                 target = tileWithEffect.getInt("target");
                 board.getTiles().get(target - 1).setEffect(new PlaceholderEffect());
                 effect = new LadderEffect(tileNumber, target);
-                break;
+            }
 
-            case "Snake":
+            case "Snake" -> {
                 target = tileWithEffect.getInt("target");
                 board.getTiles().get(target - 1).setEffect(new PlaceholderEffect());
                 effect = new SnakeEffect(tileNumber, target);
-                break;
+            }
 
-            case "LoseTurn":
-                effect = new SkipTurnEffect();
-                break;
+            case "LoseTurn" -> effect = new SkipTurnEffect();
 
-            case "Back":
-                effect = new BackToStartEffect(tileNumber, 1);
-                break;
+            case "Back" -> effect = new BackToStartEffect(tileNumber, 1);
 
-            default:
-                throw new AssertionError("Unknown effect type: " + effectType);
+            default -> throw new AssertionError("Unknown effect type: " + effectType);
         }
 
         board.getTiles().get(tileNumber - 1).setEffect(effect);

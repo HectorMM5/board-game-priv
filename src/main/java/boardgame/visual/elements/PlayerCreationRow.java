@@ -23,6 +23,8 @@ public class PlayerCreationRow extends HBox {
     private final TextField nameField;
     private final Button saveButton;
     private final MenuButton fetchButton;
+    private final Button deleteRowButton;
+    private Runnable deleteRowAction;
     private final PlayerCSV playerCSV;
     private StackPane iconWrapper;
     private ImageView iconDisplay;
@@ -36,11 +38,12 @@ public class PlayerCreationRow extends HBox {
         this.playerCSV = PlayerCSV.instance();
         nameField = new TextField();
         saveButton = new Button("Save Player");
+        deleteRowButton = new Button("X");
         fetchButton = new MenuButton("->");
 
         init();
 
-        this.getChildren().addAll(fetchButton, iconWrapper, nameField, saveButton);
+        this.getChildren().addAll(fetchButton, iconWrapper, nameField, saveButton, deleteRowButton);
 
     }
 
@@ -70,6 +73,10 @@ public class PlayerCreationRow extends HBox {
                 alert.show();
             }
 
+        });
+
+        deleteRowButton.setOnAction(e -> {
+            deleteRowAction.run();
         });
 
         List<String[]> playerNames = PlayerCSV.getCSVContent();
@@ -129,5 +136,9 @@ public class PlayerCreationRow extends HBox {
 
     public TextField getNameField() {
         return nameField;
+    }
+
+    public void setDeleteRowAction(Runnable deleteRowAction) {
+        this.deleteRowAction = deleteRowAction;
     }
 }

@@ -50,9 +50,12 @@ public class GameInitVisual {
 
         // Game-specific title
         switch (chosenGame) {
-            case "Snakes & Ladders" -> titleLabel = new Label("Snakes & Ladders");
-            case "Ludo" -> titleLabel = new Label("Ludo");
-            default -> throw new AssertionError();
+            case "Snakes & Ladders" ->
+                titleLabel = new Label("Snakes & Ladders");
+            case "Ludo" ->
+                titleLabel = new Label("Ludo");
+            default ->
+                throw new AssertionError();
         }
 
         // Title styling
@@ -63,7 +66,6 @@ public class GameInitVisual {
         VBox.setMargin(subtitleLabel, new Insets(0, 0, 50, 0));
 
         // --- Setup buttons ---
-
         // Add player
         addPlayerButton.setOnAction(e -> addEmptyPlayerRow());
 
@@ -81,7 +83,6 @@ public class GameInitVisual {
         });
 
         // --- Board selection buttons ---
-
         Button board1Button = new Button("Board 1");
         board1Button.setOnAction(e -> loadBoard(0));
 
@@ -95,13 +96,11 @@ public class GameInitVisual {
         boardChoices.setAlignment(Pos.CENTER);
 
         // --- Build left-hand side (board) ---
-
         VBox boardSide = new VBox();
         boardSide.setAlignment(Pos.CENTER);
         boardSide.getChildren().add(boardChoiceHolder);
 
         // --- Build right-hand side (controls) ---
-
         VBox sideColumn = new VBox(20);
         sideColumn.getChildren().addAll(titleLabel, subtitleLabel, boardChoices, playerRowsContainer, addPlayerButton, startGameButton);
         sideColumn.setPadding(new Insets(20));
@@ -109,12 +108,10 @@ public class GameInitVisual {
         sideColumn.setAlignment(Pos.TOP_CENTER);
 
         // --- Layout rules ---
-
         HBox.setHgrow(boardSide, Priority.NEVER);
         HBox.setHgrow(sideColumn, Priority.ALWAYS);
 
         // --- Final scene assembly ---
-
         sceneWrapper.setAlignment(Pos.CENTER_LEFT);
         sceneWrapper.getChildren().addAll(boardSide, sideColumn);
 
@@ -130,6 +127,13 @@ public class GameInitVisual {
         }
 
         PlayerCreationRow row = new PlayerCreationRow();
+        row.setDeleteRowAction((() -> {
+            playerRowsContainer.getChildren().remove(row);
+            if (playerRowsContainer.getChildren().size() < 3) {
+                addPlayerButton.setDisable(false);
+            }
+        }));
+
         playerRowsContainer.getChildren().add(row);
     }
 
