@@ -65,10 +65,9 @@ public class GameController {
         targetTile.addPlayer(player);
 
         if (!(targetTile.getEffect() == null)) {
-            PauseTransition pause = new PauseTransition(Duration.millis(500));
+            targetTile.getEffect().execute(player, this);
+            PauseTransition pause = new PauseTransition(Duration.millis(300));
             pause.setOnFinished(event -> {
-                targetTile.getEffect().execute(player, this);
-
                 if (targetTile.getEffect() instanceof MovementEffect movementEffect) {
                     ingame.getIngameController().moveToken(player, movementEffect.getTargetTileIndex());
                 }

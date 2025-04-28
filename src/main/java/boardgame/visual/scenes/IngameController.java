@@ -3,6 +3,7 @@ package boardgame.visual.scenes;
 import boardgame.controller.GameController;
 import boardgame.model.boardFiles.Player;
 import boardgame.model.diceFiles.Dice;
+import boardgame.model.effectFiles.MovementEffect;
 import boardgame.visual.elements.DiceButtonVisual;
 import boardgame.visual.elements.SideColumnVisual;
 import boardgame.visual.gameLayers.PlayerTokenLayer;
@@ -43,7 +44,13 @@ public class IngameController {
 
         playerTokenLayer.movePlayerThroughPath(player, nextPosition);
 
-        PauseTransition finalPause = new PauseTransition(Duration.millis((steps + 1) * 200));
+        int additionalMsDelay = 0;
+        //Additional delay for the effect to be shown
+        if (gameController.getBoard().getTiles().get(nextPosition - 1).getEffect() instanceof MovementEffect) {
+            additionalMsDelay = 300;
+        }
+
+        PauseTransition finalPause = new PauseTransition(Duration.millis((steps + 1) * 300 + additionalMsDelay));
         finalPause.setOnFinished(event -> {
             gameController.movePlayer(player, nextPosition);
             sideColumn.turnOnButton();

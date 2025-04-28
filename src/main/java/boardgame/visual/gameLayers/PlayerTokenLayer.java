@@ -70,7 +70,9 @@ public class PlayerTokenLayer extends Pane {
             cols.put(i + 1, col);
             rows.put(i + 1, row);
 
+
         });
+
     }
 
     /**
@@ -85,11 +87,8 @@ public class PlayerTokenLayer extends Pane {
         int col = cols.get(tileNumber);
         int row = rows.get(tileNumber);
 
-        double targetX = col * boardVisual.getSpacing() + boardVisual.getSpacing() / 2 - 25;
-        double targetY = row * boardVisual.getSpacing() + boardVisual.getSpacing() / 2 - 25;
-
-        token.setLayoutX(0);
-        token.setLayoutY(0);
+        double targetX = col * boardVisual.getSpacing();
+        double targetY = row * boardVisual.getSpacing();
 
         TranslateTransition move = new TranslateTransition(Duration.millis(300), token);
         move.setToX(targetX);
@@ -108,7 +107,7 @@ public class PlayerTokenLayer extends Pane {
         int playerPosition = player.getPosition();
 
         IntStream.rangeClosed(0, endTile - playerPosition).forEach(i -> {
-            PauseTransition pause = new PauseTransition(Duration.millis(i * 200));
+            PauseTransition pause = new PauseTransition(Duration.millis(i * 300));
             pause.setOnFinished(event -> {
                 moveToken(player, playerPosition + i);
             });
