@@ -2,8 +2,8 @@ package boardgame.controller;
 
 import java.util.List;
 
-import boardgame.model.boardFiles.Board;
 import boardgame.model.boardFiles.Player;
+import boardgame.model.boardFiles.SnLBoard;
 import boardgame.model.boardFiles.Tile;
 import boardgame.model.effectFiles.MovementEffect;
 import boardgame.utils.LoopingIterator;
@@ -18,7 +18,7 @@ import javafx.util.Duration;
  * @author Hector Mendana Morales
  */
 public class GameController {
-    private final Board board;
+    private final SnLBoard board;
     private final List<Tile> tiles;
     private final List<Player> players;
     private Player playerWhoseTurn;
@@ -32,7 +32,7 @@ public class GameController {
      * @param board the game board
      * @param players the list of players participating in the game
      */
-    public GameController(Board board, List<Player> players) {
+    public GameController(SnLBoard board, List<Player> players) {
         this.board = board;
         this.tiles = board.getTiles();
         System.out.println("Reached GameController with player list size: " + players.size());
@@ -117,7 +117,7 @@ public class GameController {
      *
      * @return the board
      */
-    public Board getBoard() {
+    public SnLBoard getBoard() {
         return board;
     }
 

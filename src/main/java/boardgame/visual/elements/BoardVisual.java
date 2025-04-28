@@ -2,7 +2,7 @@ package boardgame.visual.elements;
 
 import java.util.ArrayList;
 
-import boardgame.model.boardFiles.Board;
+import boardgame.model.boardFiles.SnLBoard;
 import boardgame.model.boardFiles.Tile;
 import boardgame.utils.ScreenDimension;
 import boardgame.visual.gameLayers.SnakesNLadders.LadderLayer;
@@ -12,7 +12,7 @@ import javafx.scene.layout.StackPane;
 /**
  * Visual representation of the game board using JavaFX's {@link GridPane}.
  * This class arranges {@link TileVisual} components based on the logic from
- * the underlying {@link Board} object and supports updating the board display.
+ * the underlying {@link SnLBoard} object and supports updating the board display.
  * 
  * The tiles are laid out in a zig-zag (snaking) pattern across the grid.
  * 
@@ -20,7 +20,7 @@ import javafx.scene.layout.StackPane;
  */
 public class BoardVisual extends StackPane {
 
-    private final Board board;
+    private final SnLBoard board;
     private final ArrayList<Tile> tileLogic;
     private final ArrayList<TileVisual> tileViews;
     private final double dimension = ScreenDimension.getScreenHeight() - 200; // Example dimension, adjust as needed
@@ -31,12 +31,12 @@ public class BoardVisual extends StackPane {
     
 
     /**
-     * Constructs a new visual board based on the provided {@link Board} logic.
+     * Constructs a new visual board based on the provided {@link SnLBoard} logic.
      * Initializes layout settings and populates the grid with visual tile elements.
      *
      * @param board the logical board to visualize
      */
-    public BoardVisual(Board board) {
+    public BoardVisual(SnLBoard board) {
         this.board = board;
         this.tileLogic = board.getTiles();
         this.tileViews = new ArrayList<>();

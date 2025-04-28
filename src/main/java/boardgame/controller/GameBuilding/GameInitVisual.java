@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import boardgame.controller.BoardJSON;
-import boardgame.model.boardFiles.Board;
+import boardgame.model.boardFiles.SnLBoard;
 import boardgame.model.boardFiles.Player;
 import boardgame.visual.elements.BoardVisual;
 import boardgame.visual.elements.PlayerCreationRow;
@@ -141,7 +141,7 @@ public class GameInitVisual {
      * Loads a board into the left panel based on board variant index.
      */
     private void loadBoard(int boardIndex) {
-        Board board = BoardJSON.constructSnLBoardFromJSON(boardIndex);
+        SnLBoard board = BoardJSON.constructSnLBoardFromJSON(boardIndex);
         BoardVisual boardVisual = new BoardVisual(board);
         LadderLayer ladderLayer = new LadderLayer(boardVisual, board.getTilesWithLadders(), board.getTilesWithSnakes());
 

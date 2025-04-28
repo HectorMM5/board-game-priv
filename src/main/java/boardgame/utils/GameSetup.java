@@ -5,7 +5,7 @@ import java.util.List;
 import boardgame.controller.BoardJSON;
 import boardgame.controller.GameController;
 import boardgame.controller.SceneManager;
-import boardgame.model.boardFiles.Board;
+import boardgame.model.boardFiles.SnLBoard;
 import boardgame.model.boardFiles.Player;
 import boardgame.visual.scenes.Ingame;
 
@@ -20,7 +20,7 @@ import boardgame.visual.scenes.Ingame;
  */
 public class GameSetup {
 
-    private final Board board;
+    private final SnLBoard board;
     private final List<Player> players;
     private final GameController gameController;
     private final Ingame ingame;
@@ -46,7 +46,7 @@ public class GameSetup {
      *
      * @return the game board
      */
-    public Board getBoard() {
+    public SnLBoard getBoard() {
         return board;
     }
 

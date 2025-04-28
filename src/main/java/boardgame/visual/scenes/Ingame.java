@@ -1,7 +1,7 @@
 package boardgame.visual.scenes;
 
 import boardgame.controller.GameController;
-import boardgame.model.boardFiles.Board;
+import boardgame.model.boardFiles.SnLBoard;
 import boardgame.utils.GameSetup;
 import boardgame.visual.elements.BoardVisual;
 import boardgame.visual.elements.SideColumnVisual;
@@ -27,7 +27,7 @@ import javafx.scene.layout.VBox;
  */
 public class Ingame {
 
-    private final Board board;
+    private final SnLBoard board;
     private final BoardVisual boardVisual;
     private final SideColumnVisual sideColumn;
     private final PlayerTokenLayer playerTokenLayer;

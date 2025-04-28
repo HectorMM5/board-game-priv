@@ -8,7 +8,7 @@ import java.util.stream.IntStream;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import boardgame.model.boardFiles.Board;
+import boardgame.model.boardFiles.SnLBoard;
 import boardgame.model.effectFiles.BackToStartEffect;
 import boardgame.model.effectFiles.Effect;
 import boardgame.model.effectFiles.LadderEffect;
@@ -32,10 +32,10 @@ public class BoardJSON {
      * from the boards.json resource file.
      *
      * @param choice the index of the board configuration in the "SnL" array to load
-     * @return a populated {@link Board} object with effects set according to the JSON
+     * @return a populated {@link SnLBoard} object with effects set according to the JSON
      */
-    public static Board constructSnLBoardFromJSON(int choice) {
-        Board board = new Board();
+    public static SnLBoard constructSnLBoardFromJSON(int choice) {
+        SnLBoard board = new SnLBoard();
 
         try (InputStream is = BoardJSON.class.getClassLoader().getResourceAsStream("boards.json")) {
             if (is == null) {
@@ -66,9 +66,9 @@ public class BoardJSON {
      * {@link Effect} to the target tile on the board.
      *
      * @param tileWithEffect the JSON object representing the tile and its effect
-     * @param board the {@link Board} to apply the effect to
+     * @param board the {@link SnLBoard} to apply the effect to
      */
-    public static void modifyEffectTileFromJSON(JSONObject tileWithEffect, Board board) {
+    public static void modifyEffectTileFromJSON(JSONObject tileWithEffect, SnLBoard board) {
         int tileNumber = tileWithEffect.getInt("tile");
         String effectType = tileWithEffect.getString("effect");
 
