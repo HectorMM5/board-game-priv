@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import boardgame.controller.BoardJSON;
-import boardgame.model.boardFiles.SnLBoard;
 import boardgame.model.boardFiles.Player;
+import boardgame.model.boardFiles.SnL.SnLBoard;
 import boardgame.visual.elements.BoardVisual;
 import boardgame.visual.elements.PlayerCreationRow;
 import boardgame.visual.gameLayers.SnakesNLadders.LadderLayer;

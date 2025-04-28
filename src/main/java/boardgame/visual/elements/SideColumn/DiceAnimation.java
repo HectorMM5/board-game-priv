@@ -1,4 +1,4 @@
-package boardgame.visual.elements;
+package boardgame.visual.elements.SideColumn;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package boardgame.visual.elements;
+package boardgame.visual.elements.SideColumn;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;

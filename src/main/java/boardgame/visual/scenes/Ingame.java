@@ -1,10 +1,10 @@
 package boardgame.visual.scenes;
 
 import boardgame.controller.GameController;
-import boardgame.model.boardFiles.SnLBoard;
+import boardgame.model.boardFiles.SnL.SnLBoard;
 import boardgame.utils.GameSetup;
 import boardgame.visual.elements.BoardVisual;
-import boardgame.visual.elements.SideColumnVisual;
+import boardgame.visual.elements.SideColumn.SideColumnVisual;
 import boardgame.visual.gameLayers.PlayerTokenLayer;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;

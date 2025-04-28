@@ -2,7 +2,7 @@ package boardgame.visual.elements;
 
 import java.util.ArrayList;
 
-import boardgame.model.boardFiles.SnLBoard;
+import boardgame.model.boardFiles.SnL.SnLBoard;
 import boardgame.model.boardFiles.Tile;
 import boardgame.utils.ScreenDimension;
 import boardgame.visual.gameLayers.SnakesNLadders.LadderLayer;
