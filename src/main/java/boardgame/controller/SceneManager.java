@@ -30,7 +30,6 @@ public class SceneManager {
             primaryStage.setScene(scene);
             primaryStage.show();
 
-            
         } else {
             System.out.println("Primary stage is not set. Cannot change scene.");
         }

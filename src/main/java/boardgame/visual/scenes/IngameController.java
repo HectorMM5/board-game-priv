@@ -1,6 +1,7 @@
 package boardgame.visual.scenes;
 
 import boardgame.controller.GameController;
+import boardgame.controller.SceneManager;
 import boardgame.model.boardFiles.Player;
 import boardgame.model.diceFiles.Dice;
 import boardgame.model.effectFiles.MovementEffect;
@@ -23,11 +24,13 @@ public class IngameController {
     private final PlayerTokenLayer playerTokenLayer;
     private final SideColumnVisual sideColumn;
     private final Dice dice = new Dice(1);
+    private final int boardSize;
 
     public IngameController(GameController gameController, PlayerTokenLayer playerTokenLayer, SideColumnVisual sideColumn) {
         this.gameController = gameController;
         this.playerTokenLayer = playerTokenLayer;
         this.sideColumn = sideColumn;
+        this.boardSize = gameController.getBoard().getTiles().size();
     }
 
     /**
@@ -65,11 +68,28 @@ public class IngameController {
      */
     public void handleRollDice(DiceButtonVisual buttonVisual) {
         int diceRoll = dice.roll();
-        System.out.println("Rolled: " + diceRoll);
-
         sideColumn.displayRoll(diceRoll);
-        moveBy(gameController.getCurrentPlayer(), diceRoll, buttonVisual);
-        gameController.advanceTurn();
+
+        Player currentPlayer = gameController.getCurrentPlayer();
+
+        if (currentPlayer.getPosition() + diceRoll >= boardSize) {
+            moveBy(gameController.getCurrentPlayer(), boardSize - currentPlayer.getPosition(), buttonVisual);
+
+            PauseTransition gameEndAnimation = new PauseTransition(Duration.millis((boardSize - currentPlayer.getPosition() + 1) * 300 + 300));
+            gameEndAnimation.setOnFinished(event -> {
+                SceneManager.getInstance().changeScene(
+                new WinScreen(
+                    currentPlayer.getName(), currentPlayer.getIcon()
+                    ).getScene());
+            
+            });
+            gameEndAnimation.play();
+
+        } else {
+            moveBy(gameController.getCurrentPlayer(), diceRoll, buttonVisual);
+            gameController.advanceTurn();
+        }
+
     }
 
     /**
