@@ -83,7 +83,6 @@ public class Ingame {
     Scene scene = new Scene(sceneWrapper);
 
     gameController.start();
-    boardVisual.updateEntireBoard();
 
     return scene;
 }

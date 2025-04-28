@@ -11,8 +11,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
 public class WinScreen {
-    private String winnerName;
-    private String winnerIconPath;
+    private final String winnerName;
+    private final String winnerIconPath;
 
     public WinScreen(String winnerName, String winnerIconPath) {
         this.winnerName = winnerName;

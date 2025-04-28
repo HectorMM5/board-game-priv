@@ -76,21 +76,7 @@ public class BoardVisual extends StackPane {
 
             tileGrid.add(tileVisual, col, row);
         }
-
-        for (TileVisual tv : tileViews) {
-            tv.updateVisual();
-        }
         
-    }
-
-    /**
-     * Updates the entire board's visuals by triggering a refresh
-     * on each individual {@link TileVisual}.
-     */
-    public void updateEntireBoard() {
-        for (TileVisual tv : tileViews) {
-            tv.updateVisual();
-        }
     }
 
     public GridPane getTileGrid() {
