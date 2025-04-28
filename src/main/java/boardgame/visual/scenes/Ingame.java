@@ -1,34 +1,27 @@
 package boardgame.visual.scenes;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import boardgame.controller.GameController;
 import boardgame.model.boardFiles.Board;
-import boardgame.model.boardFiles.Player;
-import boardgame.model.boardFiles.Tile;
-import boardgame.model.diceFiles.Dice;
-import boardgame.model.effectFiles.LadderEffect;
-import boardgame.model.effectFiles.SnakeEffect;
 import boardgame.utils.GameSetup;
 import boardgame.visual.elements.BoardVisual;
-import boardgame.visual.elements.DiceButtonVisual;
 import boardgame.visual.elements.SideColumnVisual;
 import boardgame.visual.gameLayers.PlayerTokenLayer;
-import boardgame.visual.gameLayers.SnakesNLadders.LadderLayer;
-import javafx.animation.PauseTransition;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
-import javafx.util.Duration;
+import javafx.scene.layout.VBox;
+
 
 /**
  * The main scene handler for the in-game screen.
  * Responsible for initializing all UI elements (board, side column, tokens),
  * and managing gameplay flow such as player movement and dice rolling.
  *
- * This class connects the game's logic (`GameController`) with the visual layers.
+ * This class connects the game's logic (GameController) with the visual layers.
+ * Now uses IngameController to separate gameplay logic from scene setup.
  * 
  * @author Hector Mendana Morales
  */
@@ -36,11 +29,10 @@ public class Ingame {
 
     private final Board board;
     private final BoardVisual boardVisual;
-    private final List<Player> players;
     private final SideColumnVisual sideColumn;
     private final PlayerTokenLayer playerTokenLayer;
-    private final Dice dice = new Dice(1);
-    GameController gameController;
+    private final IngameController ingameController;
+    private final GameController gameController;
 
     /**
      * Constructs an in-game scene based on the given game setup.
@@ -52,96 +44,56 @@ public class Ingame {
         this.board = gameSetup.getBoard();
         this.boardVisual = new BoardVisual(board);
         this.sideColumn = new SideColumnVisual(gameController, gameSetup.getPlayers(), this);
-        this.playerTokenLayer = new PlayerTokenLayer(gameSetup.getPlayers());
-        this.players = gameSetup.getPlayers();
+        this.playerTokenLayer = new PlayerTokenLayer(boardVisual, gameSetup.getPlayers());
+        this.ingameController = new IngameController(gameController, playerTokenLayer, sideColumn);
+        
     }
 
     /**
      * Builds and displays the game scene, initializing all layers and visuals.
      *
-     * @param primaryStage the stage to display the scene in
+     * @return the scene containing the in-game UI
      */
-    public void createGameScene(Stage primaryStage) {
-        gameController.setIngame(this);
+    public Scene getScene() {
+    gameController.setIngame(this);
 
-        StackPane centerPane = new StackPane();
-        centerPane.getChildren().add(boardVisual);
+    // Main wrapper HBox
+    HBox sceneWrapper = new HBox(25);
 
-        ArrayList<Tile> tilesWithLadders = new ArrayList<>();
-        for (Tile tile : board.getTiles()) {
-            if (tile.getEffect() instanceof LadderEffect) {
-                tilesWithLadders.add(tile);
-            }
-            if (tile.getEffect() != null) {
-                System.out.println("EFFECT IN: " + tile.getNumber());
-            }
-        }
+    // --- Left side: Board visuals ---
+    StackPane boardPane = new StackPane();
+    boardPane.getChildren().addAll(boardVisual, playerTokenLayer);
+    boardPane.setAlignment(Pos.CENTER);
 
-        ArrayList<Tile> tilesWithSnakes = new ArrayList<>();
-        for (Tile tile : board.getTiles()) {
-            if (tile.getEffect() instanceof SnakeEffect) {
-                tilesWithSnakes.add(tile);
-            }
-        }
+    playerTokenLayer.prefWidthProperty().bind(boardVisual.widthProperty());
+    playerTokenLayer.prefHeightProperty().bind(boardVisual.heightProperty());
+    playerTokenLayer.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
 
-        BorderPane root = new BorderPane();
-        root.setLeft(sideColumn);
+    // NEW: Wrap boardPane in a VBox to center it properly
+    VBox boardContainer = new VBox(boardPane);
+    boardContainer.setAlignment(Pos.CENTER);
+    HBox.setHgrow(boardContainer, Priority.ALWAYS); // Important to make it take up space
 
-        Scene scene = new Scene(root, 600, 600);
-        primaryStage.setTitle("Board Game");
-        primaryStage.setScene(scene);
-        primaryStage.show();
+    // --- Right side: Side column ---
+    sideColumn.setAlignment(Pos.CENTER);
 
-        LadderLayer ladders = new LadderLayer(boardVisual, tilesWithLadders, tilesWithSnakes);
-        centerPane.getChildren().add(ladders);
-        centerPane.getChildren().add(playerTokenLayer);
-        root.setCenter(centerPane);
+    // Assemble
+    sceneWrapper.getChildren().addAll(boardContainer, sideColumn);
 
-        gameController.start();
-        boardVisual.updateEntireBoard();
-    }
+    Scene scene = new Scene(sceneWrapper);
+
+    gameController.start();
+
+    return scene;
+}
+
 
     /**
-     * Animates and completes a player's move by a number of steps.
-     * Updates token layer, invokes game logic, and re-enables the roll button.
+     * Returns the ingame controller responsible for gameplay actions.
      *
-     * @param player the player to move
-     * @param steps the number of tiles to move
-     * @param buttonVisual the roll button to be re-enabled after move
+     * @return the IngameController instance
      */
-    public void moveBy(Player player, int steps, DiceButtonVisual buttonVisual) {
-        int nextPosition = player.getPosition() + steps;
-
-        playerTokenLayer.movePlayerThroughPath(player, nextPosition);
-        PauseTransition finalPause = new PauseTransition(Duration.millis((nextPosition - player.getPosition() + 1) * 200));
-        finalPause.setOnFinished(event -> {
-            gameController.movePlayer(player, nextPosition);
-            sideColumn.turnOnButton();
-        });
-        finalPause.play();
-    }
-
-    /**
-     * Handles the dice roll event, initiates player movement and updates the display.
-     *
-     * @param buttonVisual the roll button that was pressed
-     */
-    public void handleRollDice(DiceButtonVisual buttonVisual) {
-        int diceRoll = dice.roll();
-        System.out.println("Rolled: " + diceRoll);
-        moveBy(gameController.getCurrentPlayer(), diceRoll, buttonVisual);
-        sideColumn.displayRoll(diceRoll);
-        gameController.advanceTurn();
-    }
-
-    /**
-     * Instantly moves the token of a player to the given tile number.
-     * Called during teleporting effects like ladders or snakes.
-     *
-     * @param player the player to move
-     * @param tileNumber the destination tile
-     */
-    public void moveToken(Player player, int tileNumber) {
-        playerTokenLayer.moveToken(player, tileNumber);
+    public IngameController getIngameController() {
+        return ingameController;
     }
 }

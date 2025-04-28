@@ -31,7 +31,7 @@
                         { "tile": 35, "effect": "LoseTurn"},
                         { "tile": 50, "effect": "Back"},
                         { "tile": 65, "effect": "LoseTurn"},
-                        { "tile": 72, "effect": "Ladder", "target": 90 },
+                        { "tile": 72, "effect": "Ladder", "target": 76 },
                         { "tile": 85, "effect": "Snake", "target": 45 }
                     ]
                 },
@@ -44,7 +44,7 @@
                         { "tile": 33, "effect": "LoseTurn"},
                         { "tile": 48, "effect": "Back"},
                         { "tile": 62, "effect": "LoseTurn"},
-                        { "tile": 75, "effect": "Ladder", "target": 95 },
+                        { "tile": 75, "effect": "Ladder", "target": 90 },
                         { "tile": 80, "effect": "Snake", "target": 50 }
                     ]
                 }

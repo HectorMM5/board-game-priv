@@ -5,12 +5,15 @@ import java.util.List;
 
 import boardgame.model.boardFiles.Tile;
 import boardgame.model.effectFiles.LadderEffect;
+import boardgame.model.effectFiles.MovementEffect;
 import boardgame.model.effectFiles.SnakeEffect;
+import boardgame.utils.ScreenDimension;
 import boardgame.visual.elements.BoardVisual;
 import boardgame.visual.elements.TileVisual;
+import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
 import javafx.scene.transform.Rotate;
 
 /**
@@ -25,6 +28,13 @@ import javafx.scene.transform.Rotate;
 public class LadderLayer extends Pane {
 
     private final BoardVisual boardVisual;
+    final double TILE_SIZE = (ScreenDimension.getScreenHeight() - 200) / 10; 
+    final int GAP = 4;
+    final double spacing = TILE_SIZE + GAP;
+    
+    private enum EffectType {
+        LADDER, SNAKE
+    }
 
     /**
      * Constructs the ladder layer using the board visual and lists of tiles that
@@ -37,45 +47,45 @@ public class LadderLayer extends Pane {
     public LadderLayer(BoardVisual boardVisual, List<Tile> tilesWithLadders, List<Tile> tilesWithSnakes) {
         this.boardVisual = boardVisual;
 
-        this.setPrefSize(536, 482);
-        this.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
-        this.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+        this.prefWidthProperty().bind(boardVisual.getTileGrid().widthProperty());
+        this.prefHeightProperty().bind(boardVisual.getTileGrid().heightProperty());
 
         for (Tile tile : tilesWithLadders) {
-            renderLadder((LadderEffect) tile.getEffect());
+            renderEffect((MovementEffect) tile.getEffect(), EffectType.LADDER);
         }
 
         for (Tile tile : tilesWithSnakes) {
-            renderSnake((SnakeEffect) tile.getEffect());
+            renderEffect((MovementEffect) tile.getEffect(), EffectType.SNAKE);
         }
+    
     }
 
     /**
-     * Renders a ladder graphic from the base tile to the target tile.
+     * Generalized method to render either a ladder or a snake visual.
      *
-     * @param ladder the ladder effect containing start and end tile indices
+     * @param effect the effect object (either LadderEffect or SnakeEffect)
+     * @param type the type of effect (ladder or snake)
      */
-    private void renderLadder(LadderEffect ladder) {
-        LadderVisual ladderVisual;
+    private void renderEffect(MovementEffect effect, EffectType type) {
         Integer baseX = null, baseY = null;
         Integer targetX = null, targetY = null;
 
-        Iterator<Node> tileIterator = boardVisual.getChildren().iterator();
+        int baseIndex = effect.getBaseTileIndex();
+        int targetIndex = effect.getTargetTileIndex();
 
-        final int TILE_SIZE = 50;
-        final int GAP = 4;
-        final int spacing = TILE_SIZE + GAP;
+        Iterator<Node> tileIterator = boardVisual.getTileGrid().getChildren().iterator();
 
         while (((baseX == null) || (targetX == null)) && tileIterator.hasNext()) {
             Node tileNode = tileIterator.next();
 
             if (tileNode instanceof TileVisual tileVisual) {
-                if (tileVisual.getTile().getNumber() == ladder.getBaseTileIndex()) {
-                    baseX = BoardVisual.getColumnIndex(tileVisual);
-                    baseY = BoardVisual.getRowIndex(tileVisual);
-                } else if (tileVisual.getTile().getNumber() == ladder.getTargetTileIndex()) {
-                    targetX = BoardVisual.getColumnIndex(tileVisual);
-                    targetY = BoardVisual.getRowIndex(tileVisual);
+                int number = tileVisual.getTile().getNumber();
+                if (number == baseIndex) {
+                    baseX = GridPane.getColumnIndex(tileVisual);
+                    baseY = GridPane.getRowIndex(tileVisual);
+                } else if (number == targetIndex) {
+                    targetX = GridPane.getColumnIndex(tileVisual);
+                    targetY = GridPane.getRowIndex(tileVisual);
                 }
             }
         }
@@ -84,57 +94,19 @@ public class LadderLayer extends Pane {
         int dy = targetY - baseY;
         double hypotenuse = Math.sqrt((dx * dx) + (dy * dy));
 
-        ladderVisual = new LadderVisual(hypotenuse * spacing - TILE_SIZE / 2);
-        ladderVisual.setLayoutX(baseX * spacing);
-        ladderVisual.setLayoutY(baseY * spacing + TILE_SIZE / 2.0);
-
-        double angle = Math.toDegrees(Math.atan2(dx, dy));
-        ladderVisual.getTransforms().add(new Rotate(-angle, 25, 0));
-
-        this.getChildren().add(ladderVisual);
-    }
-
-    /**
-     * Renders a snake graphic from the base tile to the target tile.
-     *
-     * @param snake the snake effect containing start and end tile indices
-     */
-    private void renderSnake(SnakeEffect snake) {
-        SnakeVisual snakeVisual;
-        Integer baseX = null, baseY = null;
-        Integer targetX = null, targetY = null;
-
-        Iterator<Node> tileIterator = boardVisual.getChildren().iterator();
-
-        final int TILE_SIZE = 50;
-        final int GAP = 4;
-        final int spacing = TILE_SIZE + GAP;
-
-        while (((baseX == null) || (targetX == null)) && tileIterator.hasNext()) {
-            Node tileNode = tileIterator.next();
-
-            if (tileNode instanceof TileVisual tileVisual) {
-                if (tileVisual.getTile().getNumber() == snake.getBaseTileIndex()) {
-                    baseX = BoardVisual.getColumnIndex(tileVisual);
-                    baseY = BoardVisual.getRowIndex(tileVisual);
-                } else if (tileVisual.getTile().getNumber() == snake.getTargetTileIndex()) {
-                    targetX = BoardVisual.getColumnIndex(tileVisual);
-                    targetY = BoardVisual.getRowIndex(tileVisual);
-                }
-            }
+        Group visual;
+        if (type == EffectType.LADDER) {
+            visual = new LadderVisual(hypotenuse * spacing);
+        } else {
+            visual = new SnakeVisual(hypotenuse * spacing);
         }
 
-        int dx = targetX - baseX;
-        int dy = targetY - baseY;
-        double hypotenuse = Math.sqrt((dx * dx) + (dy * dy));
-
-        snakeVisual = new SnakeVisual(hypotenuse * spacing - TILE_SIZE / 2);
-        snakeVisual.setLayoutX(baseX * spacing);
-        snakeVisual.setLayoutY(baseY * spacing + TILE_SIZE / 2.0);
+        visual.setLayoutX(baseX * spacing + 12.5);
+        visual.setLayoutY(baseY * spacing + TILE_SIZE / 2);
 
         double angle = Math.toDegrees(Math.atan2(dx, dy));
-        snakeVisual.getTransforms().add(new Rotate(-angle, 25, 0));
+        visual.getTransforms().add(new Rotate(-angle, 25, 0));
 
-        this.getChildren().add(snakeVisual);
+        this.getChildren().add(visual);
     }
 }

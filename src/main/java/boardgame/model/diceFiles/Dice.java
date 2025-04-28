@@ -5,6 +5,7 @@ public class Dice {
     private static final ArrayList<Die> dice = new ArrayList<>();
 
     public Dice(int numberOfDice) {
+        dice.clear();
         for (int i = 0; i < numberOfDice; i++) {
             dice.add(new Die());
         }

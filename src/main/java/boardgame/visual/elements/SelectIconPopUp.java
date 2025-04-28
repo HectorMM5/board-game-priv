@@ -18,9 +18,9 @@ import javafx.scene.layout.VBox;
 public class SelectIconPopUp extends VBox {
 
     private static final int IMAGES_PER_ROW = 3;
-    private GridPane iconGrid;
+    private final GridPane iconGrid;
     private String iconSelected;
-    private Consumer<String> onIconSelected;
+    private final Consumer<String> onIconSelected;
 
     public SelectIconPopUp(Consumer<String> onIconSelected) {
         this.onIconSelected = onIconSelected;
@@ -94,8 +94,7 @@ public class SelectIconPopUp extends VBox {
 
     public void cleanChoice() {
         iconGrid.getChildren().stream().forEach(node -> {
-            if (node instanceof StackPane) {
-                StackPane imageWrapper = (StackPane) node;
+            if (node instanceof StackPane imageWrapper) {
                 imageWrapper.setStyle("-fx-border-color: transparent; -fx-border-width: 0;");
             }
         });

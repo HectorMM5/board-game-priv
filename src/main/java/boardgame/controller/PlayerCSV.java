@@ -26,13 +26,23 @@ import com.opencsv.CSVWriter;
 public class PlayerCSV {
 
     private static final File FILE = new File("src/main/resources/playerProfiles.csv");
+    private static PlayerCSV instance = null;
+
+
+    public static PlayerCSV instance() {
+        if (instance == null) {
+            instance = new PlayerCSV();
+        }
+        return instance;
+        
+    }
 
     /**
      * Reads and returns the contents of the CSV file as a list of string arrays.
      *
      * @return a list of all player data rows from the CSV file
      */
-    private static ArrayList<String[]> getCSVContent() {
+    public static ArrayList<String[]> getCSVContent() {
         ArrayList<String[]> allPlayers = new ArrayList<>();
 
         try (CSVReader reader = new CSVReader(new FileReader(FILE))) {
@@ -68,6 +78,10 @@ public class PlayerCSV {
      * @param icon the icon path for the player
      */
     public void registerNewPlayer(String name, String icon) {
+        if (name == null || name.isEmpty()) {
+            throw new IllegalArgumentException("Player name cannot be empty.");
+        }
+
         ArrayList<String[]> allPlayers = getCSVContent();
         Iterator<String[]> iterator = allPlayers.iterator();
 
