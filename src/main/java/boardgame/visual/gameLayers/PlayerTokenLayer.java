@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.IntStream;
 
 import boardgame.model.boardFiles.Player;
-import boardgame.visual.elements.BoardVisual;
+import boardgame.visual.elements.SnLBoardVisual;
 import javafx.animation.PauseTransition;
 import javafx.animation.TranslateTransition;
 import javafx.scene.image.Image;
@@ -30,7 +30,7 @@ public class PlayerTokenLayer extends Pane {
     private final Map<Player, ImageView> playerTokens = new HashMap<>();
     private final Map<Integer, Integer> cols = new HashMap<>();
     private final Map<Integer, Integer> rows = new HashMap<>();
-    private final BoardVisual boardVisual;
+    private final SnLBoardVisual boardVisual;
 
     /**
      * Constructs the token layer for a given list of players.
@@ -38,7 +38,7 @@ public class PlayerTokenLayer extends Pane {
      *
      * @param players the list of players whose tokens should be displayed
      */
-    public PlayerTokenLayer(BoardVisual boardVisual, List<Player> players) {
+    public PlayerTokenLayer(SnLBoardVisual boardVisual, List<Player> players) {
         this.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-background-color: transparent;");
         this.boardVisual = boardVisual;
         this.prefWidthProperty().bind(boardVisual.getTileGrid().widthProperty());   

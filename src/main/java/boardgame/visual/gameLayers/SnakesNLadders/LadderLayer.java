@@ -8,7 +8,7 @@ import boardgame.model.effectFiles.LadderEffect;
 import boardgame.model.effectFiles.MovementEffect;
 import boardgame.model.effectFiles.SnakeEffect;
 import boardgame.utils.ScreenDimension;
-import boardgame.visual.elements.BoardVisual;
+import boardgame.visual.elements.SnLBoardVisual;
 import boardgame.visual.elements.TileVisual;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -27,7 +27,7 @@ import javafx.scene.transform.Rotate;
  */
 public class LadderLayer extends Pane {
 
-    private final BoardVisual boardVisual;
+    private final SnLBoardVisual boardVisual;
     final double TILE_SIZE = (ScreenDimension.getScreenHeight() - 200) / 10; 
     final int GAP = 4;
     final double spacing = TILE_SIZE + GAP;
@@ -44,7 +44,7 @@ public class LadderLayer extends Pane {
      * @param tilesWithLadders tiles that contain {@link LadderEffect}s
      * @param tilesWithSnakes tiles that contain {@link SnakeEffect}s
      */
-    public LadderLayer(BoardVisual boardVisual, List<Tile> tilesWithLadders, List<Tile> tilesWithSnakes) {
+    public LadderLayer(SnLBoardVisual boardVisual, List<Tile> tilesWithLadders, List<Tile> tilesWithSnakes) {
         this.boardVisual = boardVisual;
 
         this.prefWidthProperty().bind(boardVisual.getTileGrid().widthProperty());

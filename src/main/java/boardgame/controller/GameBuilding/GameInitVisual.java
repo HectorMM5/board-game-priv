@@ -6,7 +6,7 @@ import java.util.List;
 import boardgame.controller.BoardJSON;
 import boardgame.model.boardFiles.Player;
 import boardgame.model.boardFiles.SnL.SnLBoard;
-import boardgame.visual.elements.BoardVisual;
+import boardgame.visual.elements.SnLBoardVisual;
 import boardgame.visual.elements.PlayerCreationRow;
 import boardgame.visual.gameLayers.SnakesNLadders.LadderLayer;
 import javafx.geometry.Insets;
@@ -142,7 +142,7 @@ public class GameInitVisual {
      */
     private void loadBoard(int boardIndex) {
         SnLBoard board = BoardJSON.constructSnLBoardFromJSON(boardIndex);
-        BoardVisual boardVisual = new BoardVisual(board);
+        SnLBoardVisual boardVisual = new SnLBoardVisual(board);
         LadderLayer ladderLayer = new LadderLayer(boardVisual, board.getTilesWithLadders(), board.getTilesWithSnakes());
 
         boardChoiceHolder.getChildren().clear();

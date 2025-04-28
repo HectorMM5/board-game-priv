@@ -2,12 +2,11 @@ package boardgame.visual.elements;
 
 import java.util.ArrayList;
 
-import boardgame.model.boardFiles.SnL.SnLBoard;
+import boardgame.model.boardFiles.Board;
 import boardgame.model.boardFiles.Tile;
-import boardgame.utils.ScreenDimension;
-import boardgame.visual.gameLayers.SnakesNLadders.LadderLayer;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+
 
 /**
  * Visual representation of the game board using JavaFX's {@link GridPane}.
@@ -18,16 +17,11 @@ import javafx.scene.layout.StackPane;
  * 
  * @author Hector Mendana Morales
  */
-public class BoardVisual extends StackPane {
+public abstract class BoardVisual extends StackPane {
 
-    private final SnLBoard board;
-    private final ArrayList<Tile> tileLogic;
-    private final ArrayList<TileVisual> tileViews;
-    private final double dimension = ScreenDimension.getScreenHeight() - 200; // Example dimension, adjust as needed
-    private final LadderLayer ladderLayer;
-    private final GridPane tileGrid = new GridPane();
-    private final double TILE_SIZE = dimension / 10; 
-    private final double spacing = TILE_SIZE + 4;
+    public final Board board;
+    public final ArrayList<Tile> tileLogic;
+    public final ArrayList<TileVisual> tileViews;
     
 
     /**
@@ -36,55 +30,17 @@ public class BoardVisual extends StackPane {
      *
      * @param board the logical board to visualize
      */
-    public BoardVisual(SnLBoard board) {
+    public BoardVisual(Board board) {
         this.board = board;
         this.tileLogic = board.getTiles();
         this.tileViews = new ArrayList<>();
 
-        initializeBoard();
-        this.ladderLayer = new LadderLayer(this, board.getTilesWithLadders(), board.getTilesWithSnakes()); 
-        this.prefWidthProperty().bind(tileGrid.widthProperty());
-        this.prefHeightProperty().bind(tileGrid.heightProperty());    
-        this.setMaxSize(USE_PREF_SIZE, USE_PREF_SIZE);
-        this.getChildren().addAll(tileGrid, ladderLayer);
     }
 
     /**
      * Initializes the board layout by placing all tiles into the grid.
      * Tiles are arranged in a zig-zag pattern based on the board's width.
      */
-    private void initializeBoard() {
-        tileGrid.setHgap(4); // horizontal gap between tiles
-        tileGrid.setVgap(4); // vertical gap between tiles
-        tileGrid.setStyle("-fx-background-color: green;"); // background visible in gaps
-
-        Boolean movesRight = false;
-
-        for (int i = 0; i < board.getTileCount(); i++) {
-            Tile tile = tileLogic.get(i);
-            TileVisual tileVisual = new TileVisual(tile, TILE_SIZE, TILE_SIZE);
-            tileViews.add(tileVisual);
-        
-            if ((i % board.getBoardWidth()) == 0) {
-                movesRight = !movesRight;
-            }
-        
-            int row = i / board.getBoardWidth();
-            int col = movesRight
-                ? i % board.getBoardWidth()
-                : board.getBoardWidth() - ((i % board.getBoardWidth()) + 1);
-
-            tileGrid.add(tileVisual, col, row);
-        }
-        
-    }
-
-    public GridPane getTileGrid() {
-        return tileGrid;
-    }
-
-    public double getSpacing() {
-        return spacing;
-    }
+    public abstract void initializeBoard();
 
 }

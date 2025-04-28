@@ -3,7 +3,7 @@ package boardgame.visual.scenes;
 import boardgame.controller.GameController;
 import boardgame.model.boardFiles.SnL.SnLBoard;
 import boardgame.utils.GameSetup;
-import boardgame.visual.elements.BoardVisual;
+import boardgame.visual.elements.SnLBoardVisual;
 import boardgame.visual.elements.SideColumn.SideColumnVisual;
 import boardgame.visual.gameLayers.PlayerTokenLayer;
 import javafx.geometry.Pos;
@@ -28,7 +28,7 @@ import javafx.scene.layout.VBox;
 public class Ingame {
 
     private final SnLBoard board;
-    private final BoardVisual boardVisual;
+    private final SnLBoardVisual boardVisual;
     private final SideColumnVisual sideColumn;
     private final PlayerTokenLayer playerTokenLayer;
     private final IngameController ingameController;
@@ -42,7 +42,7 @@ public class Ingame {
     public Ingame(GameSetup gameSetup) {
         this.gameController = gameSetup.getGameController();
         this.board = gameSetup.getBoard();
-        this.boardVisual = new BoardVisual(board);
+        this.boardVisual = new SnLBoardVisual(board);
         this.sideColumn = new SideColumnVisual(gameController, gameSetup.getPlayers(), this);
         this.playerTokenLayer = new PlayerTokenLayer(boardVisual, gameSetup.getPlayers());
         this.ingameController = new IngameController(gameController, playerTokenLayer, sideColumn);
