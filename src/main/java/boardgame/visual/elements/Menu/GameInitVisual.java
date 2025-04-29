@@ -21,6 +21,7 @@ import javafx.scene.layout.VBox;
 public class GameInitVisual {
 
     // --- Main layout containers ---
+    private int chosenBoard;
     private final VBox playerRowsContainer;
     private final HBox boardChoices = new HBox();
     private final StackPane boardChoiceHolder = new StackPane();
@@ -32,6 +33,7 @@ public class GameInitVisual {
 
     public GameInitVisual() {
         // Initialize player column
+        this.chosenBoard = 0;
         this.playerRowsContainer = new VBox(10);
         playerRowsContainer.setStyle("-fx-padding: 20;");
 
@@ -90,7 +92,7 @@ public class GameInitVisual {
                 })
                 .toList();
         
-            GameInitController.handleGameStart(chosenGame, 0, players);
+            GameInitController.handleGameStart(chosenGame, chosenBoard, players);
         });
 
         // --- Board selection buttons ---
@@ -155,6 +157,8 @@ public class GameInitVisual {
         SnLBoard board = BoardJSON.constructSnLBoardFromJSON(boardIndex);
         SnLBoardVisual boardVisual = new SnLBoardVisual(board);
         LadderLayer ladderLayer = new LadderLayer(boardVisual, board.getTilesWithLadders(), board.getTilesWithSnakes());
+
+        chosenBoard = boardIndex;
 
         boardChoiceHolder.getChildren().clear();
         boardChoiceHolder.getChildren().addAll(boardVisual, ladderLayer);
