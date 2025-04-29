@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.IntStream;
 
 import boardgame.model.boardFiles.Player;
-import boardgame.visual.elements.SnLBoardVisual;
+import boardgame.visual.elements.SnL.SnLBoardVisual;
 import javafx.animation.PauseTransition;
 import javafx.animation.TranslateTransition;
 import javafx.scene.image.Image;

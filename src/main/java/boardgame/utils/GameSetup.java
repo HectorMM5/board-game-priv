@@ -6,7 +6,7 @@ import boardgame.controller.BoardJSON;
 import boardgame.controller.GameController;
 import boardgame.controller.SceneManager;
 import boardgame.model.boardFiles.Player;
-import boardgame.model.boardFiles.SnL.SnLBoard;
+import boardgame.model.boardFiles.SnLBoard;
 import boardgame.visual.scenes.Ingame;
 
 /**

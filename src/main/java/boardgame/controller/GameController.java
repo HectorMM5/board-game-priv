@@ -3,7 +3,7 @@ package boardgame.controller;
 import java.util.List;
 
 import boardgame.model.boardFiles.Player;
-import boardgame.model.boardFiles.SnL.SnLBoard;
+import boardgame.model.boardFiles.SnLBoard;
 import boardgame.model.boardFiles.Tile;
 import boardgame.model.effectFiles.MovementEffect;
 import boardgame.utils.LoopingIterator;

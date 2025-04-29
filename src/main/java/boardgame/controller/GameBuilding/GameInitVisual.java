@@ -4,11 +4,11 @@ import java.util.List;
 
 import boardgame.controller.BoardJSON;
 import boardgame.model.boardFiles.Player;
-import boardgame.model.boardFiles.SnL.SnLBoard;
+import boardgame.model.boardFiles.SnLBoard;
 import boardgame.visual.elements.PlayerCreationRow;
 import boardgame.visual.elements.PopUpAlert;
-import boardgame.visual.elements.SnLBoardVisual;
-import boardgame.visual.gameLayers.SnakesNLadders.LadderLayer;
+import boardgame.visual.elements.SnL.LadderLayer;
+import boardgame.visual.elements.SnL.SnLBoardVisual;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;

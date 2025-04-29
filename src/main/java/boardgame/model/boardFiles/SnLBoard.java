@@ -1,11 +1,9 @@
-package boardgame.model.boardFiles.SnL;
+package boardgame.model.boardFiles;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import boardgame.model.boardFiles.Board;
-import boardgame.model.boardFiles.Tile;
 import boardgame.model.effectFiles.LadderEffect;
 import boardgame.model.effectFiles.SnakeEffect;
 

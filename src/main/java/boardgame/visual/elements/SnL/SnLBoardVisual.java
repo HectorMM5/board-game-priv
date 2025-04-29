@@ -1,9 +1,10 @@
-package boardgame.visual.elements;
+package boardgame.visual.elements.SnL;
 
-import boardgame.model.boardFiles.SnL.SnLBoard;
+import boardgame.model.boardFiles.SnLBoard;
 import boardgame.model.boardFiles.Tile;
 import boardgame.utils.ScreenDimension;
-import boardgame.visual.gameLayers.SnakesNLadders.LadderLayer;
+import boardgame.visual.elements.BoardVisual;
+import boardgame.visual.elements.TileVisual;
 import javafx.scene.layout.GridPane;
 
 /**
