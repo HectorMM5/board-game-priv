@@ -124,7 +124,7 @@ public final class LudoBoardVisual extends BoardVisual {
         // Add playable tile visuals
         IntStream.rangeClosed(1, playableTiles.size()).forEach(i -> {
             Point point = playableTiles.get(i - 1);
-            Tile tile = tileLogic.get(i);
+            Tile tile = tileLogic.get(i-1);
             TileVisual tileVisual = new TileVisual(tile, TILE_SIZE, TILE_SIZE);
             tileGrid.add(tileVisual, point.x, point.y);
         });
