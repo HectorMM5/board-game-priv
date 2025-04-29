@@ -1,7 +1,7 @@
 package boardgame.visual.scenes;
 
-import boardgame.controller.GameBuilding.GameInitVisual;
 import boardgame.controller.SceneManager;
+import boardgame.visual.elements.Menu.GameInitVisual;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;

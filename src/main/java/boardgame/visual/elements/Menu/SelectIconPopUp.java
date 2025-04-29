@@ -1,4 +1,4 @@
-package boardgame.visual.elements;
+package boardgame.visual.elements.Menu;
 
 import java.io.InputStream;
 import java.util.List;

@@ -1,4 +1,4 @@
-package boardgame.visual.elements;
+package boardgame.visual.elements.Menu;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

@@ -2,11 +2,10 @@ package boardgame.utils;
 
 import java.util.List;
 
-import boardgame.controller.BoardJSON;
 import boardgame.controller.GameController;
 import boardgame.controller.SceneManager;
 import boardgame.model.boardFiles.Player;
-import boardgame.model.boardFiles.SnLBoard;
+import boardgame.model.boardFiles.SnL.SnLBoard;
 import boardgame.visual.scenes.Ingame;
 
 /**

@@ -1,12 +1,11 @@
-package boardgame.controller.GameBuilding;
+package boardgame.visual.elements.Menu;
 
 import java.util.List;
 
-import boardgame.controller.BoardJSON;
+import boardgame.controller.GameInitController;
 import boardgame.model.boardFiles.Player;
-import boardgame.model.boardFiles.SnLBoard;
-import boardgame.visual.elements.PlayerCreationRow;
-import boardgame.visual.elements.PopUpAlert;
+import boardgame.model.boardFiles.SnL.SnLBoard;
+import boardgame.utils.BoardJSON;
 import boardgame.visual.elements.SnL.LadderLayer;
 import boardgame.visual.elements.SnL.SnLBoardVisual;
 import javafx.geometry.Insets;

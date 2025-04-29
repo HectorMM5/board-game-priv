@@ -1,4 +1,4 @@
-package boardgame.controller.GameBuilding;
+package boardgame.controller;
 
 import java.util.List;
 

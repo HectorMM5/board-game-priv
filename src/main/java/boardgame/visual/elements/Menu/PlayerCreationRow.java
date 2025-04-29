@@ -1,10 +1,10 @@
-package boardgame.visual.elements;
+package boardgame.visual.elements.Menu;
 
 import java.io.InputStream;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import boardgame.controller.PlayerCSV;
+import boardgame.utils.PlayerCSV;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;

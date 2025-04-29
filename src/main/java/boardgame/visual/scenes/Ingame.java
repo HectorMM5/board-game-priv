@@ -1,7 +1,7 @@
 package boardgame.visual.scenes;
 
 import boardgame.controller.GameController;
-import boardgame.model.boardFiles.SnLBoard;
+import boardgame.model.boardFiles.SnL.SnLBoard;
 import boardgame.utils.GameSetup;
 import boardgame.visual.elements.SideColumn.SideColumnVisual;
 import boardgame.visual.elements.SnL.SnLBoardVisual;
