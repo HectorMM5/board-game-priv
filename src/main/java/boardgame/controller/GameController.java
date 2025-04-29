@@ -5,9 +5,8 @@ import java.util.List;
 import boardgame.model.boardFiles.Board;
 import boardgame.model.boardFiles.Player;
 import boardgame.model.boardFiles.Tile;
-import boardgame.model.effectFiles.SnL.MovementEffect;
-import javafx.animation.PauseTransition;
-import javafx.util.Duration;
+import boardgame.utils.LoopingIterator;
+import boardgame.visual.scenes.SnLIngame;
 
 /**
  * Handles the core logic of the game, including player movement,
@@ -15,9 +14,13 @@ import javafx.util.Duration;
  * 
  * @author Hector Mendana Morales
  */
-public class SnLGameController extends GameController {
-
-    private Player playerToSkip = null;
+public abstract class GameController {
+    public final Board board;
+    public final List<Tile> tiles;
+    public final List<Player> players;
+    public Player playerWhoseTurn;
+    public final LoopingIterator<Player> playerIterator;
+    public SnLIngame ingame;
 
     /**
      * Constructs a new GameController with the specified board and player list.
@@ -25,20 +28,18 @@ public class SnLGameController extends GameController {
      * @param board the game board
      * @param players the list of players participating in the game
      */
-    public SnLGameController(Board board, List<Player> players) {
-        super(board, players);
-
+    public GameController(Board board, List<Player> players) {
+        this.board = board;
+        this.tiles = board.getTiles();
+        this.players = players;
+        this.playerIterator = new LoopingIterator<>(players);
+        this.playerWhoseTurn = playerIterator.next();
     }
 
     /**
      * Starts the game by placing all players on the first tile.
      */
-    @Override
-    public void start() {
-        for (Player player : players) {
-            board.getTiles().get(0).addPlayer(player);
-        }
-    }
+    public abstract void start();
 
     /**
      * Moves the given player to the specified tile number and executes
@@ -47,46 +48,57 @@ public class SnLGameController extends GameController {
      * @param player the player to move
      * @param tileNumber the target tile number to move the player to
      */
-    @Override
     public void movePlayer(Player player, int tileNumber) {
         tiles.get(player.getPosition() - 1).popPlayer();
 
         player.setPosition(tileNumber);
         Tile targetTile = tiles.get(tileNumber - 1);
         targetTile.addPlayer(player);
-
-        if (!(targetTile.getEffect() == null)) {
-            targetTile.getEffect().execute(player, this);
-            PauseTransition pause = new PauseTransition(Duration.millis(300));
-            pause.setOnFinished(event -> {
-                if (targetTile.getEffect() instanceof MovementEffect movementEffect) {
-                    ingame.getIngameController().moveToken(player, movementEffect.getTargetTileIndex());
-                }
-            });
-            pause.play();
-        }
+    
     }
 
     /**
-     * Marks a player to skip their next turn.
+     * Sets the reference to the Ingame UI object for triggering visual effects.
      *
-     * @param player the player who should skip their next turn
+     * @param ingame the Ingame instance associated with this controller
      */
-    public void markPlayerToSkip(Player player) {
-        playerToSkip = player;
+    public void setIngame(SnLIngame ingame) {
+        this.ingame = ingame;
+    }
+
+    /**
+     * Returns the player whose turn it currently is.
+     *
+     * @return the current player
+     */
+    public Player getCurrentPlayer() {
+        return playerWhoseTurn;
+    }
+
+    /**
+     * Returns the list of players in the game.
+     *
+     * @return the player list
+     */
+    public List<Player> getPlayers() {
+        return players;
+    }
+
+    /**
+     * Returns the game board.
+     *
+     * @return the board
+     */
+    public Board getBoard() {
+        return board;
     }
 
     /**
      * Advances the turn to the next player, skipping any player
      * who is marked to be skipped.
      */
-    @Override
     public void advanceTurn() {
         playerWhoseTurn = playerIterator.next();
 
-        if (playerToSkip != null && playerToSkip.equals(playerWhoseTurn)) {
-            playerToSkip = null;
-            playerWhoseTurn = playerIterator.next();
-        }
     }
 }
