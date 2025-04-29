@@ -21,6 +21,7 @@ public abstract class BoardVisual extends StackPane {
 
     public final Board board;
     public final ArrayList<Tile> tileLogic;
+    public final GridPane tileGrid = new GridPane();
     
 
     /**

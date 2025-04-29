@@ -7,6 +7,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.IntStream;
 
 import boardgame.model.boardFiles.Player;
+import boardgame.visual.elements.BoardVisual;
 import boardgame.visual.elements.SnL.SnLBoardVisual;
 import javafx.animation.PauseTransition;
 import javafx.animation.TranslateTransition;
@@ -30,7 +31,7 @@ public class PlayerTokenLayer extends Pane {
     private final Map<Player, ImageView> playerTokens = new HashMap<>();
     private final Map<Integer, Integer> cols = new HashMap<>();
     private final Map<Integer, Integer> rows = new HashMap<>();
-    private final SnLBoardVisual boardVisual;
+    private final BoardVisual boardVisual;
 
     /**
      * Constructs the token layer for a given list of players.
@@ -38,18 +39,18 @@ public class PlayerTokenLayer extends Pane {
      *
      * @param players the list of players whose tokens should be displayed
      */
-    public PlayerTokenLayer(SnLBoardVisual boardVisual, List<Player> players) {
+    public PlayerTokenLayer(BoardVisual boardVisual, List<Player> players) {
         this.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-background-color: transparent;");
         this.boardVisual = boardVisual;
-        this.prefWidthProperty().bind(boardVisual.getTileGrid().widthProperty());   
-        this.prefHeightProperty().bind(boardVisual.getTileGrid().heightProperty());
+        this.prefWidthProperty().bind(((SnLBoardVisual) boardVisual).getTileGrid().widthProperty());   
+        this.prefHeightProperty().bind(((SnLBoardVisual) boardVisual).getTileGrid().heightProperty());
         
         for (Player player : players) {
             ImageView token = new ImageView(new Image(player.getIcon()));
             token.setFitWidth(50);
             token.setFitHeight(50);
-            token.setLayoutX(boardVisual.getSpacing() / 2 - 25);
-            token.setLayoutY(boardVisual.getSpacing() / 2 - 25);
+            token.setLayoutX(((SnLBoardVisual) boardVisual).getSpacing() / 2 - 25);
+            token.setLayoutY(((SnLBoardVisual) boardVisual).getSpacing() / 2 - 25);
             playerTokens.put(player, token);
             this.getChildren().add(token);
         }
@@ -87,8 +88,8 @@ public class PlayerTokenLayer extends Pane {
         int col = cols.get(tileNumber);
         int row = rows.get(tileNumber);
 
-        double targetX = col * boardVisual.getSpacing();
-        double targetY = row * boardVisual.getSpacing();
+        double targetX = col * ((SnLBoardVisual) boardVisual).getSpacing();
+        double targetY = row * ((SnLBoardVisual) boardVisual).getSpacing();
 
         TranslateTransition move = new TranslateTransition(Duration.millis(300), token);
         move.setToX(targetX);

@@ -1,9 +1,13 @@
 package boardgame.visual.scenes;
 
+import boardgame.controller.GameController;
+import boardgame.controller.SnLGameController;
 import boardgame.model.boardFiles.Board;
 import boardgame.model.boardFiles.SnL.SnLBoard;
 import boardgame.utils.GameSetup;
-import boardgame.visual.elements.SnL.SnLBoardVisual;
+import boardgame.visual.elements.BoardVisual;
+import boardgame.visual.elements.SideColumn.SideColumnVisual;
+import boardgame.visual.gameLayers.PlayerTokenLayer;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
@@ -23,25 +27,37 @@ import javafx.scene.layout.VBox;
  * 
  * @author Hector Mendana Morales
  */
-public class SnLIngame extends Ingame{
+public abstract class Ingame {
 
+    public final Board board;
+    public final BoardVisual boardVisual;
+    public final SideColumnVisual sideColumn;
+    public final PlayerTokenLayer playerTokenLayer;
+    public final IngameController ingameController;
+    public final GameController gameController;
 
     /**
      * Constructs an in-game scene based on the given game setup.
      *
      * @param gameSetup contains references to board, players, and controller
      */
-    public SnLIngame(GameSetup gameSetup) {
-        super(gameSetup);
+    public Ingame(GameSetup gameSetup) {
+        this.gameController = gameSetup.getGameController();
+        this.board = (SnLBoard) gameSetup.getBoard();
+        this.boardVisual = createBoardVisual(board);
+        this.sideColumn = new SideColumnVisual(gameController, gameSetup.getPlayers(), this);
+        this.playerTokenLayer = new PlayerTokenLayer(boardVisual, gameSetup.getPlayers());
+        this.ingameController = new IngameController((SnLGameController)gameController, playerTokenLayer, sideColumn);
         
     }
+
+    protected abstract BoardVisual createBoardVisual(Board board);
 
     /**
      * Builds and displays the game scene, initializing all layers and visuals.
      *
      * @return the scene containing the in-game UI
      */
-    @Override
     public Scene getScene() {
     gameController.setIngame(this);
 
@@ -75,8 +91,13 @@ public class SnLIngame extends Ingame{
     return scene;
 }
 
-    @Override
-    public SnLBoardVisual createBoardVisual(Board board) {
-        return new SnLBoardVisual((SnLBoard) board);
+
+    /**
+     * Returns the ingame controller responsible for gameplay actions.
+     *
+     * @return the IngameController instance
+     */
+    public IngameController getIngameController() {
+        return ingameController;
     }
 }

@@ -131,4 +131,5 @@ public final class LudoBoardVisual extends BoardVisual {
 
         this.getChildren().add(tileGrid);
     }
+
 }
