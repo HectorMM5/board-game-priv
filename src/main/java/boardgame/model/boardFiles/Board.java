@@ -39,14 +39,4 @@ public abstract class Board {
         return tiles;
     }
 
-    /**
-     * Returns the tile located at the specified index in the tile list.
-     *
-     * @param index the index of the tile
-     * @return the tile at the specified index
-     */
-    public Tile getTileInIndex(int index) {
-        return tiles.get(index);
-    }
-
 }

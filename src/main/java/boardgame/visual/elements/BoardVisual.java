@@ -21,7 +21,6 @@ public abstract class BoardVisual extends StackPane {
 
     public final Board board;
     public final ArrayList<Tile> tileLogic;
-    public final ArrayList<TileVisual> tileViews;
     
 
     /**
@@ -33,7 +32,6 @@ public abstract class BoardVisual extends StackPane {
     public BoardVisual(Board board) {
         this.board = board;
         this.tileLogic = board.getTiles();
-        this.tileViews = new ArrayList<>();
 
     }
 

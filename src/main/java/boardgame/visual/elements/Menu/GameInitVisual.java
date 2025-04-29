@@ -66,6 +66,7 @@ public class GameInitVisual {
         subtitleLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #555;");
         VBox.setMargin(subtitleLabel, new Insets(0, 0, 50, 0));
 
+
         // --- Setup buttons ---
         // Add player
         addPlayerButton.setOnAction(e -> addEmptyPlayerRow());

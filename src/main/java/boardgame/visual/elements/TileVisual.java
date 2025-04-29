@@ -46,7 +46,7 @@ public class TileVisual extends StackPane {
         this.tile = tile;
         
         this.background = new Rectangle(xDimension, yDimension);
-        background.setFill(Color.rgb(255, 255, 224));
+        background.setFill(Color.rgb(255, 255, 255));
         
         viewNumber = new Label(Integer.toString(tile.getNumber()));
 

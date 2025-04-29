@@ -1,6 +1,8 @@
 package boardgame.visual.scenes;
 
 import boardgame.controller.SceneManager;
+import boardgame.model.boardFiles.Ludo.LudoBoard;
+import boardgame.visual.elements.LudoBoardVisual;
 import boardgame.visual.elements.Menu.GameInitVisual;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -43,6 +45,8 @@ public class StartScreenView {
         menuPane.add(SnLButton, 0, 0);
         menuPane.add(LudoButton, 1, 0);
         menuPane.add(HorseRaceButton, 2, 0);
+
+        menuPane.add(new LudoBoardVisual(new LudoBoard()), 0, 1);
 
         return new Scene(root);
 

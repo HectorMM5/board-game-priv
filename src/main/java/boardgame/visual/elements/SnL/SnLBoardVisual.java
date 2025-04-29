@@ -57,7 +57,6 @@ public final class SnLBoardVisual extends BoardVisual {
         for (int i = 0; i < 90; i++) {
             Tile tile = tileLogic.get(i);
             TileVisual tileVisual = new TileVisual(tile, TILE_SIZE, TILE_SIZE);
-            tileViews.add(tileVisual);
         
             if ((i % 10) == 0) {
                 movesRight = !movesRight;

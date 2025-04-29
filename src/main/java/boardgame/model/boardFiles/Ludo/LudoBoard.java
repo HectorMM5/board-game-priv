@@ -1,8 +1,11 @@
-package boardgame.model.boardFiles;
+package boardgame.model.boardFiles.Ludo;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
+
+import boardgame.model.boardFiles.Board;
+import boardgame.model.boardFiles.Tile;
 
 /**
  * Represents a Ludo game board (15x15 grid) with a predefined path layout.
