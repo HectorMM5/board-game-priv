@@ -16,6 +16,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class PlayerCreationRow extends HBox {
@@ -117,8 +118,9 @@ public class PlayerCreationRow extends HBox {
         popupStage.setTitle("Select Icon");
         popupStage.setResizable(false);
         popupStage.initOwner(this.getScene().getWindow()); 
+        popupStage.initModality(Modality.APPLICATION_MODAL);
         popupStage.centerOnScreen();
-        popupStage.show();
+        popupStage.showAndWait();
     }
 
 

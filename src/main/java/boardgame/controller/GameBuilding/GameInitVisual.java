@@ -1,13 +1,13 @@
 package boardgame.controller.GameBuilding;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import boardgame.controller.BoardJSON;
 import boardgame.model.boardFiles.Player;
 import boardgame.model.boardFiles.SnL.SnLBoard;
-import boardgame.visual.elements.SnLBoardVisual;
 import boardgame.visual.elements.PlayerCreationRow;
+import boardgame.visual.elements.PopUpAlert;
+import boardgame.visual.elements.SnLBoardVisual;
 import boardgame.visual.gameLayers.SnakesNLadders.LadderLayer;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -71,15 +71,27 @@ public class GameInitVisual {
 
         // Start game
         startGameButton.setOnAction(e -> {
-            List<Player> players = new ArrayList<>();
-            playerRowsContainer.getChildren().forEach(node -> {
-                if (node instanceof PlayerCreationRow playerRow) {
-                    String playerName = playerRow.getNameField().getText();
-                    String iconName = playerRow.getSelectedIconName();
-                    players.add(new Player(iconName, playerName));
-                }
-            });
-            GameInitController.handleGameStart(chosenGame, 0, players); // TODO: Add board variant
+            // Check that all player rows have non-blank names
+            boolean allNamesValid = playerRowsContainer.getChildren().stream()
+                .filter(node -> node instanceof PlayerCreationRow)
+                .map(node -> ((PlayerCreationRow) node).getNameField().getText())
+                .allMatch(name -> !name.isBlank());
+        
+            if (!allNamesValid) {
+                new PopUpAlert("Player names cannot be empty.").show();
+                return;
+            }
+        
+            // If all names are valid, build the player list
+            List<Player> players = playerRowsContainer.getChildren().stream()
+                .filter(node -> node instanceof PlayerCreationRow)
+                .map(node -> {
+                    PlayerCreationRow row = (PlayerCreationRow) node;
+                    return new Player(row.getSelectedIconName(), row.getNameField().getText());
+                })
+                .toList();
+        
+            GameInitController.handleGameStart(chosenGame, 0, players);
         });
 
         // --- Board selection buttons ---
