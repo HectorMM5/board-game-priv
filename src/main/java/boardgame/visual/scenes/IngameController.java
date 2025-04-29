@@ -1,7 +1,7 @@
 package boardgame.visual.scenes;
 
-import boardgame.controller.GameController;
 import boardgame.controller.SceneManager;
+import boardgame.controller.SnLGameController;
 import boardgame.model.boardFiles.Player;
 import boardgame.model.diceFiles.Dice;
 import boardgame.model.effectFiles.SnL.MovementEffect;
@@ -20,13 +20,13 @@ import javafx.util.Duration;
  */
 public class IngameController {
 
-    private final GameController gameController;
+    private final SnLGameController gameController;
     private final PlayerTokenLayer playerTokenLayer;
     private final SideColumnVisual sideColumn;
     private final Dice dice = new Dice(1);
     private final int boardSize;
 
-    public IngameController(GameController gameController, PlayerTokenLayer playerTokenLayer, SideColumnVisual sideColumn) {
+    public IngameController(SnLGameController gameController, PlayerTokenLayer playerTokenLayer, SideColumnVisual sideColumn) {
         this.gameController = gameController;
         this.playerTokenLayer = playerTokenLayer;
         this.sideColumn = sideColumn;

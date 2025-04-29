@@ -1,6 +1,6 @@
 package boardgame.model.effectFiles.SnL;
 
-import boardgame.controller.GameController;
+import boardgame.controller.SnLGameController;
 import boardgame.model.boardFiles.Player;
 import javafx.scene.paint.Color;
 
@@ -22,7 +22,7 @@ public class PlaceholderEffect implements Effect {
      * @param gameController the game controller managing the game state (ignored)
      */
     @Override
-    public void execute(Player player, GameController gameController) {
+    public void execute(Player player, SnLGameController gameController) {
         // No action is performed
     }
 

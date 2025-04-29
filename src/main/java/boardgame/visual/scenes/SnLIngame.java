@@ -1,6 +1,6 @@
 package boardgame.visual.scenes;
 
-import boardgame.controller.GameController;
+import boardgame.controller.SnLGameController;
 import boardgame.model.boardFiles.SnL.SnLBoard;
 import boardgame.utils.GameSetup;
 import boardgame.visual.elements.SideColumn.SideColumnVisual;
@@ -25,23 +25,23 @@ import javafx.scene.layout.VBox;
  * 
  * @author Hector Mendana Morales
  */
-public class Ingame {
+public class SnLIngame {
 
     private final SnLBoard board;
     private final SnLBoardVisual boardVisual;
     private final SideColumnVisual sideColumn;
     private final PlayerTokenLayer playerTokenLayer;
     private final IngameController ingameController;
-    private final GameController gameController;
+    private final SnLGameController gameController;
 
     /**
      * Constructs an in-game scene based on the given game setup.
      *
      * @param gameSetup contains references to board, players, and controller
      */
-    public Ingame(GameSetup gameSetup) {
+    public SnLIngame(GameSetup gameSetup) {
         this.gameController = gameSetup.getGameController();
-        this.board = gameSetup.getBoard();
+        this.board = (SnLBoard) gameSetup.getBoard();
         this.boardVisual = new SnLBoardVisual(board);
         this.sideColumn = new SideColumnVisual(gameController, gameSetup.getPlayers(), this);
         this.playerTokenLayer = new PlayerTokenLayer(boardVisual, gameSetup.getPlayers());

@@ -2,11 +2,12 @@ package boardgame.utils;
 
 import java.util.List;
 
-import boardgame.controller.GameController;
 import boardgame.controller.SceneManager;
+import boardgame.controller.SnLGameController;
+import boardgame.model.boardFiles.Board;
+import boardgame.model.boardFiles.Ludo.LudoBoard;
 import boardgame.model.boardFiles.Player;
-import boardgame.model.boardFiles.SnL.SnLBoard;
-import boardgame.visual.scenes.Ingame;
+import boardgame.visual.scenes.SnLIngame;
 
 /**
  * Sets up and initializes a new game session, including the board, players,
@@ -19,10 +20,10 @@ import boardgame.visual.scenes.Ingame;
  */
 public class GameSetup {
 
-    private final SnLBoard board;
+    private final Board board;
     private final List<Player> players;
-    private final GameController gameController;
-    private final Ingame ingame;
+    private final SnLGameController gameController;
+    private final SnLIngame ingame;
 
     /**
      * Constructs a GameSetup instance by initializing the board, player list,
@@ -33,11 +34,22 @@ public class GameSetup {
      * @param players the list of players participating in the game
      */
     public GameSetup(String game, int boardChoice, List<Player> players) {
-        System.out.println("Reached GameSetup with player list size: " + players.size());
-        this.board = BoardJSON.constructSnLBoardFromJSON(boardChoice);
+
+        switch (game) {
+            case "Snakes & Ladders":
+                this.board = BoardJSON.constructSnLBoardFromJSON(boardChoice);
+                break;
+
+            case "Ludo":
+                this.board = new LudoBoard();
+                break;
+            default:
+                throw new AssertionError();
+        }
+
         this.players = players;
-        this.gameController = new GameController(board, players);
-        this.ingame = new Ingame(this);
+        this.gameController = new SnLGameController(board, players);
+        this.ingame = new SnLIngame(this);
     }
 
     /**
@@ -45,7 +57,7 @@ public class GameSetup {
      *
      * @return the game board
      */
-    public SnLBoard getBoard() {
+    public Board getBoard() {
         return board;
     }
 
@@ -54,7 +66,7 @@ public class GameSetup {
      *
      * @return the game controller
      */
-    public GameController getGameController() {
+    public SnLGameController getGameController() {
         return gameController;
     }
 

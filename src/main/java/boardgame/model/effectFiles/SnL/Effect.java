@@ -1,6 +1,6 @@
 package boardgame.model.effectFiles.SnL;
 
-import boardgame.controller.GameController;
+import boardgame.controller.SnLGameController;
 import boardgame.model.boardFiles.Player;
 import javafx.scene.paint.Color;
 
@@ -21,7 +21,7 @@ public interface Effect {
      * @param player the player affected by the effect
      * @param gameController the game controller managing the game state
      */
-    void execute(Player player, GameController gameController);
+    void execute(Player player, SnLGameController gameController);
 
     /**
      * Returns the color associated with this effect, typically for visual representation.

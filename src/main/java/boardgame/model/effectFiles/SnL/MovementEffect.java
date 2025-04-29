@@ -1,6 +1,6 @@
 package boardgame.model.effectFiles.SnL;
 
-import boardgame.controller.GameController;
+import boardgame.controller.SnLGameController;
 import boardgame.model.boardFiles.Player;
 
 /**
@@ -35,7 +35,7 @@ public abstract class MovementEffect implements Effect {
      * @param gameController the game controller managing the game state
      */
     @Override
-    public void execute(Player player, GameController gameController) {
+    public void execute(Player player, SnLGameController gameController) {
         gameController.movePlayer(player, targetTileIndex);
     }
 

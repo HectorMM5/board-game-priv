@@ -2,12 +2,12 @@ package boardgame.controller;
 
 import java.util.List;
 
+import boardgame.model.boardFiles.Board;
 import boardgame.model.boardFiles.Player;
-import boardgame.model.boardFiles.SnL.SnLBoard;
 import boardgame.model.boardFiles.Tile;
 import boardgame.model.effectFiles.SnL.MovementEffect;
 import boardgame.utils.LoopingIterator;
-import boardgame.visual.scenes.Ingame;
+import boardgame.visual.scenes.SnLIngame;
 import javafx.animation.PauseTransition;
 import javafx.util.Duration;
 
@@ -17,14 +17,14 @@ import javafx.util.Duration;
  * 
  * @author Hector Mendana Morales
  */
-public class GameController {
-    private final SnLBoard board;
+public class SnLGameController {
+    private final Board board;
     private final List<Tile> tiles;
     private final List<Player> players;
     private Player playerWhoseTurn;
     private final LoopingIterator<Player> playerIterator;
     private Player playerToSkip = null;
-    private Ingame ingame;
+    private SnLIngame ingame;
 
     /**
      * Constructs a new GameController with the specified board and player list.
@@ -32,7 +32,7 @@ public class GameController {
      * @param board the game board
      * @param players the list of players participating in the game
      */
-    public GameController(SnLBoard board, List<Player> players) {
+    public SnLGameController(Board board, List<Player> players) {
         this.board = board;
         this.tiles = board.getTiles();
         System.out.println("Reached GameController with player list size: " + players.size());
@@ -81,7 +81,7 @@ public class GameController {
      *
      * @param ingame the Ingame instance associated with this controller
      */
-    public void setIngame(Ingame ingame) {
+    public void setIngame(SnLIngame ingame) {
         this.ingame = ingame;
     }
 
@@ -117,7 +117,7 @@ public class GameController {
      *
      * @return the board
      */
-    public SnLBoard getBoard() {
+    public Board getBoard() {
         return board;
     }
 

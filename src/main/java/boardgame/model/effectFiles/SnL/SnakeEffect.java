@@ -1,6 +1,6 @@
 package boardgame.model.effectFiles.SnL;
 
-import boardgame.controller.GameController;
+import boardgame.controller.SnLGameController;
 import boardgame.model.boardFiles.Player;
 import javafx.scene.paint.Color;
 
@@ -33,7 +33,7 @@ public class SnakeEffect extends MovementEffect {
      * @param gameController the game controller managing the game state
      */
     @Override
-    public void execute(Player player, GameController gameController) {
+    public void execute(Player player, SnLGameController gameController) {
         gameController.movePlayer(player, targetTileIndex);
     }
 
