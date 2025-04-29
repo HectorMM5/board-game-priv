@@ -6,8 +6,8 @@ import java.util.stream.IntStream;
 
 import boardgame.model.boardFiles.Board;
 import boardgame.model.boardFiles.Tile;
-import boardgame.model.effectFiles.LadderEffect;
-import boardgame.model.effectFiles.SnakeEffect;
+import boardgame.model.effectFiles.SnL.LadderEffect;
+import boardgame.model.effectFiles.SnL.SnakeEffect;
 
 /**
  * Represents the game board consisting of a grid of {@link Tile} objects.

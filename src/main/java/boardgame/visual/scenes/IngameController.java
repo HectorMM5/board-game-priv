@@ -4,7 +4,7 @@ import boardgame.controller.GameController;
 import boardgame.controller.SceneManager;
 import boardgame.model.boardFiles.Player;
 import boardgame.model.diceFiles.Dice;
-import boardgame.model.effectFiles.MovementEffect;
+import boardgame.model.effectFiles.SnL.MovementEffect;
 import boardgame.visual.elements.SideColumn.DiceButtonVisual;
 import boardgame.visual.elements.SideColumn.SideColumnVisual;
 import boardgame.visual.gameLayers.PlayerTokenLayer;

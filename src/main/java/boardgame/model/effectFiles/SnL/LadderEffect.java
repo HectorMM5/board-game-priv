@@ -1,4 +1,4 @@
-package boardgame.model.effectFiles;
+package boardgame.model.effectFiles.SnL;
 
 import boardgame.controller.GameController;
 import boardgame.model.boardFiles.Player;

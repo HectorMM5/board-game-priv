@@ -5,7 +5,7 @@ import java.util.List;
 import boardgame.model.boardFiles.Player;
 import boardgame.model.boardFiles.SnL.SnLBoard;
 import boardgame.model.boardFiles.Tile;
-import boardgame.model.effectFiles.MovementEffect;
+import boardgame.model.effectFiles.SnL.MovementEffect;
 import boardgame.utils.LoopingIterator;
 import boardgame.visual.scenes.Ingame;
 import javafx.animation.PauseTransition;
