@@ -42,4 +42,8 @@ public abstract class BoardVisual extends StackPane {
      */
     public abstract void initializeBoard();
 
+    public abstract GridPane getTileGrid();
+
+    public abstract double getSpacing();
+
 }

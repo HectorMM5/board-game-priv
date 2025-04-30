@@ -7,6 +7,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.IntStream;
 
 import boardgame.model.boardFiles.Player;
+import boardgame.utils.GameType;
 import boardgame.visual.elements.BoardVisual;
 import boardgame.visual.elements.SnL.SnLBoardVisual;
 import javafx.animation.PauseTransition;
@@ -39,40 +40,52 @@ public class PlayerTokenLayer extends Pane {
      *
      * @param players the list of players whose tokens should be displayed
      */
-    public PlayerTokenLayer(BoardVisual boardVisual, List<Player> players) {
+    public PlayerTokenLayer(GameType gameType, BoardVisual boardVisual, List<Player> players) {
         this.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-background-color: transparent;");
         this.boardVisual = boardVisual;
-        this.prefWidthProperty().bind(((SnLBoardVisual) boardVisual).getTileGrid().widthProperty());   
-        this.prefHeightProperty().bind(((SnLBoardVisual) boardVisual).getTileGrid().heightProperty());
-        
-        for (Player player : players) {
-            ImageView token = new ImageView(new Image(player.getIcon()));
-            token.setFitWidth(50);
-            token.setFitHeight(50);
-            token.setLayoutX(((SnLBoardVisual) boardVisual).getSpacing() / 2 - 25);
-            token.setLayoutY(((SnLBoardVisual) boardVisual).getSpacing() / 2 - 25);
-            playerTokens.put(player, token);
-            this.getChildren().add(token);
+        this.prefWidthProperty().bind(boardVisual.getTileGrid().widthProperty());   
+        this.prefHeightProperty().bind(boardVisual.getTileGrid().heightProperty());
+
+        switch (gameType) {
+            case SnakesNLadders:
+                for (Player player : players) {
+                    ImageView token = new ImageView(new Image(player.getIcon()));
+                    token.setFitWidth(50);
+                    token.setFitHeight(50);
+                    token.setLayoutX(((SnLBoardVisual) boardVisual).getSpacing() / 2 - 25);
+                    token.setLayoutY(((SnLBoardVisual) boardVisual).getSpacing() / 2 - 25);
+                    playerTokens.put(player, token);
+                    this.getChildren().add(token);
+                }
+
+                AtomicBoolean movesRight = new AtomicBoolean(false);
+
+                // Map logical tile numbers (1–90) to grid row and column positions
+                IntStream.rangeClosed(0, 89).forEach(i -> {
+                    if ((i % 10) == 0) {
+                        movesRight.set(!movesRight.get());
+                    }
+
+                    int row = i / 10;
+                    int col = movesRight.get()
+                            ? i % 10
+                            : 10 - ((i % 10) + 1);
+                
+                    cols.put(i + 1, col);
+                    rows.put(i + 1, row);
+
+
+                });
+                
+                break;
+
+            case Ludo:
+                
+                break;
+                
+
         }
-
-        AtomicBoolean movesRight = new AtomicBoolean(false);
-
-        // Map logical tile numbers (1–90) to grid row and column positions
-        IntStream.rangeClosed(0, 89).forEach(i -> {
-            if ((i % 10) == 0) {
-                movesRight.set(!movesRight.get());
-            }
-
-            int row = i / 10;
-            int col = movesRight.get()
-                    ? i % 10
-                    : 10 - ((i % 10) + 1);
-
-            cols.put(i + 1, col);
-            rows.put(i + 1, row);
-
-
-        });
+           
 
     }
 
@@ -88,8 +101,8 @@ public class PlayerTokenLayer extends Pane {
         int col = cols.get(tileNumber);
         int row = rows.get(tileNumber);
 
-        double targetX = col * ((SnLBoardVisual) boardVisual).getSpacing();
-        double targetY = row * ((SnLBoardVisual) boardVisual).getSpacing();
+        double targetX = col * boardVisual.getSpacing();
+        double targetY = row * boardVisual.getSpacing();
 
         TranslateTransition move = new TranslateTransition(Duration.millis(300), token);
         move.setToX(targetX);

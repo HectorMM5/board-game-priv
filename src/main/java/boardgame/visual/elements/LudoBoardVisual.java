@@ -16,11 +16,14 @@ import javafx.scene.paint.Color;
 public final class LudoBoardVisual extends BoardVisual {
 
     private final double TILE_SIZE = (ScreenDimension.getScreenHeight() - 200) / 15;
-    private final GridPane tileGrid = new GridPane(-1, -1);
+    private final double spacing = TILE_SIZE;
 
     public LudoBoardVisual(LudoBoard board) {
         super(board);
         initializeBoard();
+        
+        tileGrid.setVgap(-1);
+        tileGrid.setHgap(-1);
     }
 
     @Override
@@ -130,6 +133,16 @@ public final class LudoBoardVisual extends BoardVisual {
         });
 
         this.getChildren().add(tileGrid);
+    }
+
+    @Override
+    public GridPane getTileGrid() {
+        return tileGrid;
+    }
+
+    @Override
+    public double getSpacing() {
+        return spacing;
     }
 
 }

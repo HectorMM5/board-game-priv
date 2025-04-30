@@ -3,6 +3,7 @@ package boardgame.visual.scenes;
 import boardgame.controller.SnLGameController;
 import boardgame.model.boardFiles.SnL.SnLBoard;
 import boardgame.utils.GameSetup;
+import boardgame.utils.GameType;
 import boardgame.visual.elements.SideColumn.SideColumnVisual;
 import boardgame.visual.elements.SnL.SnLBoardVisual;
 import boardgame.visual.gameLayers.PlayerTokenLayer;
@@ -39,15 +40,13 @@ public class SnLIngame implements RollHandler { //TODO CHANGE INGAME OCCURENCES 
      * @param gameSetup contains references to board, players, and controller
      */
     public SnLIngame(GameSetup gameSetup) {
-
         this.gameController = gameSetup.getGameController();
         this.board = (SnLBoard) gameSetup.getBoard();
         this.boardVisual = new SnLBoardVisual(board);
         this.sideColumn = new SideColumnVisual(gameController, gameSetup.getPlayers(), this);
-        this.playerTokenLayer = new PlayerTokenLayer(boardVisual, gameSetup.getPlayers());
+        this.playerTokenLayer = new PlayerTokenLayer(GameType.SnakesNLadders, boardVisual, gameSetup.getPlayers());
         this.ingameController = new SnLRollHandler((SnLGameController) gameController, playerTokenLayer, sideColumn);
         
-
     }
 
     /**

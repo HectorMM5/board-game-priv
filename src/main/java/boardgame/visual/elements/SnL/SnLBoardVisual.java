@@ -72,10 +72,12 @@ public final class SnLBoardVisual extends BoardVisual {
         
     }
 
+    @Override
     public GridPane getTileGrid() {
         return tileGrid;
     }
 
+    @Override
     public double getSpacing() {
         return spacing;
     }
