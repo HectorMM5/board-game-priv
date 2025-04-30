@@ -1,11 +1,11 @@
 package boardgame.visual.scenes;
 
-import boardgame.controller.SnLGameController;
-import boardgame.model.boardFiles.SnL.SnLBoard;
+import boardgame.controller.LudoGameController;
+import boardgame.model.boardFiles.Ludo.LudoBoard;
 import boardgame.utils.GameSetup;
 import boardgame.utils.GameType;
+import boardgame.visual.elements.LudoBoardVisual;
 import boardgame.visual.elements.SideColumn.SideColumnVisual;
-import boardgame.visual.elements.SnL.SnLBoardVisual;
 import boardgame.visual.gameLayers.PlayerTokenLayer;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -25,12 +25,12 @@ import javafx.scene.layout.VBox;
  *
  * @author Hector Mendana Morales
  */
-public class SnLIngame implements Ingame { //TODO CHANGE INGAME OCCURENCES TO ROLLHANDLER
+public class LudoIngame implements Ingame { //TODO CHANGE INGAME OCCURENCES TO ROLLHANDLER
 
-    public final SnLBoard board;
-    public final SnLBoardVisual boardVisual;
-    public final SnLRollHandler ingameController;
-    public final SnLGameController gameController;
+    public final LudoBoard board;
+    public final LudoBoardVisual boardVisual;
+    public final LudoRollHandler ingameController;
+    public final LudoGameController gameController;
     public final SideColumnVisual sideColumn;
     public final PlayerTokenLayer playerTokenLayer;
 
@@ -39,13 +39,13 @@ public class SnLIngame implements Ingame { //TODO CHANGE INGAME OCCURENCES TO RO
      *
      * @param gameSetup contains references to board, players, and controller
      */
-    public SnLIngame(GameSetup gameSetup) {
-        this.gameController = (SnLGameController) gameSetup.getGameController();
-        this.board = (SnLBoard) gameSetup.getBoard();
-        this.boardVisual = new SnLBoardVisual(board);
+    public LudoIngame(GameSetup gameSetup) {
+        this.gameController = (LudoGameController) gameSetup.getGameController();
+        this.board = (LudoBoard) gameSetup.getBoard();
+        this.boardVisual = new LudoBoardVisual(board);
         this.sideColumn = new SideColumnVisual(gameController, gameSetup.getPlayers(), this);
-        this.playerTokenLayer = new PlayerTokenLayer(GameType.SnakesNLadders, boardVisual, gameSetup.getPlayers());
-        this.ingameController = new SnLRollHandler((SnLGameController) gameController, playerTokenLayer, sideColumn);
+        this.playerTokenLayer = new PlayerTokenLayer(GameType.Ludo, boardVisual, gameSetup.getPlayers());
+        this.ingameController = new LudoRollHandler((LudoGameController) gameController, playerTokenLayer, sideColumn);
         
     }
 
@@ -89,7 +89,7 @@ public class SnLIngame implements Ingame { //TODO CHANGE INGAME OCCURENCES TO RO
     }
 
     @Override
-    public SnLRollHandler getIngameController() {
+    public LudoRollHandler getIngameController() {
         return ingameController;
     }
 

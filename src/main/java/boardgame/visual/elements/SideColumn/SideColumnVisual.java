@@ -4,7 +4,7 @@ import java.util.List;
 
 import boardgame.controller.GameController;
 import boardgame.model.boardFiles.Player;
-import boardgame.visual.scenes.RollHandler;
+import boardgame.visual.scenes.Ingame;
 import javafx.geometry.Pos;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -34,7 +34,7 @@ public class SideColumnVisual extends VBox {
      * @param players the list of players in the game
      * @param ingame reference to the main ingame UI for callbacks
      */
-    public SideColumnVisual(GameController gameController, List<Player> players, RollHandler ingame) {
+    public SideColumnVisual(GameController gameController, List<Player> players, Ingame ingame) {
         System.out.println("Reached SideColumnVisual with player list size: " + players.size());
 
         this.setPrefWidth(500);

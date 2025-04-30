@@ -6,7 +6,7 @@ import boardgame.model.boardFiles.Board;
 import boardgame.model.boardFiles.Player;
 import boardgame.model.boardFiles.Tile;
 import boardgame.utils.LoopingIterator;
-import boardgame.visual.scenes.RollHandler;
+import boardgame.visual.scenes.Ingame;
 
 /**
  * Handles the core logic of the game, including player movement,
@@ -20,7 +20,7 @@ public abstract class GameController {
     public final List<Player> players;
     public Player playerWhoseTurn;
     public final LoopingIterator<Player> playerIterator;
-    public RollHandler ingame;
+    public Ingame ingame;
 
     /**
      * Constructs a new GameController with the specified board and player list.
@@ -34,6 +34,8 @@ public abstract class GameController {
         this.players = players;
         this.playerIterator = new LoopingIterator<>(players);
         this.playerWhoseTurn = playerIterator.next();
+
+        System.out.println("Reached GameController abstract constructor with players: " + players.toString());
     }
 
     /**
@@ -62,7 +64,7 @@ public abstract class GameController {
      *
      * @param ingame the Ingame instance associated with this controller
      */
-    public void setIngame(RollHandler ingame) {
+    public void setIngame(Ingame ingame) {
         this.ingame = ingame;
     }
 

@@ -18,7 +18,7 @@ import javafx.util.Duration;
  *
  * @author Hector Mendana Morales
  */
-public class SnLRollHandler implements IngameController {
+public class SnLRollHandler implements RollHandler {
 
     private final SnLGameController gameController;
     private final PlayerTokenLayer playerTokenLayer;

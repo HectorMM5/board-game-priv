@@ -1,21 +1,11 @@
 package boardgame.visual.scenes;
 
-import javafx.scene.Scene;
+import boardgame.model.boardFiles.Player;
+import boardgame.visual.elements.SideColumn.DiceButtonVisual;
 
-
-/**
- * The main scene handler for the in-game screen.
- * Responsible for initializing all UI elements (board, side column, tokens),
- * and managing gameplay flow such as player movement and dice rolling.
- *
- * This class connects the game's logic (GameController) with the visual layers.
- * Now uses IngameController to separate gameplay logic from scene setup.
- * 
- * @author Hector Mendana Morales
- */
 public interface RollHandler {
-
-    public Scene getScene();
-
-    public SnLRollHandler getIngameController();
+    
+    public void moveBy(Player player, int steps, DiceButtonVisual buttonVisual);
+    public void moveToken(Player player, int tileNumber);
+    public void handleRollDice(DiceButtonVisual buttonVisual);
 }

@@ -1,5 +1,6 @@
 package boardgame.visual.gameLayers;
 
+import java.awt.Point;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,7 +9,9 @@ import java.util.stream.IntStream;
 
 import boardgame.model.boardFiles.Player;
 import boardgame.utils.GameType;
+import boardgame.utils.LudoBoardTiles;
 import boardgame.visual.elements.BoardVisual;
+import boardgame.visual.elements.LudoBoardVisual;
 import boardgame.visual.elements.SnL.SnLBoardVisual;
 import javafx.animation.PauseTransition;
 import javafx.animation.TranslateTransition;
@@ -19,12 +22,12 @@ import javafx.util.Duration;
 
 /**
  * A visual layer used to display and animate player tokens on top of the board.
- * This class calculates tile positions based on a zig-zag layout and supports both
- * direct movement and animated path traversal.
- * 
- * Each token is represented using an {@link ImageView}, and movement is animated
- * using JavaFX transitions.
- * 
+ * This class calculates tile positions based on a zig-zag layout and supports
+ * both direct movement and animated path traversal.
+ *
+ * Each token is represented using an {@link ImageView}, and movement is
+ * animated using JavaFX transitions.
+ *
  * @author Hector Mendana Morales
  */
 public class PlayerTokenLayer extends Pane {
@@ -35,19 +38,19 @@ public class PlayerTokenLayer extends Pane {
     private final BoardVisual boardVisual;
 
     /**
-     * Constructs the token layer for a given list of players.
-     * Initializes visual tokens and maps logical tile numbers to grid positions.
+     * Constructs the token layer for a given list of players. Initializes
+     * visual tokens and maps logical tile numbers to grid positions.
      *
      * @param players the list of players whose tokens should be displayed
      */
     public PlayerTokenLayer(GameType gameType, BoardVisual boardVisual, List<Player> players) {
         this.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-background-color: transparent;");
         this.boardVisual = boardVisual;
-        this.prefWidthProperty().bind(boardVisual.getTileGrid().widthProperty());   
+        this.prefWidthProperty().bind(boardVisual.getTileGrid().widthProperty());
         this.prefHeightProperty().bind(boardVisual.getTileGrid().heightProperty());
 
         switch (gameType) {
-            case SnakesNLadders:
+            case SnakesNLadders -> {
                 for (Player player : players) {
                     ImageView token = new ImageView(new Image(player.getIcon()));
                     token.setFitWidth(50);
@@ -70,22 +73,34 @@ public class PlayerTokenLayer extends Pane {
                     int col = movesRight.get()
                             ? i % 10
                             : 10 - ((i % 10) + 1);
-                
+
                     cols.put(i + 1, col);
                     rows.put(i + 1, row);
 
+                });
+            }
+
+            case Ludo -> {
+                List<Point> playableTileCoordinates = LudoBoardTiles.getPlayableTiles();
+
+                for (Player player : players) {
+                    ImageView token = new ImageView(new Image(player.getIcon()));
+                    token.setFitWidth(50);
+                    token.setFitHeight(50);
+                    token.setLayoutX(((LudoBoardVisual) boardVisual).getSpacing() / 2 - 25);
+                    token.setLayoutY(((LudoBoardVisual) boardVisual).getSpacing() / 2 - 25);
+                    playerTokens.put(player, token);
+                    this.getChildren().add(token);
+                }
+
+                IntStream.rangeClosed(1, playableTileCoordinates.size()).forEach(i -> {
+                    cols.put(i, playableTileCoordinates.get(i - 1).x);
+                    rows.put(i, playableTileCoordinates.get(i - 1).y);
 
                 });
-                
-                break;
-
-            case Ludo:
-                
-                break;
-                
+            }
 
         }
-           
 
     }
 
@@ -98,8 +113,8 @@ public class PlayerTokenLayer extends Pane {
     public void moveToken(Player player, int tileNumber) {
         ImageView token = playerTokens.get(player);
 
-        int col = cols.get(tileNumber);
-        int row = rows.get(tileNumber);
+        Integer col = cols.get(tileNumber);
+        Integer row = rows.get(tileNumber);
 
         double targetX = col * boardVisual.getSpacing();
         double targetY = row * boardVisual.getSpacing();
@@ -111,8 +126,9 @@ public class PlayerTokenLayer extends Pane {
     }
 
     /**
-     * Animates a player's token as it moves across multiple tiles from its current position to the end tile.
-     * A short delay is introduced between each step to simulate progression.
+     * Animates a player's token as it moves across multiple tiles from its
+     * current position to the end tile. A short delay is introduced between
+     * each step to simulate progression.
      *
      * @param player the player to move
      * @param endTile the final tile number to reach
@@ -123,7 +139,12 @@ public class PlayerTokenLayer extends Pane {
         IntStream.rangeClosed(0, endTile - playerPosition).forEach(i -> {
             PauseTransition pause = new PauseTransition(Duration.millis(i * 300));
             pause.setOnFinished(event -> {
-                moveToken(player, playerPosition + i);
+                int nextPosition = playerPosition + i;
+                if (nextPosition > 56) {
+                    nextPosition -= 56;
+                }
+
+                moveToken(player, nextPosition);
             });
             pause.play();
         });

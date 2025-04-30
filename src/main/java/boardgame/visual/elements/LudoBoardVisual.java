@@ -9,6 +9,7 @@ import java.util.stream.IntStream;
 
 import boardgame.model.boardFiles.Ludo.LudoBoard;
 import boardgame.model.boardFiles.Tile;
+import boardgame.utils.LudoBoardTiles;
 import boardgame.utils.ScreenDimension;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -28,7 +29,8 @@ public final class LudoBoardVisual extends BoardVisual {
 
     @Override
     public void initializeBoard() {
-        List<Point> playableTiles = new ArrayList<>();
+        List<Point> playableTiles = LudoBoardTiles.getPlayableTiles();
+        
         List<Point> yellowHomeTiles = new ArrayList<>();
         List<Point> redHomeTiles = new ArrayList<>();
         List<Point> greenHomeTiles = new ArrayList<>();
@@ -38,20 +40,6 @@ public final class LudoBoardVisual extends BoardVisual {
         List<Point> greenStartTiles = new ArrayList<>();
         List<Point> blueStartTiles = new ArrayList<>();
 
-        // Playable path
-        IntStream.rangeClosed(2, 6).forEach(i -> playableTiles.add(new Point(8, i)));
-        IntStream.rangeClosed(9, 14).forEach(i -> playableTiles.add(new Point(i, 6)));
-        IntStream.rangeClosed(7, 8).forEach(i -> playableTiles.add(new Point(14, i)));
-        IntStream.iterate(13, i -> i >= 8, i -> i - 1).forEach(i -> playableTiles.add(new Point(i, 8)));
-        IntStream.rangeClosed(9, 14).forEach(i -> playableTiles.add(new Point(8, i)));
-        IntStream.iterate(7, i -> i >= 6, i -> i - 1).forEach(i -> playableTiles.add(new Point(i, 14)));
-        IntStream.iterate(13, i -> i >= 8, i -> i - 1).forEach(i -> playableTiles.add(new Point(6, i)));
-        IntStream.iterate(5, i -> i >= 0, i -> i - 1).forEach(i -> playableTiles.add(new Point(i, 8)));
-        IntStream.iterate(7, i -> i >= 6, i -> i - 1).forEach(i -> playableTiles.add(new Point(0, i)));
-        IntStream.rangeClosed(1, 6).forEach(i -> playableTiles.add(new Point(i, 6)));
-        IntStream.iterate(5, i -> i >= 0, i -> i - 1).forEach(i -> playableTiles.add(new Point(6, i)));
-        IntStream.rangeClosed(7, 8).forEach(i -> playableTiles.add(new Point(i, 0)));
-        playableTiles.add(new Point(8, 1));
 
         // Home tiles
         IntStream.rangeClosed(1, 6).forEach(i -> yellowHomeTiles.add(new Point(7, i)));

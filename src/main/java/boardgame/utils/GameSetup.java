@@ -2,11 +2,15 @@ package boardgame.utils;
 
 import java.util.List;
 
+import boardgame.controller.GameController;
+import boardgame.controller.LudoGameController;
 import boardgame.controller.SceneManager;
 import boardgame.controller.SnLGameController;
 import boardgame.model.boardFiles.Board;
 import boardgame.model.boardFiles.Ludo.LudoBoard;
 import boardgame.model.boardFiles.Player;
+import boardgame.visual.scenes.Ingame;
+import boardgame.visual.scenes.LudoIngame;
 import boardgame.visual.scenes.SnLIngame;
 
 /**
@@ -22,8 +26,8 @@ public class GameSetup {
 
     private final Board board;
     private final List<Player> players;
-    private final SnLGameController gameController;
-    private final SnLIngame ingame;
+    private final GameController gameController;
+    private final Ingame ingame;
 
     /**
      * Constructs a GameSetup instance by initializing the board, player list,
@@ -33,23 +37,28 @@ public class GameSetup {
      * @param boardChoice the index of the board to load from JSON
      * @param players the list of players participating in the game
      */
-    public GameSetup(String game, int boardChoice, List<Player> players) {
-
-        switch (game) {
-            case "Snakes & Ladders":
-                this.board = BoardJSON.constructSnLBoardFromJSON(boardChoice);
-                break;
-
-            case "Ludo":
-                this.board = new LudoBoard();
-                break;
-            default:
-                throw new AssertionError();
-        }
+    public GameSetup(GameType gameType, int boardChoice, List<Player> players) {
 
         this.players = players;
-        this.gameController = new SnLGameController(board, players);
-        this.ingame = new SnLIngame(this);
+
+        System.out.println("Reached Gamesetup with players: " + players.toString());
+
+        switch (gameType) {
+            case SnakesNLadders -> {
+                this.board = BoardJSON.constructSnLBoardFromJSON(boardChoice);
+                this.gameController = new SnLGameController(board, players);
+                this.ingame = new SnLIngame(this);
+            }
+
+            case Ludo -> {
+                this.board = new LudoBoard();
+                this.gameController = new LudoGameController(board, players);
+                this.ingame = new LudoIngame(this);
+            }
+            default -> throw new AssertionError();
+        }
+
+        
     }
 
     /**
@@ -66,7 +75,7 @@ public class GameSetup {
      *
      * @return the game controller
      */
-    public SnLGameController getGameController() {
+    public GameController getGameController() {
         return gameController;
     }
 

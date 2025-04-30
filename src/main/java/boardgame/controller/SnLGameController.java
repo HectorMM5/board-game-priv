@@ -28,6 +28,8 @@ public class SnLGameController extends GameController {
     public SnLGameController(Board board, List<Player> players) {
         super(board, players);
 
+        System.out.println("Reached SnL with players: " + players.toString());
+
     }
 
     /**

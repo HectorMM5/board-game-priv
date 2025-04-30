@@ -7,6 +7,7 @@ import boardgame.model.boardFiles.Ludo.LudoBoard;
 import boardgame.model.boardFiles.Player;
 import boardgame.model.boardFiles.SnL.SnLBoard;
 import boardgame.utils.BoardJSON;
+import boardgame.utils.GameType;
 import boardgame.visual.elements.LudoBoardVisual;
 import boardgame.visual.elements.SnL.LadderLayer;
 import boardgame.visual.elements.SnL.SnLBoardVisual;
@@ -23,7 +24,7 @@ import javafx.scene.layout.VBox;
 public class GameInitVisual {
 
     private int chosenBoard;
-    private String chosenGame;
+    private GameType chosenGame;
 
     private final VBox playerRowsContainer;
     private final HBox boardChoices = new HBox();
@@ -39,7 +40,7 @@ public class GameInitVisual {
         playerRowsContainer.setStyle("-fx-padding: 20;");
     }
 
-    public Scene getScene(String chosenGame) {
+    public Scene getScene(GameType chosenGame) {
         this.chosenGame = chosenGame;
         addEmptyPlayerRow();
 
@@ -47,8 +48,8 @@ public class GameInitVisual {
         Label subtitleLabel = new Label("Create your players!");
 
         switch (chosenGame) {
-            case "Snakes & Ladders" -> titleLabel = new Label("Snakes & Ladders");
-            case "Ludo" -> titleLabel = new Label("Ludo");
+            case SnakesNLadders -> titleLabel = new Label("Snakes & Ladders");
+            case Ludo -> titleLabel = new Label("Ludo");
             default -> throw new AssertionError("Unknown game: " + chosenGame);
         }
 
@@ -83,7 +84,7 @@ public class GameInitVisual {
         });
 
         // Board preset buttons for SnL only
-        if (chosenGame.equals("Snakes & Ladders")) {
+        if (chosenGame.equals(GameType.SnakesNLadders)) {
             boardChoices.getChildren().clear();
             Button board1Button = new Button("Board 1");
             board1Button.setOnAction(e -> loadBoard(0));
@@ -107,7 +108,7 @@ public class GameInitVisual {
         VBox sideColumn = new VBox(20);
         sideColumn.getChildren().addAll(titleLabel, subtitleLabel);
 
-        if (chosenGame.equals("Snakes & Ladders")) {
+        if (chosenGame.equals(GameType.SnakesNLadders)) {
             sideColumn.getChildren().add(boardChoices);
         }
 
@@ -146,8 +147,8 @@ public class GameInitVisual {
     private void loadBoard(int boardIndex) {
         this.chosenBoard = boardIndex;
         switch (chosenGame) {
-            case "Snakes & Ladders" -> handleSnL(boardIndex);
-            case "Ludo" -> handleLudo();
+            case SnakesNLadders -> handleSnL(boardIndex);
+            case Ludo -> handleLudo();
         }
     }
 
@@ -161,7 +162,9 @@ public class GameInitVisual {
     }
 
     private void handleLudo() {
-        LudoBoardVisual ludoBoardVisual = new LudoBoardVisual(new LudoBoard());
+        LudoBoard ludoBoard = new LudoBoard();
+        LudoBoardVisual ludoBoardVisual = new LudoBoardVisual(ludoBoard);
+
         boardChoiceHolder.getChildren().clear();
         boardChoiceHolder.getChildren().add(ludoBoardVisual);
     }
