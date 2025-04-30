@@ -24,11 +24,11 @@ import javafx.scene.layout.VBox;
  *
  * @author Hector Mendana Morales
  */
-public class SnLIngame implements Ingame {
+public class SnLIngame implements RollHandler { //TODO CHANGE INGAME OCCURENCES TO ROLLHANDLER
 
     public final SnLBoard board;
     public final SnLBoardVisual boardVisual;
-    public final IngameController ingameController;
+    public final SnLRollHandler ingameController;
     public final SnLGameController gameController;
     public final SideColumnVisual sideColumn;
     public final PlayerTokenLayer playerTokenLayer;
@@ -45,7 +45,7 @@ public class SnLIngame implements Ingame {
         this.boardVisual = new SnLBoardVisual(board);
         this.sideColumn = new SideColumnVisual(gameController, gameSetup.getPlayers(), this);
         this.playerTokenLayer = new PlayerTokenLayer(boardVisual, gameSetup.getPlayers());
-        this.ingameController = new IngameController((SnLGameController) gameController, playerTokenLayer, sideColumn);
+        this.ingameController = new SnLRollHandler((SnLGameController) gameController, playerTokenLayer, sideColumn);
         
 
     }
@@ -90,7 +90,7 @@ public class SnLIngame implements Ingame {
     }
 
     @Override
-    public IngameController getIngameController() {
+    public SnLRollHandler getIngameController() {
         return ingameController;
     }
 

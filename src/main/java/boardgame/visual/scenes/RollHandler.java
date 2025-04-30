@@ -13,9 +13,9 @@ import javafx.scene.Scene;
  * 
  * @author Hector Mendana Morales
  */
-public interface Ingame {
+public interface RollHandler {
 
     public Scene getScene();
 
-    public IngameController getIngameController();
+    public SnLRollHandler getIngameController();
 }
