@@ -1,8 +1,6 @@
 package boardgame.visual.scenes;
 
 import boardgame.controller.SceneManager;
-import boardgame.utils.GameType;
-import boardgame.visual.elements.Menu.GameInitVisual;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -49,7 +47,7 @@ public class WinScreen {
 
         Button mainMenuButton = new Button("Return to Main Menu");
         mainMenuButton.setOnAction(e -> {
-            SceneManager.getInstance().changeScene(new GameInitVisual().getScene(GameType.SnakesNLadders));
+            SceneManager.getInstance().changeScene(StartScreenView.getScene());
         });
 
         root.getChildren().addAll(congratsLabel, winnerImage, winnerLabel, mainMenuButton);

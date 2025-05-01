@@ -35,7 +35,6 @@ public abstract class GameController {
         this.playerIterator = new LoopingIterator<>(players);
         this.playerWhoseTurn = playerIterator.next();
 
-        System.out.println("Reached GameController abstract constructor with players: " + players.toString());
     }
 
     /**

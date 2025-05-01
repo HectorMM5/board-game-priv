@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.stream.IntStream;
 
 import boardgame.controller.LudoGameController;
+import boardgame.controller.SceneManager;
 import boardgame.model.boardFiles.Player;
 import boardgame.model.diceFiles.Dice;
 import boardgame.visual.elements.SideColumn.DiceButtonVisual;
@@ -55,15 +56,13 @@ public class LudoRollHandler implements RollHandler {
      * @param buttonVisual the roll button to be re-enabled after move
      */
     @Override
-    public void moveBy(Player player, int step, DiceButtonVisual buttonVisual) {
-        int steps = 6;
-
+    public void moveBy(Player player, int steps, DiceButtonVisual buttonVisual) {
         int startPosition = player.getPosition();
         int nextPosition = startPosition + steps;
         Color color = gameController.getPlayerColor().get(player);
         int totalTilesMoved = tilesMoved.get(player);
 
-        if (totalTilesMoved == 52) {
+        if (totalTilesMoved == 53) {
             int homePosition = gameController.getHomePosition().get(player);
 
             playerTokenLayer.movePlayerThroughHomePath(player, color, homePosition + steps, gameController);
@@ -75,11 +74,11 @@ public class LudoRollHandler implements RollHandler {
             });
             pause.play();
 
-        } else if (totalTilesMoved + steps > 52) {
-            int stepsUntilReachedHome = 52 - totalTilesMoved;
-            playerTokenLayer.movePlayerThroughPath(player, startPosition + stepsUntilReachedHome + 1);
+        } else if (totalTilesMoved + steps > 53) {
+            int stepsUntilReachedHome = 53 - totalTilesMoved;
+            playerTokenLayer.movePlayerThroughPath(player, startPosition + stepsUntilReachedHome);
 
-            tilesMoved.replace(player, 52);
+            tilesMoved.replace(player, 53);
 
             PauseTransition pause = new PauseTransition(Duration.millis((stepsUntilReachedHome + 1) * 300));
             pause.setOnFinished(e -> {
@@ -101,7 +100,6 @@ public class LudoRollHandler implements RollHandler {
 
         } else {
             int adjustedNextPosition = nextPosition > 56 ? nextPosition - 56 : nextPosition;
-
 
             playerTokenLayer.movePlayerThroughPath(player, nextPosition);
             tilesMoved.replace(player, totalTilesMoved + steps);
@@ -128,24 +126,37 @@ public class LudoRollHandler implements RollHandler {
         sideColumn.displayRoll(diceRoll);
 
         Player currentPlayer = gameController.getCurrentPlayer();
+        int homePosition = gameController.getHomePosition().get(currentPlayer);
 
-        //if (currentPlayer.getPosition() + diceRoll >= boardSize) {
-        //    moveBy(gameController.getCurrentPlayer(), boardSize - currentPlayer.getPosition(), buttonVisual);
-//
-        //    PauseTransition gameEndAnimation = new PauseTransition(Duration.millis((boardSize - currentPlayer.getPosition() + 1) * 300 + 300));
-        //    gameEndAnimation.setOnFinished(event -> {
-        //        SceneManager.getInstance().changeScene(
-        //                new WinScreen(
-        //                        currentPlayer.getName(), currentPlayer.getIcon()
-        //                ).getScene());
-//
-        //    });
-        //    gameEndAnimation.play();
-//
-        //} else {
-        moveBy(gameController.getCurrentPlayer(), diceRoll, buttonVisual);
-        gameController.advanceTurn();
-        //}
+        System.out.println("HOME POSITION: " + homePosition);
+
+        if (homePosition + diceRoll > 6) {
+            int toGoal = 6 - homePosition;
+            moveBy(gameController.getCurrentPlayer(), toGoal, buttonVisual);
+
+            System.out.println("REACHED END");
+
+            PauseTransition gameEndAnimation = new PauseTransition(Duration.millis(toGoal * 300 + 300));
+            gameEndAnimation.setOnFinished(event -> {
+                playerTokenLayer.moveToGoal(currentPlayer);
+
+                PauseTransition switchScreenPause = new PauseTransition(Duration.millis(600));
+                switchScreenPause.setOnFinished(e -> {
+                SceneManager.getInstance().changeScene(
+                        new WinScreen(
+                                currentPlayer.getName(), currentPlayer.getIcon()
+                        ).getScene());
+                });
+
+                switchScreenPause.play();
+
+            });
+            gameEndAnimation.play();
+
+        } else {
+            moveBy(gameController.getCurrentPlayer(), diceRoll, buttonVisual);
+            gameController.advanceTurn();
+        }
 
     }
 
