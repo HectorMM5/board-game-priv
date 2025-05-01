@@ -1,13 +1,16 @@
 package boardgame.visual.gameLayers;
 
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.IntStream;
 
+import boardgame.controller.LudoGameController;
 import boardgame.model.boardFiles.Player;
+import boardgame.model.boardFiles.Tile;
 import boardgame.utils.GameType;
 import boardgame.utils.LudoBoardTiles;
 import boardgame.visual.elements.BoardVisual;
@@ -18,6 +21,7 @@ import javafx.animation.TranslateTransition;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 /**
@@ -36,6 +40,15 @@ public class PlayerTokenLayer extends Pane {
     private final Map<Integer, Integer> cols = new HashMap<>();
     private final Map<Integer, Integer> rows = new HashMap<>();
     private final BoardVisual boardVisual;
+
+    Map<Color, List<Tile>> colorToHouseTiles = Map.of(
+            Color.YELLOW, LudoGameController.getYellowHomeTiles(),
+            Color.RED, LudoGameController.getRedHomeTiles(),
+            Color.BLUE, LudoGameController.getBlueHomeTiles(),
+            Color.GREEN, LudoGameController.getGreenHomeTiles()
+    );
+
+    private final Map<Color, List<Point>> colorHome = new HashMap<>();
 
     /**
      * Constructs the token layer for a given list of players. Initializes
@@ -69,8 +82,8 @@ public class PlayerTokenLayer extends Pane {
                         movesRight.set(!movesRight.get());
                     }
 
-                    int row = i / 10;
-                    int col = movesRight.get()
+                    Integer row = i / 10;
+                    Integer col = movesRight.get()
                             ? i % 10
                             : 10 - ((i % 10) + 1);
 
@@ -83,25 +96,35 @@ public class PlayerTokenLayer extends Pane {
             case Ludo -> {
                 List<Point> playableTileCoordinates = LudoBoardTiles.getPlayableTiles();
 
-                for (Player player : players) {
-                    ImageView token = new ImageView(new Image(player.getIcon()));
-                    token.setFitWidth(50);
-                    token.setFitHeight(50);
-                    token.setLayoutX(((LudoBoardVisual) boardVisual).getSpacing() / 2 - 25);
-                    token.setLayoutY(((LudoBoardVisual) boardVisual).getSpacing() / 2 - 25);
-                    playerTokens.put(player, token);
-                    this.getChildren().add(token);
-                }
-
                 IntStream.rangeClosed(1, playableTileCoordinates.size()).forEach(i -> {
                     cols.put(i, playableTileCoordinates.get(i - 1).x);
                     rows.put(i, playableTileCoordinates.get(i - 1).y);
 
                 });
+
+                Map<Color, Integer> colorStartPositions = LudoBoardTiles.getColorStartPositions();
+
+                List<Color> colors = new ArrayList<>(List.of(Color.YELLOW, Color.RED, Color.BLUE, Color.GREEN));
+
+                IntStream.range(0, players.size()).forEach(i -> {
+                    Player player = players.get(i);
+                    ImageView token = new ImageView(new Image(player.getIcon()));
+                    token.setFitWidth(50);
+                    token.setFitHeight(50);
+
+                    playerTokens.put(player, token);
+                    this.getChildren().add(token);
+
+                    moveToken(player, colorStartPositions.get(colors.get(i)));
+                
+                });
+
+                colorHome.put(Color.YELLOW, ((LudoBoardVisual) boardVisual).getYellowHomeTiles());
+                colorHome.put(Color.RED, ((LudoBoardVisual) boardVisual).getRedHomeTiles());
+                colorHome.put(Color.BLUE, ((LudoBoardVisual) boardVisual).getBlueHomeTiles());
+                colorHome.put(Color.GREEN, ((LudoBoardVisual) boardVisual).getGreenHomeTiles());
             }
-
         }
-
     }
 
     /**
@@ -124,6 +147,36 @@ public class PlayerTokenLayer extends Pane {
         move.setToY(targetY);
         move.play();
     }
+
+    public void moveTokenThroughHome(Player player, Color color, int tileNumber) {
+        ImageView token = playerTokens.get(player);
+        List<Point> houseList = colorHome.get(color);
+
+
+        Integer col = houseList.get(tileNumber - 1).x;
+        Integer row = houseList.get(tileNumber - 1).y;
+
+        double targetX = col * boardVisual.getSpacing();
+        double targetY = row * boardVisual.getSpacing();
+
+        TranslateTransition move = new TranslateTransition(Duration.millis(300), token);
+        move.setToX(targetX);
+        move.setToY(targetY);
+        move.play();
+
+    }
+
+    public void movePlayerThroughHomePath(Player player, Color color, int stopTile, LudoGameController gameController) {
+        // Find current position in home path (0 if not yet inside)
+        int currentPosition = gameController.getHomePosition().get(player);
+    
+        IntStream.range(currentPosition, stopTile).forEach(i -> {
+            PauseTransition pause = new PauseTransition(Duration.millis((i - currentPosition) * 300));
+            pause.setOnFinished(event -> moveTokenThroughHome(player, color, i));
+            pause.play();
+        });
+    }
+    
 
     /**
      * Animates a player's token as it moves across multiple tiles from its

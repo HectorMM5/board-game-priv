@@ -19,6 +19,11 @@ public final class LudoBoardVisual extends BoardVisual {
     private final double TILE_SIZE = (ScreenDimension.getScreenHeight() - 200) / 15;
     private final double spacing = TILE_SIZE;
 
+    private final List<Point> yellowHomeTiles = new ArrayList<>();
+    private final List<Point> redHomeTiles = new ArrayList<>();
+    private final List<Point> greenHomeTiles = new ArrayList<>();
+    private final List<Point> blueHomeTiles = new ArrayList<>();
+
     public LudoBoardVisual(LudoBoard board) {
         super(board);
         initializeBoard();
@@ -31,10 +36,6 @@ public final class LudoBoardVisual extends BoardVisual {
     public void initializeBoard() {
         List<Point> playableTiles = LudoBoardTiles.getPlayableTiles();
         
-        List<Point> yellowHomeTiles = new ArrayList<>();
-        List<Point> redHomeTiles = new ArrayList<>();
-        List<Point> greenHomeTiles = new ArrayList<>();
-        List<Point> blueHomeTiles = new ArrayList<>();
         List<Point> yellowStartTiles = new ArrayList<>();
         List<Point> redStartTiles = new ArrayList<>();
         List<Point> greenStartTiles = new ArrayList<>();
@@ -42,10 +43,10 @@ public final class LudoBoardVisual extends BoardVisual {
 
 
         // Home tiles
-        IntStream.rangeClosed(1, 6).forEach(i -> yellowHomeTiles.add(new Point(7, i)));
-        IntStream.iterate(13, i -> i >= 8, i -> i - 1).forEach(i -> redHomeTiles.add(new Point(i, 7)));
-        IntStream.iterate(13, i -> i >= 8, i -> i - 1).forEach(i -> blueHomeTiles.add(new Point(7, i)));
-        IntStream.rangeClosed(1, 6).forEach(i -> greenHomeTiles.add(new Point(i, 7)));
+        IntStream.rangeClosed(1, 6).forEach(i -> redHomeTiles.add(new Point(7, i)));
+        IntStream.iterate(13, i -> i >= 8, i -> i - 1).forEach(i -> blueHomeTiles.add(new Point(i, 7)));
+        IntStream.iterate(13, i -> i >= 8, i -> i - 1).forEach(i -> greenHomeTiles.add(new Point(7, i)));
+        IntStream.rangeClosed(1, 6).forEach(i -> yellowHomeTiles.add(new Point(i, 7)));
 
         // Start boxes (5x5 hollow)
         IntStream.rangeClosed(0, 4).forEach(x -> {
@@ -131,6 +132,22 @@ public final class LudoBoardVisual extends BoardVisual {
     @Override
     public double getSpacing() {
         return spacing;
+    }
+
+    public List<Point> getYellowHomeTiles() {
+        return yellowHomeTiles;
+    }
+
+    public List<Point> getRedHomeTiles() {
+        return redHomeTiles;
+    }
+    
+    public List<Point> getBlueHomeTiles() {
+        return blueHomeTiles;
+    }
+
+    public List<Point> getGreenHomeTiles() {
+        return greenHomeTiles;
     }
 
 }

@@ -3,7 +3,10 @@ package boardgame.utils;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.IntStream;
+
+import javafx.scene.paint.Color;
 
 
 public class LudoBoardTiles {
@@ -29,6 +32,17 @@ public class LudoBoardTiles {
 
     public static List<Point> getPlayableTiles() {
         return playableTiles;
+    }
+
+    private static final Map<Color, Integer> colorStartPositions = Map.of(
+            Color.YELLOW, 43,
+            Color.RED, 1,
+            Color.BLUE, 15,
+            Color.GREEN, 29
+    );
+
+    public static Map<Color, Integer> getColorStartPositions() {
+        return colorStartPositions;
     }
     
 }
