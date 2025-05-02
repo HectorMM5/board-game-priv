@@ -2,12 +2,16 @@ package boardgame.utils;
 
 import java.util.List;
 
-import boardgame.controller.BoardJSON;
 import boardgame.controller.GameController;
+import boardgame.controller.LudoGameController;
 import boardgame.controller.SceneManager;
+import boardgame.controller.SnLGameController;
 import boardgame.model.boardFiles.Board;
+import boardgame.model.boardFiles.Ludo.LudoBoard;
 import boardgame.model.boardFiles.Player;
 import boardgame.visual.scenes.Ingame;
+import boardgame.visual.scenes.LudoIngame;
+import boardgame.visual.scenes.SnLIngame;
 
 /**
  * Sets up and initializes a new game session, including the board, players,
@@ -33,12 +37,28 @@ public class GameSetup {
      * @param boardChoice the index of the board to load from JSON
      * @param players the list of players participating in the game
      */
-    public GameSetup(String game, int boardChoice, List<Player> players) {
-        System.out.println("Reached GameSetup with player list size: " + players.size());
-        this.board = BoardJSON.constructSnLBoardFromJSON(boardChoice);
+    public GameSetup(GameType gameType, int boardChoice, List<Player> players) {
+
         this.players = players;
-        this.gameController = new GameController(board, players);
-        this.ingame = new Ingame(this);
+
+        System.out.println("Reached Gamesetup with players: " + players.toString());
+
+        switch (gameType) {
+            case SnakesNLadders -> {
+                this.board = BoardJSON.constructSnLBoardFromJSON(boardChoice);
+                this.gameController = new SnLGameController(board, players);
+                this.ingame = new SnLIngame(this);
+            }
+
+            case Ludo -> {
+                this.board = new LudoBoard();
+                this.gameController = new LudoGameController(board, players);
+                this.ingame = new LudoIngame(this);
+            }
+            default -> throw new AssertionError();
+        }
+
+        
     }
 
     /**
