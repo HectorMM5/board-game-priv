@@ -61,7 +61,7 @@ public final class SnLBoardVisual extends BoardVisual {
                 movesRight = !movesRight;
             }
         
-            int row = i / 10;
+            int row = 8 - (i / 10);
             int col = movesRight
                 ? i % 10
                 : 10 - ((i % 10) + 1);
