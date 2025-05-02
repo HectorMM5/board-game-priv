@@ -9,7 +9,6 @@ import java.util.stream.IntStream;
 
 import boardgame.controller.LudoGameController;
 import boardgame.model.boardFiles.Player;
-import boardgame.model.boardFiles.Tile;
 import boardgame.utils.LudoBoardTiles;
 import boardgame.visual.elements.LudoBoardVisual;
 import javafx.animation.PauseTransition;
@@ -20,13 +19,6 @@ import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 public class LudoTokenLayer extends TokenLayer {
-
-    Map<Color, List<Tile>> colorToHouseTiles = Map.of(
-            Color.YELLOW, LudoGameController.getYellowHomeTiles(),
-            Color.RED, LudoGameController.getRedHomeTiles(),
-            Color.BLUE, LudoGameController.getBlueHomeTiles(),
-            Color.GREEN, LudoGameController.getGreenHomeTiles()
-    );
 
     private final Map<Color, List<Point>> colorHome = new HashMap<>();
 

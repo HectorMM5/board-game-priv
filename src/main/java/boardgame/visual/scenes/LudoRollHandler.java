@@ -29,7 +29,6 @@ public class LudoRollHandler implements RollHandler {
     private final LudoTokenLayer playerTokenLayer;
     private final SideColumnVisual sideColumn;
     private final Dice dice = new Dice(1);
-    private final int boardSize;
 
     private final Map<Player, Integer> tilesMoved = new HashMap<>();
 
@@ -37,7 +36,6 @@ public class LudoRollHandler implements RollHandler {
         this.gameController = gameController;
         this.playerTokenLayer = playerTokenLayer;
         this.sideColumn = sideColumn;
-        this.boardSize = gameController.getBoard().getTiles().size();
 
         List<Player> players = gameController.getPlayers();
 

@@ -62,7 +62,7 @@ public class SnLGameController extends GameController {
             PauseTransition pause = new PauseTransition(Duration.millis(300));
             pause.setOnFinished(event -> {
                 if (targetTile.getEffect() instanceof MovementEffect movementEffect) {
-                    ingame.getIngameController().moveToken(player, movementEffect.getTargetTileIndex());
+                    ingame.getRollHandler().moveToken(player, movementEffect.getTargetTileIndex());
                 }
             });
             pause.play();

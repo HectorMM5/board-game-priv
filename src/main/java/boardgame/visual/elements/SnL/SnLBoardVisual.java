@@ -20,7 +20,6 @@ public final class SnLBoardVisual extends BoardVisual {
 
     private final double dimension = ScreenDimension.getScreenHeight() - 200; // Example dimension, adjust as needed
     private final LadderLayer ladderLayer;
-    private final GridPane tileGrid = new GridPane();
     private final double TILE_SIZE = dimension / 10; 
     private final double spacing = TILE_SIZE + 4;
     

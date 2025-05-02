@@ -17,5 +17,5 @@ public interface Ingame {
 
     public Scene getScene();
 
-    public RollHandler getIngameController();
+    public RollHandler getRollHandler();
 }

@@ -24,11 +24,11 @@ import javafx.scene.layout.VBox;
  *
  * @author Hector Mendana Morales
  */
-public class LudoIngame implements Ingame { //TODO CHANGE INGAME OCCURENCES TO ROLLHANDLER
+public class LudoIngame implements Ingame { 
 
     public final LudoBoard board;
     public final LudoBoardVisual boardVisual;
-    public final LudoRollHandler ingameController;
+    public final LudoRollHandler rollHandler;
     public final LudoGameController gameController;
     public final SideColumnVisual sideColumn;
     public final LudoTokenLayer playerTokenLayer;
@@ -44,7 +44,7 @@ public class LudoIngame implements Ingame { //TODO CHANGE INGAME OCCURENCES TO R
         this.boardVisual = new LudoBoardVisual(board);
         this.sideColumn = new SideColumnVisual(gameController, gameSetup.getPlayers(), this);
         this.playerTokenLayer = new LudoTokenLayer(boardVisual, gameSetup.getPlayers());
-        this.ingameController = new LudoRollHandler((LudoGameController) gameController, playerTokenLayer, sideColumn);
+        this.rollHandler = new LudoRollHandler((LudoGameController) gameController, playerTokenLayer, sideColumn);
         
     }
 
@@ -88,8 +88,8 @@ public class LudoIngame implements Ingame { //TODO CHANGE INGAME OCCURENCES TO R
     }
 
     @Override
-    public LudoRollHandler getIngameController() {
-        return ingameController;
+    public LudoRollHandler getRollHandler() {
+        return rollHandler;
     }
 
 }
