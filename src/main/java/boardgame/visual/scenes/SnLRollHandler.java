@@ -7,7 +7,7 @@ import boardgame.model.diceFiles.Dice;
 import boardgame.model.effectFiles.SnL.MovementEffect;
 import boardgame.visual.elements.SideColumn.DiceButtonVisual;
 import boardgame.visual.elements.SideColumn.SideColumnVisual;
-import boardgame.visual.gameLayers.PlayerTokenLayer;
+import boardgame.visual.gameLayers.SnLTokenLayer;
 import javafx.animation.PauseTransition;
 import javafx.util.Duration;
 
@@ -21,12 +21,12 @@ import javafx.util.Duration;
 public class SnLRollHandler implements RollHandler {
 
     private final SnLGameController gameController;
-    private final PlayerTokenLayer playerTokenLayer;
+    private final SnLTokenLayer playerTokenLayer;
     private final SideColumnVisual sideColumn;
     private final Dice dice = new Dice(1);
     private final int boardSize;
 
-    public SnLRollHandler(SnLGameController gameController, PlayerTokenLayer playerTokenLayer, SideColumnVisual sideColumn) {
+    public SnLRollHandler(SnLGameController gameController, SnLTokenLayer playerTokenLayer, SideColumnVisual sideColumn) {
         this.gameController = gameController;
         this.playerTokenLayer = playerTokenLayer;
         this.sideColumn = sideColumn;
@@ -46,7 +46,7 @@ public class SnLRollHandler implements RollHandler {
         int startPosition = player.getPosition();
         int nextPosition = startPosition + steps;
 
-        playerTokenLayer.movePlayerThroughPath(player, nextPosition);
+        playerTokenLayer.moveTokenThroughPath(player, nextPosition);
 
         int additionalMsDelay = 0;
         //Additional delay for the effect to be shown

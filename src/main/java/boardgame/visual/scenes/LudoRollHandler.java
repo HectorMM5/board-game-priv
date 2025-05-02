@@ -11,7 +11,7 @@ import boardgame.model.boardFiles.Player;
 import boardgame.model.diceFiles.Dice;
 import boardgame.visual.elements.SideColumn.DiceButtonVisual;
 import boardgame.visual.elements.SideColumn.SideColumnVisual;
-import boardgame.visual.gameLayers.PlayerTokenLayer;
+import boardgame.visual.gameLayers.LudoTokenLayer;
 import javafx.animation.PauseTransition;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
@@ -26,14 +26,14 @@ import javafx.util.Duration;
 public class LudoRollHandler implements RollHandler {
 
     private final LudoGameController gameController;
-    private final PlayerTokenLayer playerTokenLayer;
+    private final LudoTokenLayer playerTokenLayer;
     private final SideColumnVisual sideColumn;
     private final Dice dice = new Dice(1);
     private final int boardSize;
 
     private final Map<Player, Integer> tilesMoved = new HashMap<>();
 
-    public LudoRollHandler(LudoGameController gameController, PlayerTokenLayer playerTokenLayer, SideColumnVisual sideColumn) {
+    public LudoRollHandler(LudoGameController gameController, LudoTokenLayer playerTokenLayer, SideColumnVisual sideColumn) {
         this.gameController = gameController;
         this.playerTokenLayer = playerTokenLayer;
         this.sideColumn = sideColumn;
@@ -76,7 +76,7 @@ public class LudoRollHandler implements RollHandler {
 
         } else if (totalTilesMoved + steps > 53) {
             int stepsUntilReachedHome = 53 - totalTilesMoved;
-            playerTokenLayer.movePlayerThroughPath(player, startPosition + stepsUntilReachedHome);
+            playerTokenLayer.moveTokenThroughPath(player, startPosition + stepsUntilReachedHome);
 
             tilesMoved.replace(player, 53);
 
@@ -101,7 +101,7 @@ public class LudoRollHandler implements RollHandler {
         } else {
             int adjustedNextPosition = nextPosition > 56 ? nextPosition - 56 : nextPosition;
 
-            playerTokenLayer.movePlayerThroughPath(player, nextPosition);
+            playerTokenLayer.moveTokenThroughPath(player, nextPosition);
             tilesMoved.replace(player, totalTilesMoved + steps);
 
             PauseTransition pause = new PauseTransition(Duration.millis((steps + 1) * 300));

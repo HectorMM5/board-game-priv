@@ -3,10 +3,9 @@ package boardgame.visual.scenes;
 import boardgame.controller.SnLGameController;
 import boardgame.model.boardFiles.SnL.SnLBoard;
 import boardgame.utils.GameSetup;
-import boardgame.utils.GameType;
 import boardgame.visual.elements.SideColumn.SideColumnVisual;
 import boardgame.visual.elements.SnL.SnLBoardVisual;
-import boardgame.visual.gameLayers.PlayerTokenLayer;
+import boardgame.visual.gameLayers.SnLTokenLayer;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
@@ -32,7 +31,7 @@ public class SnLIngame implements Ingame { //TODO CHANGE INGAME OCCURENCES TO RO
     public final SnLRollHandler ingameController;
     public final SnLGameController gameController;
     public final SideColumnVisual sideColumn;
-    public final PlayerTokenLayer playerTokenLayer;
+    public final SnLTokenLayer playerTokenLayer;
 
     /**
      * Constructs an in-game scene based on the given game setup.
@@ -44,7 +43,7 @@ public class SnLIngame implements Ingame { //TODO CHANGE INGAME OCCURENCES TO RO
         this.board = (SnLBoard) gameSetup.getBoard();
         this.boardVisual = new SnLBoardVisual(board);
         this.sideColumn = new SideColumnVisual(gameController, gameSetup.getPlayers(), this);
-        this.playerTokenLayer = new PlayerTokenLayer(GameType.SnakesNLadders, boardVisual, gameSetup.getPlayers());
+        this.playerTokenLayer = new SnLTokenLayer(boardVisual, gameSetup.getPlayers());
         this.ingameController = new SnLRollHandler((SnLGameController) gameController, playerTokenLayer, sideColumn);
         
     }

@@ -3,10 +3,9 @@ package boardgame.visual.scenes;
 import boardgame.controller.LudoGameController;
 import boardgame.model.boardFiles.Ludo.LudoBoard;
 import boardgame.utils.GameSetup;
-import boardgame.utils.GameType;
 import boardgame.visual.elements.LudoBoardVisual;
 import boardgame.visual.elements.SideColumn.SideColumnVisual;
-import boardgame.visual.gameLayers.PlayerTokenLayer;
+import boardgame.visual.gameLayers.LudoTokenLayer;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
@@ -32,7 +31,7 @@ public class LudoIngame implements Ingame { //TODO CHANGE INGAME OCCURENCES TO R
     public final LudoRollHandler ingameController;
     public final LudoGameController gameController;
     public final SideColumnVisual sideColumn;
-    public final PlayerTokenLayer playerTokenLayer;
+    public final LudoTokenLayer playerTokenLayer;
 
     /**
      * Constructs an in-game scene based on the given game setup.
@@ -44,7 +43,7 @@ public class LudoIngame implements Ingame { //TODO CHANGE INGAME OCCURENCES TO R
         this.board = (LudoBoard) gameSetup.getBoard();
         this.boardVisual = new LudoBoardVisual(board);
         this.sideColumn = new SideColumnVisual(gameController, gameSetup.getPlayers(), this);
-        this.playerTokenLayer = new PlayerTokenLayer(GameType.Ludo, boardVisual, gameSetup.getPlayers());
+        this.playerTokenLayer = new LudoTokenLayer(boardVisual, gameSetup.getPlayers());
         this.ingameController = new LudoRollHandler((LudoGameController) gameController, playerTokenLayer, sideColumn);
         
     }
