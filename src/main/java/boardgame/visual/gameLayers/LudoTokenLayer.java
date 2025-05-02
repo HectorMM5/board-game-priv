@@ -37,6 +37,8 @@ public class LudoTokenLayer extends TokenLayer {
 
         List<Color> colors = new ArrayList<>(List.of(Color.YELLOW, Color.RED, Color.BLUE, Color.GREEN));
 
+        double spacing = boardVisual.getSpacing();
+
         IntStream.range(0, players.size()).forEach(i -> {
             Player player = players.get(i);
             ImageView token = new ImageView(new Image(player.getIcon()));
@@ -46,7 +48,11 @@ public class LudoTokenLayer extends TokenLayer {
             playerTokens.put(player, token);
             this.getChildren().add(token);
 
-            moveToken(player, colorStartPositions.get(colors.get(i)));
+            Integer startPosition = colorStartPositions.get(colors.get(i));
+            int x = cols.get(startPosition);
+            int y = rows.get(startPosition);
+            token.setTranslateX(x * spacing);
+            token.setTranslateY(y * spacing);
 
         });
 
