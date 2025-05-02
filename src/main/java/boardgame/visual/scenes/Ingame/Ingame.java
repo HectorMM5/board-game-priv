@@ -1,5 +1,6 @@
-package boardgame.visual.scenes;
+package boardgame.visual.scenes.Ingame;
 
+import boardgame.controller.RollHandlers.RollHandler;
 import javafx.scene.Scene;
 
 

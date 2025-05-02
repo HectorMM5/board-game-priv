@@ -1,6 +1,6 @@
 package boardgame.model.effectFiles.SnL;
 
-import boardgame.controller.SnLGameController;
+import boardgame.controller.GameControllers.SnLGameController;
 import boardgame.model.boardFiles.Player;
 
 /**

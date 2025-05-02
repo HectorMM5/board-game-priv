@@ -1,4 +1,4 @@
-package boardgame.controller;
+package boardgame.controller.GameControllers;
 
 import java.util.ArrayList;
 import java.util.HashMap;

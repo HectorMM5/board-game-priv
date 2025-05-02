@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
 
-import boardgame.controller.LudoGameController;
+import boardgame.controller.GameControllers.LudoGameController;
 import boardgame.model.boardFiles.Player;
 import boardgame.utils.LudoBoardTiles;
 import boardgame.visual.elements.LudoBoardVisual;

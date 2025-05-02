@@ -2,16 +2,16 @@ package boardgame.utils;
 
 import java.util.List;
 
-import boardgame.controller.GameController;
-import boardgame.controller.LudoGameController;
+import boardgame.controller.GameControllers.GameController;
+import boardgame.controller.GameControllers.LudoGameController;
+import boardgame.controller.GameControllers.SnLGameController;
 import boardgame.controller.SceneManager;
-import boardgame.controller.SnLGameController;
 import boardgame.model.boardFiles.Board;
 import boardgame.model.boardFiles.Ludo.LudoBoard;
 import boardgame.model.boardFiles.Player;
-import boardgame.visual.scenes.Ingame;
-import boardgame.visual.scenes.LudoIngame;
-import boardgame.visual.scenes.SnLIngame;
+import boardgame.visual.scenes.Ingame.Ingame;
+import boardgame.visual.scenes.Ingame.LudoIngame;
+import boardgame.visual.scenes.Ingame.SnLIngame;
 
 /**
  * Sets up and initializes a new game session, including the board, players,
@@ -22,7 +22,7 @@ import boardgame.visual.scenes.SnLIngame;
  * 
  * @author Hector Mendana Morales
  */
-public class GameSetup {
+public class GameFactory {
 
     private final Board board;
     private final List<Player> players;
@@ -37,7 +37,7 @@ public class GameSetup {
      * @param boardChoice the index of the board to load from JSON
      * @param players the list of players participating in the game
      */
-    public GameSetup(GameType gameType, int boardChoice, List<Player> players) {
+    public GameFactory(GameType gameType, int boardChoice, List<Player> players) {
 
         this.players = players;
 

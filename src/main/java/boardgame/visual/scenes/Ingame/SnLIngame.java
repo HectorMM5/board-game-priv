@@ -1,11 +1,12 @@
-package boardgame.visual.scenes;
+package boardgame.visual.scenes.Ingame;
 
-import boardgame.controller.LudoGameController;
-import boardgame.model.boardFiles.Ludo.LudoBoard;
-import boardgame.utils.GameSetup;
-import boardgame.visual.elements.LudoBoardVisual;
+import boardgame.controller.GameControllers.SnLGameController;
+import boardgame.controller.RollHandlers.SnLRollHandler;
+import boardgame.model.boardFiles.SnL.SnLBoard;
+import boardgame.utils.GameFactory;
 import boardgame.visual.elements.SideColumn.SideColumnVisual;
-import boardgame.visual.gameLayers.LudoTokenLayer;
+import boardgame.visual.elements.SnL.SnLBoardVisual;
+import boardgame.visual.gameLayers.SnLTokenLayer;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
@@ -24,27 +25,27 @@ import javafx.scene.layout.VBox;
  *
  * @author Hector Mendana Morales
  */
-public class LudoIngame implements Ingame { 
+public class SnLIngame implements Ingame {
 
-    public final LudoBoard board;
-    public final LudoBoardVisual boardVisual;
-    public final LudoRollHandler rollHandler;
-    public final LudoGameController gameController;
+    public final SnLBoard board;
+    public final SnLBoardVisual boardVisual;
+    public final SnLRollHandler rollHandler;
+    public final SnLGameController gameController;
     public final SideColumnVisual sideColumn;
-    public final LudoTokenLayer playerTokenLayer;
+    public final SnLTokenLayer playerTokenLayer;
 
     /**
      * Constructs an in-game scene based on the given game setup.
      *
      * @param gameSetup contains references to board, players, and controller
      */
-    public LudoIngame(GameSetup gameSetup) {
-        this.gameController = (LudoGameController) gameSetup.getGameController();
-        this.board = (LudoBoard) gameSetup.getBoard();
-        this.boardVisual = new LudoBoardVisual(board);
+    public SnLIngame(GameFactory gameSetup) {
+        this.gameController = (SnLGameController) gameSetup.getGameController();
+        this.board = (SnLBoard) gameSetup.getBoard();
+        this.boardVisual = new SnLBoardVisual(board);
         this.sideColumn = new SideColumnVisual(gameController, gameSetup.getPlayers(), this);
-        this.playerTokenLayer = new LudoTokenLayer(boardVisual, gameSetup.getPlayers());
-        this.rollHandler = new LudoRollHandler((LudoGameController) gameController, playerTokenLayer, sideColumn);
+        this.playerTokenLayer = new SnLTokenLayer(boardVisual, gameSetup.getPlayers());
+        this.rollHandler = new SnLRollHandler((SnLGameController) gameController, playerTokenLayer, sideColumn);
         
     }
 
@@ -88,7 +89,7 @@ public class LudoIngame implements Ingame {
     }
 
     @Override
-    public LudoRollHandler getRollHandler() {
+    public SnLRollHandler getRollHandler() {
         return rollHandler;
     }
 

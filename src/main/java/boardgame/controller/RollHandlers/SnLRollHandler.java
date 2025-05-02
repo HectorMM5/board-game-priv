@@ -1,13 +1,14 @@
-package boardgame.visual.scenes;
+package boardgame.controller.RollHandlers;
 
+import boardgame.controller.GameControllers.SnLGameController;
 import boardgame.controller.SceneManager;
-import boardgame.controller.SnLGameController;
 import boardgame.model.boardFiles.Player;
 import boardgame.model.diceFiles.Dice;
 import boardgame.model.effectFiles.SnL.MovementEffect;
 import boardgame.visual.elements.SideColumn.DiceButtonVisual;
 import boardgame.visual.elements.SideColumn.SideColumnVisual;
 import boardgame.visual.gameLayers.SnLTokenLayer;
+import boardgame.visual.scenes.WinScreen;
 import javafx.animation.PauseTransition;
 import javafx.util.Duration;
 

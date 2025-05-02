@@ -1,4 +1,4 @@
-package boardgame.visual.scenes;
+package boardgame.controller.RollHandlers;
 
 import boardgame.model.boardFiles.Player;
 import boardgame.visual.elements.SideColumn.DiceButtonVisual;

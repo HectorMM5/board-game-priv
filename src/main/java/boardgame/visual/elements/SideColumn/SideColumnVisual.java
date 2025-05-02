@@ -2,9 +2,9 @@ package boardgame.visual.elements.SideColumn;
 
 import java.util.List;
 
-import boardgame.controller.GameController;
+import boardgame.controller.GameControllers.GameController;
 import boardgame.model.boardFiles.Player;
-import boardgame.visual.scenes.Ingame;
+import boardgame.visual.scenes.Ingame.Ingame;
 import javafx.geometry.Pos;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;

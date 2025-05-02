@@ -1,4 +1,4 @@
-package boardgame.controller;
+package boardgame.controller.GameControllers;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ import boardgame.model.boardFiles.Board;
 import boardgame.model.boardFiles.Player;
 import boardgame.model.boardFiles.Tile;
 import boardgame.utils.LoopingIterator;
-import boardgame.visual.scenes.Ingame;
+import boardgame.visual.scenes.Ingame.Ingame;
 
 /**
  * Handles the core logic of the game, including player movement,

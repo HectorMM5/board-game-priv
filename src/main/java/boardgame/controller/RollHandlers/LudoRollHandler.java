@@ -1,17 +1,18 @@
-package boardgame.visual.scenes;
+package boardgame.controller.RollHandlers;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
 
-import boardgame.controller.LudoGameController;
+import boardgame.controller.GameControllers.LudoGameController;
 import boardgame.controller.SceneManager;
 import boardgame.model.boardFiles.Player;
 import boardgame.model.diceFiles.Dice;
 import boardgame.visual.elements.SideColumn.DiceButtonVisual;
 import boardgame.visual.elements.SideColumn.SideColumnVisual;
 import boardgame.visual.gameLayers.LudoTokenLayer;
+import boardgame.visual.scenes.WinScreen;
 import javafx.animation.PauseTransition;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
