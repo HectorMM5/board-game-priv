@@ -12,7 +12,7 @@ public class UnknownEffectException extends RuntimeException {
     }
 
     /**
-     * Constructs a new JsonParsingException with a custom message.
+     * Constructs a new UnkownEffectException with a custom message.
      * 
      * @param message the detailed error message
      */

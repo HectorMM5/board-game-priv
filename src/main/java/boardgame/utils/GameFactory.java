@@ -9,6 +9,7 @@ import boardgame.controller.SceneManager;
 import boardgame.model.boardFiles.Board;
 import boardgame.model.boardFiles.Ludo.LudoBoard;
 import boardgame.model.boardFiles.Player;
+import boardgame.utils.JSON.BoardJSON;
 import boardgame.visual.scenes.Ingame.Ingame;
 import boardgame.visual.scenes.Ingame.LudoIngame;
 import boardgame.visual.scenes.Ingame.SnLIngame;
@@ -41,8 +42,6 @@ public class GameFactory {
 
         this.players = players;
 
-        System.out.println("Reached Gamesetup with players: " + players.toString());
-
         switch (gameType) {
             case SnakesNLadders -> {
                 this.board = BoardJSON.constructSnLBoardFromJSON(boardChoice);
@@ -56,9 +55,7 @@ public class GameFactory {
                 this.ingame = new LudoIngame(this);
             }
             default -> throw new AssertionError();
-        }
-
-        
+        }        
     }
 
     /**

@@ -45,7 +45,11 @@ public class SnLIngame implements Ingame {
         this.boardVisual = new SnLBoardVisual(board);
         this.sideColumn = new SideColumnVisual(gameController, gameSetup.getPlayers(), this);
         this.playerTokenLayer = new SnLTokenLayer(boardVisual, gameSetup.getPlayers());
+
+        gameSetup.getPlayers().forEach(p -> p.addObserver(playerTokenLayer));
+
         this.rollHandler = new SnLRollHandler((SnLGameController) gameController, playerTokenLayer, sideColumn);
+
         
     }
 

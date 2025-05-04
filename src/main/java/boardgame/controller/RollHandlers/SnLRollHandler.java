@@ -22,14 +22,12 @@ import javafx.util.Duration;
 public class SnLRollHandler implements RollHandler {
 
     private final SnLGameController gameController;
-    private final SnLTokenLayer playerTokenLayer;
     private final SideColumnVisual sideColumn;
     private final Dice dice = new Dice(1);
     private final int boardSize;
 
     public SnLRollHandler(SnLGameController gameController, SnLTokenLayer playerTokenLayer, SideColumnVisual sideColumn) {
         this.gameController = gameController;
-        this.playerTokenLayer = playerTokenLayer;
         this.sideColumn = sideColumn;
         this.boardSize = gameController.getBoard().getTiles().size();
     }
@@ -47,7 +45,7 @@ public class SnLRollHandler implements RollHandler {
         int startPosition = player.getPosition();
         int nextPosition = startPosition + steps;
 
-        playerTokenLayer.moveTokenThroughPath(player, nextPosition);
+        gameController.movePlayer(player, nextPosition);
 
         int additionalMsDelay = 0;
         //Additional delay for the effect to be shown
@@ -57,7 +55,6 @@ public class SnLRollHandler implements RollHandler {
 
         PauseTransition finalPause = new PauseTransition(Duration.millis((steps + 1) * 300 + additionalMsDelay));
         finalPause.setOnFinished(event -> {
-            gameController.movePlayer(player, nextPosition);
             sideColumn.turnOnButton();
         });
         finalPause.play();
@@ -95,15 +92,4 @@ public class SnLRollHandler implements RollHandler {
 
     }
 
-    /**
-     * Instantly moves the token of a player to the given tile number.
-     * Called during teleporting effects like ladders or snakes.
-     *
-     * @param player the player to move
-     * @param tileNumber the destination tile
-     */
-    @Override
-    public void moveToken(Player player, int tileNumber) {
-        playerTokenLayer.moveToken(player, tileNumber);
-    }
 }

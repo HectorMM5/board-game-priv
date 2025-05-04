@@ -10,9 +10,9 @@ import javafx.animation.PauseTransition;
 import javafx.util.Duration;
 
 /**
- * Handles the core logic of the game, including player movement,
- * turn advancement, and interaction with the board and effects.
- * 
+ * Handles the core logic of the game, including player movement, turn
+ * advancement, and interaction with the board and effects.
+ *
  * @author Hector Mendana Morales
  */
 public class SnLGameController extends GameController {
@@ -43,29 +43,37 @@ public class SnLGameController extends GameController {
     }
 
     /**
-     * Moves the given player to the specified tile number and executes
-     * any effect present on the target tile.
+     * Moves the given player to the specified tile number and executes any
+     * effect present on the target tile.
      *
      * @param player the player to move
      * @param tileNumber the target tile number to move the player to
      */
     @Override
     public void movePlayer(Player player, int tileNumber) {
-        tiles.get(player.getPosition() - 1).popPlayer();
 
+        // Notify path move for initial movement
+        player.getObservers().forEach(o -> o.registerPlayerPathMove(player, tileNumber));
+
+        tiles.get(player.getPosition() - 1).popPlayer();
         player.setPosition(tileNumber);
         Tile targetTile = tiles.get(tileNumber - 1);
         targetTile.addPlayer(player);
 
-        if (!(targetTile.getEffect() == null)) {
+        if (targetTile.getEffect() != null) {
             targetTile.getEffect().execute(player, this);
-            PauseTransition pause = new PauseTransition(Duration.millis(300));
-            pause.setOnFinished(event -> {
-                if (targetTile.getEffect() instanceof MovementEffect movementEffect) {
-                    ingame.getRollHandler().moveToken(player, movementEffect.getTargetTileIndex());
-                }
-            });
-            pause.play();
+
+            if (targetTile.getEffect() instanceof MovementEffect movementEffect) {
+                int effectTarget = movementEffect.getTargetTileIndex();
+
+                PauseTransition pause = new PauseTransition(Duration.millis(300));
+                pause.setOnFinished(event -> {
+                    player.setPosition(effectTarget);
+                    tiles.get(effectTarget - 1).addPlayer(player);
+                    player.getObservers().forEach(o -> o.registerPlayerMove(player, effectTarget)); // use direct jump
+                });
+                pause.play();
+            }
         }
     }
 
@@ -79,8 +87,8 @@ public class SnLGameController extends GameController {
     }
 
     /**
-     * Advances the turn to the next player, skipping any player
-     * who is marked to be skipped.
+     * Advances the turn to the next player, skipping any player who is marked
+     * to be skipped.
      */
     @Override
     public void advanceTurn() {

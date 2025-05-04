@@ -45,6 +45,9 @@ public class LudoIngame implements Ingame {
         this.boardVisual = new LudoBoardVisual(board);
         this.sideColumn = new SideColumnVisual(gameController, gameSetup.getPlayers(), this);
         this.playerTokenLayer = new LudoTokenLayer(boardVisual, gameSetup.getPlayers());
+
+        gameSetup.getPlayers().forEach(p -> p.addObserver(playerTokenLayer));
+
         this.rollHandler = new LudoRollHandler((LudoGameController) gameController, playerTokenLayer, sideColumn);
         
     }

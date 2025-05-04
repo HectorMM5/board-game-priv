@@ -97,10 +97,13 @@ public class LudoGameController extends GameController {
      */
     @Override
     public void movePlayer(Player player, int tileNumber) {
+        int adjustedNextPosition = tileNumber > 56 ? tileNumber - 56 : tileNumber;
+        player.getObservers().forEach(i -> i.registerPlayerPathMove(player, tileNumber));
+
         tiles.get(player.getPosition() - 1).popPlayer();
 
-        player.setPosition(tileNumber);
-        Tile targetTile = tiles.get(tileNumber - 1);
+        player.setPosition(adjustedNextPosition);
+        Tile targetTile = tiles.get(adjustedNextPosition - 1);
         targetTile.addPlayer(player);
 
     }

@@ -1,17 +1,24 @@
 package boardgame.model.boardFiles;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import boardgame.model.Observer.PlayerObserver;
+
 /**
  * Represents a player in the board game, containing identity, icon, position,
  * and optional color data. Each player can move between tiles on the board.
- * 
+ *
  * The player starts at position 1 by default.
- * 
+ *
  * @author Hector Mendana Morales
  */
 public class Player {
+
     private String icon;
     final String name;
     int position;
+    private final List<PlayerObserver> observers = new ArrayList<>();
 
     /**
      * Constructs a player with the given icon path and name.
@@ -78,4 +85,17 @@ public class Player {
     public void moveToTile(Tile tile) {
         position = tile.getNumber() + 1;
     }
+
+    public void addObserver(PlayerObserver observer) {
+        observers.add(observer);
+    }
+
+    public void removeObserver(PlayerObserver observer) {
+        observers.remove(observer);
+    }
+
+    public List<PlayerObserver> getObservers() {
+        return observers;
+    }
+
 }

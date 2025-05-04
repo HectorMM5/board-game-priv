@@ -148,4 +148,16 @@ public class LudoTokenLayer extends TokenLayer {
 
     }
 
+    @Override
+    public void registerPlayerMove(Player player, int tileNumber) {
+        moveToken(player, tileNumber);
+    }
+
+    @Override
+    public void registerPlayerPathMove(Player player, int tileNumber) {
+        moveTokenThroughPath(player, tileNumber);
+    }
+
+
+
 }
