@@ -1,4 +1,4 @@
-package boardgame.utils;
+package boardgame.utils.JSON;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,6 +15,8 @@ import boardgame.model.effectFiles.SnL.LadderEffect;
 import boardgame.model.effectFiles.SnL.PlaceholderEffect;
 import boardgame.model.effectFiles.SnL.SkipTurnEffect;
 import boardgame.model.effectFiles.SnL.SnakeEffect;
+import boardgame.utils.JSON.Exceptions.JSONParsingException;
+import boardgame.utils.JSON.Exceptions.UnknownEffectException;
 
 /**
  * Utility class for loading and constructing a Snakes and Ladders board from a JSON file.
@@ -22,7 +24,7 @@ import boardgame.model.effectFiles.SnL.SnakeEffect;
  *
  * It supports various tile effects such as Ladder, Snake, LoseTurn, and BackToStart,
  * and populates the board accordingly.
- *
+ * 
  * @author Hector Mendana Morales
  */
 public class BoardJSON {
@@ -33,13 +35,14 @@ public class BoardJSON {
      *
      * @param choice the index of the board configuration in the "SnL" array to load
      * @return a populated {@link SnLBoard} object with effects set according to the JSON
+     * @throws JSONParsingException if loading or parsing the JSON file fails
      */
     public static SnLBoard constructSnLBoardFromJSON(int choice) {
         SnLBoard board = new SnLBoard();
 
         try (InputStream is = BoardJSON.class.getClassLoader().getResourceAsStream("boards.json")) {
             if (is == null) {
-                throw new IOException("boards.json not found in resources!");
+                throw new JSONParsingException("boards.json not found in resources!");
             }
 
             String jsonText = new String(is.readAllBytes(), StandardCharsets.UTF_8);
@@ -54,8 +57,8 @@ public class BoardJSON {
             IntStream.range(0, tilesWithEffects.length())
                 .forEach(i -> modifyEffectTileFromJSON(tilesWithEffects.getJSONObject(i), board));
 
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException | org.json.JSONException e) {
+            throw new JSONParsingException("Failed to parse SnL board from JSON.");
         }
 
         return board;
@@ -67,6 +70,7 @@ public class BoardJSON {
      *
      * @param tileWithEffect the JSON object representing the tile and its effect
      * @param board the {@link SnLBoard} to apply the effect to
+     * @throws UnknownEffectException if the effect type is unknown
      */
     public static void modifyEffectTileFromJSON(JSONObject tileWithEffect, SnLBoard board) {
         int tileNumber = tileWithEffect.getInt("tile");
@@ -92,7 +96,7 @@ public class BoardJSON {
 
             case "Back" -> effect = new BackToStartEffect(tileNumber, 1);
 
-            default -> throw new AssertionError("Unknown effect type: " + effectType);
+            default -> throw new UnknownEffectException("Unknown effect type");
         }
 
         board.getTiles().get(tileNumber - 1).setEffect(effect);
