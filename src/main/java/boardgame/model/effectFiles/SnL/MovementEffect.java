@@ -2,6 +2,7 @@ package boardgame.model.effectFiles.SnL;
 
 import boardgame.controller.GameControllers.SnLGameController;
 import boardgame.model.boardFiles.Player;
+import boardgame.utils.movementType;
 
 /**
  * An abstract base class for all effects that involve moving a player
@@ -36,7 +37,7 @@ public abstract class MovementEffect implements Effect {
      */
     @Override
     public void execute(Player player, SnLGameController gameController) {
-        gameController.movePlayer(player, targetTileIndex);
+        gameController.movePlayer(player, targetTileIndex, movementType.INSTANT);
     }
 
     /**

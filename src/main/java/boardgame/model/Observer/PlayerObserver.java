@@ -1,10 +1,10 @@
 package boardgame.model.Observer;
 
 import boardgame.model.boardFiles.Player;
+import boardgame.utils.movementType;
 
 public interface PlayerObserver {
-    void registerPlayerPathMove(Player player, int newTileNumber);
 
-    void registerPlayerMove(Player player, int newTileNumber);
+    void registerPlayerMove(Player player, int newTileNumber, movementType movementType);
 
 }

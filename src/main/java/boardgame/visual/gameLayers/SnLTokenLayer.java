@@ -5,6 +5,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.IntStream;
 
 import boardgame.model.boardFiles.Player;
+import boardgame.utils.movementType;
 import boardgame.visual.elements.SnL.SnLBoardVisual;
 import javafx.animation.PauseTransition;
 import javafx.animation.TranslateTransition;
@@ -110,14 +111,16 @@ public class SnLTokenLayer extends TokenLayer {
         });
     }
 
-    @Override
-    public void registerPlayerMove(Player player, int tileNumber) {
-        moveToken(player, tileNumber);
-    }
 
+
+    
     @Override
-    public void registerPlayerPathMove(Player player, int tileNumber) {
-        moveTokenThroughPath(player, tileNumber);
+    public void registerPlayerMove(Player player, int tileNumber, movementType movementType) {
+        switch (movementType) {
+            case PATH -> moveTokenThroughPath(player, tileNumber);
+
+            case INSTANT -> moveToken(player, tileNumber);
+        }
     }
     
 

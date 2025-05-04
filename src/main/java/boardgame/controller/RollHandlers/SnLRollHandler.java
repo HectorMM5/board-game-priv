@@ -1,21 +1,20 @@
 package boardgame.controller.RollHandlers;
 
 import boardgame.controller.GameControllers.SnLGameController;
-import boardgame.controller.SceneManager;
 import boardgame.model.boardFiles.Player;
 import boardgame.model.diceFiles.Dice;
 import boardgame.model.effectFiles.SnL.MovementEffect;
+import boardgame.utils.movementType;
 import boardgame.visual.elements.SideColumn.DiceButtonVisual;
 import boardgame.visual.elements.SideColumn.SideColumnVisual;
 import boardgame.visual.gameLayers.SnLTokenLayer;
-import boardgame.visual.scenes.WinScreen;
 import javafx.animation.PauseTransition;
 import javafx.util.Duration;
 
 /**
  * Controller for handling in-game actions such as dice rolls, player movement,
- * and updating side UI elements during gameplay.
- * Connects game logic to the visual layer.
+ * and updating side UI elements during gameplay. Connects game logic to the
+ * visual layer.
  *
  * @author Hector Mendana Morales
  */
@@ -24,17 +23,15 @@ public class SnLRollHandler implements RollHandler {
     private final SnLGameController gameController;
     private final SideColumnVisual sideColumn;
     private final Dice dice = new Dice(1);
-    private final int boardSize;
 
     public SnLRollHandler(SnLGameController gameController, SnLTokenLayer playerTokenLayer, SideColumnVisual sideColumn) {
         this.gameController = gameController;
         this.sideColumn = sideColumn;
-        this.boardSize = gameController.getBoard().getTiles().size();
     }
 
     /**
-     * Animates and completes a player's move by a number of steps.
-     * Updates token layer, invokes game logic, and re-enables the roll button.
+     * Animates and completes a player's move by a number of steps. Updates
+     * token layer, invokes game logic, and re-enables the roll button.
      *
      * @param player the player to move
      * @param steps the number of tiles to move
@@ -45,7 +42,11 @@ public class SnLRollHandler implements RollHandler {
         int startPosition = player.getPosition();
         int nextPosition = startPosition + steps;
 
-        gameController.movePlayer(player, nextPosition);
+        gameController.movePlayer(player, nextPosition, movementType.PATH);
+
+        if (nextPosition >= 90) {
+            return;
+        }
 
         int additionalMsDelay = 0;
         //Additional delay for the effect to be shown
@@ -53,15 +54,16 @@ public class SnLRollHandler implements RollHandler {
             additionalMsDelay = 300;
         }
 
-        PauseTransition finalPause = new PauseTransition(Duration.millis((steps + 1) * 300 + additionalMsDelay));
-        finalPause.setOnFinished(event -> {
+        PauseTransition buttonPause = new PauseTransition(Duration.millis((steps + 1) * 300 + additionalMsDelay));
+        buttonPause.setOnFinished(event -> {
             sideColumn.turnOnButton();
         });
-        finalPause.play();
+        buttonPause.play();
     }
 
     /**
-     * Handles the dice roll event, initiates player movement and updates the display.
+     * Handles the dice roll event, initiates player movement and updates the
+     * display.
      *
      * @param buttonVisual the roll button that was pressed
      */
@@ -70,26 +72,8 @@ public class SnLRollHandler implements RollHandler {
         int diceRoll = dice.roll();
         sideColumn.displayRoll(diceRoll);
 
-        Player currentPlayer = gameController.getCurrentPlayer();
-
-        if (currentPlayer.getPosition() + diceRoll >= boardSize) {
-            moveBy(gameController.getCurrentPlayer(), boardSize - currentPlayer.getPosition(), buttonVisual);
-
-            PauseTransition gameEndAnimation = new PauseTransition(Duration.millis((boardSize - currentPlayer.getPosition() + 1) * 300 + 300));
-            gameEndAnimation.setOnFinished(event -> {
-                SceneManager.getInstance().changeScene(
-                new WinScreen(
-                    currentPlayer.getName(), currentPlayer.getIcon()
-                    ).getScene());
-            
-            });
-            gameEndAnimation.play();
-
-        } else {
-            moveBy(gameController.getCurrentPlayer(), diceRoll, buttonVisual);
-            gameController.advanceTurn();
-        }
-
+        moveBy(gameController.getCurrentPlayer(), diceRoll, buttonVisual);
+        gameController.advanceTurn();
     }
 
 }

@@ -10,6 +10,7 @@ import boardgame.model.boardFiles.Board;
 import boardgame.model.boardFiles.Player;
 import boardgame.model.boardFiles.Tile;
 import boardgame.utils.LudoBoardTiles;
+import boardgame.utils.movementType;
 import javafx.scene.paint.Color;
 
 /**
@@ -96,9 +97,9 @@ public class LudoGameController extends GameController {
      * @param tileNumber the target tile number to move the player to
      */
     @Override
-    public void movePlayer(Player player, int tileNumber) {
+    public void movePlayer(Player player, int tileNumber, movementType mT) {
         int adjustedNextPosition = tileNumber > 56 ? tileNumber - 56 : tileNumber;
-        player.getObservers().forEach(i -> i.registerPlayerPathMove(player, tileNumber));
+        player.getObservers().forEach(i -> i.registerPlayerMove(player, tileNumber, movementType.PATH));
 
         tiles.get(player.getPosition() - 1).popPlayer();
 

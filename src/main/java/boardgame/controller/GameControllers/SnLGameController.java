@@ -2,10 +2,13 @@ package boardgame.controller.GameControllers;
 
 import java.util.List;
 
+import boardgame.controller.SceneManager;
 import boardgame.model.boardFiles.Board;
 import boardgame.model.boardFiles.Player;
 import boardgame.model.boardFiles.Tile;
 import boardgame.model.effectFiles.SnL.MovementEffect;
+import boardgame.utils.movementType;
+import boardgame.visual.scenes.WinScreen;
 import javafx.animation.PauseTransition;
 import javafx.util.Duration;
 
@@ -50,12 +53,32 @@ public class SnLGameController extends GameController {
      * @param tileNumber the target tile number to move the player to
      */
     @Override
-    public void movePlayer(Player player, int tileNumber) {
+    public void movePlayer(Player player, int tileNumber, movementType mT) {
 
-        // Notify path move for initial movement
-        player.getObservers().forEach(o -> o.registerPlayerPathMove(player, tileNumber));
+        int playerPosition = player.getPosition();
+        
 
-        tiles.get(player.getPosition() - 1).popPlayer();
+        if (tileNumber >= 90) {
+            player.getObservers().forEach(i -> i.registerPlayerMove(player, 90, mT));
+
+            PauseTransition gameEndAnimation = new PauseTransition(Duration.millis((90 - playerPosition + 1) * 300 + 300));
+            gameEndAnimation.setOnFinished(event -> {
+                SceneManager.getInstance().changeScene(
+                new WinScreen(
+                    player.getName(), player.getIcon()
+                    ).getScene());
+            });
+            gameEndAnimation.play();
+            return;
+        }
+
+        if (mT == movementType.PATH) {
+            // Notify path move for initial movement
+            System.out.println("REACHED PATH");
+            player.getObservers().forEach(o -> o.registerPlayerMove(player, tileNumber, movementType.PATH));
+        }
+
+        tiles.get(playerPosition - 1).popPlayer();
         player.setPosition(tileNumber);
         Tile targetTile = tiles.get(tileNumber - 1);
         targetTile.addPlayer(player);
@@ -66,15 +89,18 @@ public class SnLGameController extends GameController {
             if (targetTile.getEffect() instanceof MovementEffect movementEffect) {
                 int effectTarget = movementEffect.getTargetTileIndex();
 
-                PauseTransition pause = new PauseTransition(Duration.millis(300));
+                PauseTransition pause = new PauseTransition(Duration.millis(Math.abs(tileNumber - playerPosition) * 300 + 350));
                 pause.setOnFinished(event -> {
                     player.setPosition(effectTarget);
                     tiles.get(effectTarget - 1).addPlayer(player);
-                    player.getObservers().forEach(o -> o.registerPlayerMove(player, effectTarget)); // use direct jump
+                    System.out.println("REACHED EFFECT TRIGGER");
+                    player.getObservers().forEach(o -> o.registerPlayerMove(player, effectTarget, movementType.INSTANT)); // use direct jump
                 });
                 pause.play();
             }
         }
+
+        
     }
 
     /**

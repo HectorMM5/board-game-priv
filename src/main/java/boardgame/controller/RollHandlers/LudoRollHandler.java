@@ -9,6 +9,7 @@ import boardgame.controller.GameControllers.LudoGameController;
 import boardgame.controller.SceneManager;
 import boardgame.model.boardFiles.Player;
 import boardgame.model.diceFiles.Dice;
+import boardgame.utils.movementType;
 import boardgame.visual.elements.SideColumn.DiceButtonVisual;
 import boardgame.visual.elements.SideColumn.SideColumnVisual;
 import boardgame.visual.gameLayers.LudoTokenLayer;
@@ -99,7 +100,7 @@ public class LudoRollHandler implements RollHandler {
             pause.play();
 
         } else {
-            gameController.movePlayer(player, nextPosition);
+            gameController.movePlayer(player, nextPosition, movementType.PATH);
 
             tilesMoved.replace(player, totalTilesMoved + steps);
 

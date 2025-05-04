@@ -10,6 +10,7 @@ import java.util.stream.IntStream;
 import boardgame.controller.GameControllers.LudoGameController;
 import boardgame.model.boardFiles.Player;
 import boardgame.utils.LudoBoardTiles;
+import boardgame.utils.movementType;
 import boardgame.visual.elements.LudoBoardVisual;
 import javafx.animation.PauseTransition;
 import javafx.animation.TranslateTransition;
@@ -149,14 +150,15 @@ public class LudoTokenLayer extends TokenLayer {
     }
 
     @Override
-    public void registerPlayerMove(Player player, int tileNumber) {
-        moveToken(player, tileNumber);
+    public void registerPlayerMove(Player player, int tileNumber, movementType movementType) {
+        switch (movementType) {
+            case PATH -> moveTokenThroughPath(player, tileNumber);
+
+            case INSTANT -> moveToken(player, tileNumber);
+        }
     }
 
-    @Override
-    public void registerPlayerPathMove(Player player, int tileNumber) {
-        moveTokenThroughPath(player, tileNumber);
-    }
+
 
 
 

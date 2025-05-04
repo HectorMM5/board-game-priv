@@ -6,6 +6,7 @@ import boardgame.model.boardFiles.Board;
 import boardgame.model.boardFiles.Player;
 import boardgame.model.boardFiles.Tile;
 import boardgame.utils.LoopingIterator;
+import boardgame.utils.movementType;
 import boardgame.visual.scenes.Ingame.Ingame;
 
 /**
@@ -49,7 +50,7 @@ public abstract class GameController {
      * @param player the player to move
      * @param tileNumber the target tile number to move the player to
      */
-    public void movePlayer(Player player, int tileNumber) {
+    public void movePlayer(Player player, int tileNumber, movementType movementType) {
         tiles.get(player.getPosition() - 1).popPlayer();
 
         player.setPosition(tileNumber);

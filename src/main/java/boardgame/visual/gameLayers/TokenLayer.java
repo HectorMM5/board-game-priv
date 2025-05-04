@@ -6,6 +6,7 @@ import java.util.Map;
 
 import boardgame.model.Observer.PlayerObserver;
 import boardgame.model.boardFiles.Player;
+import boardgame.utils.movementType;
 import boardgame.visual.elements.BoardVisual;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -31,9 +32,7 @@ public abstract class TokenLayer extends Pane implements PlayerObserver {
     protected abstract void moveTokenThroughPath(Player player, int endTile);
 
     @Override
-    public void registerPlayerMove(Player player, int newTileNumber) {
-        moveTokenThroughPath(player, newTileNumber); 
-    }
+    public abstract void registerPlayerMove(Player player, int newTileNumber, movementType movementType);
     
 
 
