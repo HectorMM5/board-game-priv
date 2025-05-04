@@ -1,4 +1,4 @@
-package boardgame.utils.JSON;
+package boardgame.utils.JSON.Exceptions;
 
 /**
  * Custom exception to signal problems when parsing a JSON file.

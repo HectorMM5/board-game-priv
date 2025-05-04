@@ -42,7 +42,7 @@ public class BoardJSON {
 
         try (InputStream is = BoardJSON.class.getClassLoader().getResourceAsStream("boards.json")) {
             if (is == null) {
-                throw new JSONParsingException("boards.json not found in resources!");
+                throw new JSONParsingException("boards.json not found in resources.");
             }
 
             String jsonText = new String(is.readAllBytes(), StandardCharsets.UTF_8);
@@ -57,8 +57,10 @@ public class BoardJSON {
             IntStream.range(0, tilesWithEffects.length())
                 .forEach(i -> modifyEffectTileFromJSON(tilesWithEffects.getJSONObject(i), board));
 
-        } catch (IOException | org.json.JSONException e) {
+        } catch (IOException e) {
             throw new JSONParsingException("Failed to parse SnL board from JSON.");
+        } catch (IndexOutOfBoundsException e) {
+            throw new JSONParsingException("Effect was attempted placed at an illegal tile.");
         }
 
         return board;
