@@ -1,4 +1,4 @@
-package boardgame.visual.elements.Menu;
+package boardgame.visual.scenes;
 
 import java.util.List;
 
@@ -9,6 +9,8 @@ import boardgame.model.boardFiles.SnL.SnLBoard;
 import boardgame.utils.GameType;
 import boardgame.utils.JSON.BoardJSON;
 import boardgame.visual.elements.LudoBoardVisual;
+import boardgame.visual.elements.Menu.PlayerCreationRow;
+import boardgame.visual.elements.Menu.PopUpAlert;
 import boardgame.visual.elements.SnL.LadderLayer;
 import boardgame.visual.elements.SnL.SnLBoardVisual;
 import javafx.geometry.Insets;
@@ -46,8 +48,6 @@ public class GameInitVisual {
 
         Label titleLabel;
         Label subtitleLabel = new Label("Create your players!");
-
-        
 
         switch (chosenGame) {
             case SnakesNLadders -> titleLabel = new Label("Snakes & Ladders");
@@ -138,8 +138,18 @@ public class GameInitVisual {
     }
 
     public void addEmptyPlayerRow() {
-        if (playerRowsContainer.getChildren().size() == 3) {
-            addPlayerButton.setDisable(true);
+        switch (chosenGame) {
+            case SnakesNLadders -> {
+                if (playerRowsContainer.getChildren().size() == 4) {
+                    addPlayerButton.setDisable(true);
+                }
+            }
+
+            case Ludo -> {
+                if (playerRowsContainer.getChildren().size() == 3) {
+                    addPlayerButton.setDisable(true);
+                }
+            }
         }
 
         PlayerCreationRow row = new PlayerCreationRow();
