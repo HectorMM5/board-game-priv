@@ -35,7 +35,7 @@ public class WinScreen {
         VBox root = new VBox(30);
         root.setAlignment(Pos.CENTER);
 
-        Label congratsLabel = new Label("🎉 Congratulations! 🎉");
+        Label congratsLabel = new Label("Congratulations!");
         congratsLabel.setStyle("-fx-font-size: 36px; -fx-text-fill: #333; -fx-font-weight: bold;");
 
         Label winnerLabel = new Label(winnerName + " wins!");
