@@ -6,11 +6,8 @@ import boardgame.controller.GameControllers.GameController;
 import boardgame.model.boardFiles.Player;
 import boardgame.visual.scenes.Ingame.Ingame;
 import javafx.geometry.Pos;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 
 /**
  * Represents the vertical side panel of the game UI.
@@ -39,7 +36,7 @@ public class SideColumnVisual extends VBox {
 
         this.setPrefWidth(500);
         this.setSpacing(150);
-        this.setBackground(new Background(new BackgroundFill(Color.AQUA, null, null)));
+        this.getStyleClass().add("side-column");
 
         this.diceAnimation = new DiceAnimation();
         this.rollButton = new DiceButtonVisual();
