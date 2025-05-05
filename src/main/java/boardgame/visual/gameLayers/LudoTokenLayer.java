@@ -121,11 +121,13 @@ public class LudoTokenLayer extends TokenLayer {
     public void moveTokenThroughPath(Player player, int endTile) {
         int playerPosition = player.getPosition();
 
-        IntStream.rangeClosed(0, endTile - playerPosition).forEach(i -> {
+        int adjustedNextPosition = endTile < playerPosition ? endTile + 56 : endTile;
+
+        IntStream.rangeClosed(0, Math.abs(adjustedNextPosition - playerPosition)).forEach(i -> {
             PauseTransition pause = new PauseTransition(Duration.millis(i * 300));
             pause.setOnFinished(event -> {
                 int nextPosition = playerPosition + i;
-                if (nextPosition > 56) {
+                if (nextPosition > 56) { 
                     nextPosition -= 56;
                 }
 
@@ -145,7 +147,6 @@ public class LudoTokenLayer extends TokenLayer {
         move.setToX(targetX);
         move.setToY(targetY);
         move.play();
-
 
     }
 

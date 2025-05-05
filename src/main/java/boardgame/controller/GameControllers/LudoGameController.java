@@ -117,7 +117,6 @@ public class LudoGameController extends GameController {
 
         } else {
             colorHome.get(positionInHome - 1).popPlayer();
-
         }
 
         colorHome.get(tileNumber - 1).addPlayer(player);

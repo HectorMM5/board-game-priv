@@ -77,7 +77,7 @@ public class LudoRollHandler implements RollHandler {
         } else if (totalTilesMoved + steps > 53) {
             int stepsUntilReachedHome = 53 - totalTilesMoved;
 
-            playerTokenLayer.moveTokenThroughPath(player, startPosition + stepsUntilReachedHome);
+            gameController.movePlayer(player, startPosition + stepsUntilReachedHome, movementType.PATH);
 
             tilesMoved.replace(player, 53);
 
@@ -106,8 +106,8 @@ public class LudoRollHandler implements RollHandler {
 
             PauseTransition pause = new PauseTransition(Duration.millis((steps + 1) * 300));
             pause.setOnFinished(e -> {
-                
                 sideColumn.turnOnButton();
+                
             });
 
             pause.play();
