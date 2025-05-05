@@ -72,7 +72,7 @@ public class SnLGameController extends GameController {
             if (targetTile.getEffect() instanceof MovementEffect movementEffect) {
                 int effectTarget = movementEffect.getTargetTileIndex();
 
-                PauseTransition pause = new PauseTransition(Duration.millis(Math.abs(tileNumber - playerPosition) * 300 + 350));
+                PauseTransition pause = new PauseTransition(Duration.millis((Math.abs(tileNumber - playerPosition) + 1) * 300 + 350));
                 pause.setOnFinished(event -> {
                     movementEffect.execute(player, this);
                     player.setPosition(effectTarget, movementType.INSTANT);
@@ -81,6 +81,9 @@ public class SnLGameController extends GameController {
                 });
                 pause.play();
 
+            } else {
+                targetTile.getEffect().execute(player, this);
+                
             }
         }
 

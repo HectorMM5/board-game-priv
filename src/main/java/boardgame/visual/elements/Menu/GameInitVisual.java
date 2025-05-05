@@ -47,6 +47,8 @@ public class GameInitVisual {
         Label titleLabel;
         Label subtitleLabel = new Label("Create your players!");
 
+        
+
         switch (chosenGame) {
             case SnakesNLadders -> titleLabel = new Label("Snakes & Ladders");
             case Ludo -> titleLabel = new Label("Ludo");
@@ -55,6 +57,7 @@ public class GameInitVisual {
 
         titleLabel.setAlignment(Pos.CENTER);
         titleLabel.setStyle("-fx-font-size: 32px; -fx-text-fill: #333; -fx-font-weight: bold;");
+
         subtitleLabel.setAlignment(Pos.CENTER);
         subtitleLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #555;");
         VBox.setMargin(subtitleLabel, new Insets(0, 0, 50, 0));
@@ -88,12 +91,15 @@ public class GameInitVisual {
             boardChoices.getChildren().clear();
             Button board1Button = new Button("Board 1");
             board1Button.setOnAction(e -> loadBoard(0));
+            board1Button.getStyleClass().add("button-common");
 
             Button board2Button = new Button("Board 2");
             board2Button.setOnAction(e -> loadBoard(1));
+            board2Button.getStyleClass().add("button-common");
 
             Button board3Button = new Button("Board 3");
             board3Button.setOnAction(e -> loadBoard(2));
+            board3Button.getStyleClass().add("button-common");
 
             boardChoices.getChildren().addAll(board1Button, board2Button, board3Button);
             boardChoices.setAlignment(Pos.CENTER);

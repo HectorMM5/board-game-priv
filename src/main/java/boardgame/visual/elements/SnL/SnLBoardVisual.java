@@ -49,7 +49,7 @@ public final class SnLBoardVisual extends BoardVisual {
     public void initializeBoard() {
         tileGrid.setHgap(4); // horizontal gap between tiles
         tileGrid.setVgap(4); // vertical gap between tiles
-        tileGrid.setStyle("-fx-background-color: green;"); // background visible in gaps
+        tileGrid.setStyle("-fx-background-color: black;"); // background visible in gaps
 
         Boolean movesRight = false;
 

@@ -49,6 +49,7 @@ public class WinScreen {
         mainMenuButton.setOnAction(e -> {
             SceneManager.getInstance().changeScene(StartScreenView.getScene());
         });
+        mainMenuButton.getStyleClass().add("button-common");
 
         root.getChildren().addAll(congratsLabel, winnerImage, winnerLabel, mainMenuButton);
 
