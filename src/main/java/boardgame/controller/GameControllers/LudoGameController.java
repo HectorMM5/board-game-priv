@@ -1,4 +1,4 @@
-package boardgame.controller;
+package boardgame.controller.GameControllers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,6 +10,7 @@ import boardgame.model.boardFiles.Board;
 import boardgame.model.boardFiles.Player;
 import boardgame.model.boardFiles.Tile;
 import boardgame.utils.LudoBoardTiles;
+import boardgame.utils.movementType;
 import javafx.scene.paint.Color;
 
 /**
@@ -82,7 +83,7 @@ public class LudoGameController extends GameController {
             playerColor.put(player, color);
 
             int startPosition = colorStartPositions.get(color);
-            player.setPosition(startPosition);
+            player.setPosition(startPosition, movementType.INSTANT);
             board.getTiles().get(startPosition - 1).addPlayer(player);
         });
 
@@ -96,11 +97,12 @@ public class LudoGameController extends GameController {
      * @param tileNumber the target tile number to move the player to
      */
     @Override
-    public void movePlayer(Player player, int tileNumber) {
+    public void movePlayer(Player player, int tileNumber, movementType mT) {
+        int adjustedNextPosition = tileNumber > 56 ? tileNumber - 56 : tileNumber;
         tiles.get(player.getPosition() - 1).popPlayer();
 
-        player.setPosition(tileNumber);
-        Tile targetTile = tiles.get(tileNumber - 1);
+        player.setPosition(adjustedNextPosition, mT);
+        Tile targetTile = tiles.get(adjustedNextPosition - 1);
         targetTile.addPlayer(player);
 
     }
@@ -115,7 +117,6 @@ public class LudoGameController extends GameController {
 
         } else {
             colorHome.get(positionInHome - 1).popPlayer();
-
         }
 
         colorHome.get(tileNumber - 1).addPlayer(player);

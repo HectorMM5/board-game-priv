@@ -1,4 +1,4 @@
-package boardgame.visual.elements.Menu;
+package boardgame.visual.scenes;
 
 import java.util.List;
 
@@ -6,9 +6,11 @@ import boardgame.controller.GameInitController;
 import boardgame.model.boardFiles.Ludo.LudoBoard;
 import boardgame.model.boardFiles.Player;
 import boardgame.model.boardFiles.SnL.SnLBoard;
-import boardgame.utils.BoardJSON;
 import boardgame.utils.GameType;
+import boardgame.utils.JSON.BoardJSON;
 import boardgame.visual.elements.LudoBoardVisual;
+import boardgame.visual.elements.Menu.PlayerCreationRow;
+import boardgame.visual.elements.Menu.PopUpAlert;
 import boardgame.visual.elements.SnL.LadderLayer;
 import boardgame.visual.elements.SnL.SnLBoardVisual;
 import javafx.geometry.Insets;
@@ -27,7 +29,7 @@ public class GameInitVisual {
     private GameType chosenGame;
 
     private final VBox playerRowsContainer;
-    private final HBox boardChoices = new HBox();
+    private final HBox boardChoices = new HBox(25);
     private final StackPane boardChoiceHolder = new StackPane();
     private final HBox sceneWrapper = new HBox(25);
 
@@ -55,16 +57,18 @@ public class GameInitVisual {
 
         titleLabel.setAlignment(Pos.CENTER);
         titleLabel.setStyle("-fx-font-size: 32px; -fx-text-fill: #333; -fx-font-weight: bold;");
+
         subtitleLabel.setAlignment(Pos.CENTER);
         subtitleLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #555;");
         VBox.setMargin(subtitleLabel, new Insets(0, 0, 50, 0));
 
         addPlayerButton.setOnAction(e -> addEmptyPlayerRow());
+        addPlayerButton.getStyleClass().add("button-common");
 
         startGameButton.setOnAction(e -> {
             boolean allNamesValid = playerRowsContainer.getChildren().stream()
                 .filter(node -> node instanceof PlayerCreationRow)
-                .map(node -> ((PlayerCreationRow) node).getNameField().getText())
+                .map(node -> ((PlayerCreationRow) node).getNameField().getText().trim())
                 .allMatch(name -> !name.isBlank());
 
             if (!allNamesValid) {
@@ -83,17 +87,22 @@ public class GameInitVisual {
             GameInitController.handleGameStart(chosenGame, chosenBoard, players);
         });
 
+        startGameButton.getStyleClass().add("button-common");
+
         // Board preset buttons for SnL only
         if (chosenGame.equals(GameType.SnakesNLadders)) {
             boardChoices.getChildren().clear();
             Button board1Button = new Button("Board 1");
             board1Button.setOnAction(e -> loadBoard(0));
+            board1Button.getStyleClass().add("button-common");
 
             Button board2Button = new Button("Board 2");
             board2Button.setOnAction(e -> loadBoard(1));
+            board2Button.getStyleClass().add("button-common");
 
             Button board3Button = new Button("Board 3");
             board3Button.setOnAction(e -> loadBoard(2));
+            board3Button.getStyleClass().add("button-common");
 
             boardChoices.getChildren().addAll(board1Button, board2Button, board3Button);
             boardChoices.setAlignment(Pos.CENTER);
@@ -129,8 +138,18 @@ public class GameInitVisual {
     }
 
     public void addEmptyPlayerRow() {
-        if (playerRowsContainer.getChildren().size() == 3) {
-            addPlayerButton.setDisable(true);
+        switch (chosenGame) {
+            case SnakesNLadders -> {
+                if (playerRowsContainer.getChildren().size() == 4) {
+                    addPlayerButton.setDisable(true);
+                }
+            }
+
+            case Ludo -> {
+                if (playerRowsContainer.getChildren().size() == 3) {
+                    addPlayerButton.setDisable(true);
+                }
+            }
         }
 
         PlayerCreationRow row = new PlayerCreationRow();

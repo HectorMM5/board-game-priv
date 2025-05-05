@@ -1,7 +1,8 @@
 package boardgame.model.effectFiles.SnL;
 
-import boardgame.controller.SnLGameController;
+import boardgame.controller.GameControllers.SnLGameController;
 import boardgame.model.boardFiles.Player;
+import boardgame.utils.movementType;
 import javafx.scene.paint.Color;
 
 /**
@@ -16,7 +17,7 @@ public class BackToStartEffect extends MovementEffect {
 
     @Override
     public void execute(Player player, SnLGameController gameController) {
-        gameController.movePlayer(player, 1);
+        gameController.movePlayer(player, 1, movementType.INSTANT);
     }
 
     @Override

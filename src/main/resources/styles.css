@@ -1,0 +1,31 @@
+.button-common {
+    background-color: #ffffff;
+    -fx-background-color: linear-gradient(to bottom, #ffffff 5%, #ffffff 100%);
+    border-color: #050505;
+    -fx-border-color: #050505;
+    border-radius: 6px;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    color: #424242;
+    -fx-text-fill: #424242;
+    font-family: "Arial";
+    -fx-font-family: "Arial";
+    font-size: 15px;
+    -fx-font-size: 15px;
+    font-weight: bold;
+    -fx-font-weight: bold;
+    padding: 6px 24px;
+    -fx-padding: 6 24;
+}
+
+.button-common:hover {
+    background-color: #ffffff;
+    -fx-background-color: linear-gradient(to bottom, #ffffff 5%, #ffffff 100%);
+}
+
+.side-column {
+    background-color: rgb(197, 197, 197);
+    -fx-background-color: rgb(197, 197, 197);
+    -fx-spacing: 150;
+    -fx-alignment: center;
+}

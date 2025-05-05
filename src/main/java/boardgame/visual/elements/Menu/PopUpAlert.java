@@ -48,6 +48,7 @@ public class PopUpAlert extends VBox {
 
         // Close button
         Button closeButton = new Button("OK");
+        closeButton.getStyleClass().add("button-common");
         closeButton.setOnAction(e -> popupStage.close());
 
         // Add all elements
@@ -56,6 +57,7 @@ public class PopUpAlert extends VBox {
         // Scene setup
         Scene scene = new Scene(this);
         popupStage.setScene(scene);
+        scene.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
         popupStage.sizeToScene();
         popupStage.setResizable(false);
     }

@@ -30,6 +30,9 @@ public final class LudoBoardVisual extends BoardVisual {
         
         tileGrid.setVgap(-1);
         tileGrid.setHgap(-1);
+        this.prefWidthProperty().bind(tileGrid.widthProperty());
+        this.prefHeightProperty().bind(tileGrid.heightProperty());
+        this.setMaxSize(USE_PREF_SIZE, USE_PREF_SIZE);
     }
 
     @Override

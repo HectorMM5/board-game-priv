@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
 
-import boardgame.controller.LudoGameController;
+import boardgame.controller.GameControllers.LudoGameController;
 import boardgame.model.boardFiles.Player;
-import boardgame.model.boardFiles.Tile;
 import boardgame.utils.LudoBoardTiles;
+import boardgame.utils.movementType;
 import boardgame.visual.elements.LudoBoardVisual;
 import javafx.animation.PauseTransition;
 import javafx.animation.TranslateTransition;
@@ -20,13 +20,6 @@ import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 public class LudoTokenLayer extends TokenLayer {
-
-    Map<Color, List<Tile>> colorToHouseTiles = Map.of(
-            Color.YELLOW, LudoGameController.getYellowHomeTiles(),
-            Color.RED, LudoGameController.getRedHomeTiles(),
-            Color.BLUE, LudoGameController.getBlueHomeTiles(),
-            Color.GREEN, LudoGameController.getGreenHomeTiles()
-    );
 
     private final Map<Color, List<Point>> colorHome = new HashMap<>();
 
@@ -45,6 +38,8 @@ public class LudoTokenLayer extends TokenLayer {
 
         List<Color> colors = new ArrayList<>(List.of(Color.YELLOW, Color.RED, Color.BLUE, Color.GREEN));
 
+        double spacing = boardVisual.getSpacing();
+
         IntStream.range(0, players.size()).forEach(i -> {
             Player player = players.get(i);
             ImageView token = new ImageView(new Image(player.getIcon()));
@@ -54,7 +49,11 @@ public class LudoTokenLayer extends TokenLayer {
             playerTokens.put(player, token);
             this.getChildren().add(token);
 
-            moveToken(player, colorStartPositions.get(colors.get(i)));
+            Integer startPosition = colorStartPositions.get(colors.get(i));
+            int x = cols.get(startPosition);
+            int y = rows.get(startPosition);
+            token.setTranslateX(x * spacing);
+            token.setTranslateY(y * spacing);
 
         });
 
@@ -122,11 +121,13 @@ public class LudoTokenLayer extends TokenLayer {
     public void moveTokenThroughPath(Player player, int endTile) {
         int playerPosition = player.getPosition();
 
-        IntStream.rangeClosed(0, endTile - playerPosition).forEach(i -> {
+        int adjustedNextPosition = endTile < playerPosition ? endTile + 56 : endTile;
+
+        IntStream.rangeClosed(0, Math.abs(adjustedNextPosition - playerPosition)).forEach(i -> {
             PauseTransition pause = new PauseTransition(Duration.millis(i * 300));
             pause.setOnFinished(event -> {
                 int nextPosition = playerPosition + i;
-                if (nextPosition > 56) {
+                if (nextPosition > 56) { 
                     nextPosition -= 56;
                 }
 
@@ -147,7 +148,19 @@ public class LudoTokenLayer extends TokenLayer {
         move.setToY(targetY);
         move.play();
 
-
     }
+
+    @Override
+    public void registerPlayerMove(Player player, int tileNumber, movementType movementType) {
+        switch (movementType) {
+            case PATH -> moveTokenThroughPath(player, tileNumber);
+
+            case INSTANT -> moveToken(player, tileNumber);
+        }
+    }
+
+
+
+
 
 }

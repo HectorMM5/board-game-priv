@@ -1,17 +1,19 @@
-package boardgame.visual.scenes;
+package boardgame.controller.RollHandlers;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
 
-import boardgame.controller.LudoGameController;
+import boardgame.controller.GameControllers.LudoGameController;
 import boardgame.controller.SceneManager;
 import boardgame.model.boardFiles.Player;
 import boardgame.model.diceFiles.Dice;
+import boardgame.utils.movementType;
 import boardgame.visual.elements.SideColumn.DiceButtonVisual;
 import boardgame.visual.elements.SideColumn.SideColumnVisual;
 import boardgame.visual.gameLayers.LudoTokenLayer;
+import boardgame.visual.scenes.WinScreen;
 import javafx.animation.PauseTransition;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
@@ -29,7 +31,6 @@ public class LudoRollHandler implements RollHandler {
     private final LudoTokenLayer playerTokenLayer;
     private final SideColumnVisual sideColumn;
     private final Dice dice = new Dice(1);
-    private final int boardSize;
 
     private final Map<Player, Integer> tilesMoved = new HashMap<>();
 
@@ -37,7 +38,6 @@ public class LudoRollHandler implements RollHandler {
         this.gameController = gameController;
         this.playerTokenLayer = playerTokenLayer;
         this.sideColumn = sideColumn;
-        this.boardSize = gameController.getBoard().getTiles().size();
 
         List<Player> players = gameController.getPlayers();
 
@@ -76,7 +76,8 @@ public class LudoRollHandler implements RollHandler {
 
         } else if (totalTilesMoved + steps > 53) {
             int stepsUntilReachedHome = 53 - totalTilesMoved;
-            playerTokenLayer.moveTokenThroughPath(player, startPosition + stepsUntilReachedHome);
+
+            gameController.movePlayer(player, startPosition + stepsUntilReachedHome, movementType.PATH);
 
             tilesMoved.replace(player, 53);
 
@@ -99,15 +100,14 @@ public class LudoRollHandler implements RollHandler {
             pause.play();
 
         } else {
-            int adjustedNextPosition = nextPosition > 56 ? nextPosition - 56 : nextPosition;
+            gameController.movePlayer(player, nextPosition, movementType.PATH);
 
-            playerTokenLayer.moveTokenThroughPath(player, nextPosition);
             tilesMoved.replace(player, totalTilesMoved + steps);
 
             PauseTransition pause = new PauseTransition(Duration.millis((steps + 1) * 300));
             pause.setOnFinished(e -> {
-                gameController.movePlayer(player, adjustedNextPosition);
                 sideColumn.turnOnButton();
+                
             });
 
             pause.play();
@@ -160,15 +160,4 @@ public class LudoRollHandler implements RollHandler {
 
     }
 
-    /**
-     * Instantly moves the token of a player to the given tile number. Called
-     * during teleporting effects like ladders or snakes.
-     *
-     * @param player the player to move
-     * @param tileNumber the destination tile
-     */
-    @Override
-    public void moveToken(Player player, int tileNumber) {
-        playerTokenLayer.moveToken(player, tileNumber);
-    }
 }

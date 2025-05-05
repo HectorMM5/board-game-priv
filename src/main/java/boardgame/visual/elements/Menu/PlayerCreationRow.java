@@ -37,10 +37,14 @@ public class PlayerCreationRow extends HBox {
         this.setPadding(new Insets(10));
         this.setAlignment(Pos.CENTER);
         this.playerCSV = PlayerCSV.instance();
-        nameField = new TextField();
-        saveButton = new Button("Save Player");
-        deleteRowButton = new Button("X");
-        fetchButton = new MenuButton("->");
+        this.nameField = new TextField();
+        this.saveButton = new Button("Save Player");
+        this.deleteRowButton = new Button("X");
+        this.fetchButton = new MenuButton("->");
+
+        saveButton.getStyleClass().add("button-common");
+        deleteRowButton.getStyleClass().add("button-common");
+        fetchButton.getStyleClass().add("button-common");
 
         init();
 

@@ -1,8 +1,9 @@
-package boardgame.visual.scenes;
+package boardgame.visual.scenes.Ingame;
 
-import boardgame.controller.SnLGameController;
+import boardgame.controller.GameControllers.SnLGameController;
+import boardgame.controller.RollHandlers.SnLRollHandler;
 import boardgame.model.boardFiles.SnL.SnLBoard;
-import boardgame.utils.GameSetup;
+import boardgame.utils.GameFactory;
 import boardgame.visual.elements.SideColumn.SideColumnVisual;
 import boardgame.visual.elements.SnL.SnLBoardVisual;
 import boardgame.visual.gameLayers.SnLTokenLayer;
@@ -24,11 +25,11 @@ import javafx.scene.layout.VBox;
  *
  * @author Hector Mendana Morales
  */
-public class SnLIngame implements Ingame { //TODO CHANGE INGAME OCCURENCES TO ROLLHANDLER
+public class SnLIngame implements Ingame {
 
     public final SnLBoard board;
     public final SnLBoardVisual boardVisual;
-    public final SnLRollHandler ingameController;
+    public final SnLRollHandler rollHandler;
     public final SnLGameController gameController;
     public final SideColumnVisual sideColumn;
     public final SnLTokenLayer playerTokenLayer;
@@ -38,13 +39,17 @@ public class SnLIngame implements Ingame { //TODO CHANGE INGAME OCCURENCES TO RO
      *
      * @param gameSetup contains references to board, players, and controller
      */
-    public SnLIngame(GameSetup gameSetup) {
+    public SnLIngame(GameFactory gameSetup) {
         this.gameController = (SnLGameController) gameSetup.getGameController();
         this.board = (SnLBoard) gameSetup.getBoard();
         this.boardVisual = new SnLBoardVisual(board);
         this.sideColumn = new SideColumnVisual(gameController, gameSetup.getPlayers(), this);
         this.playerTokenLayer = new SnLTokenLayer(boardVisual, gameSetup.getPlayers());
-        this.ingameController = new SnLRollHandler((SnLGameController) gameController, playerTokenLayer, sideColumn);
+
+        gameSetup.getPlayers().forEach(p -> p.addObserver(playerTokenLayer));
+
+        this.rollHandler = new SnLRollHandler((SnLGameController) gameController, playerTokenLayer, sideColumn);
+
         
     }
 
@@ -88,8 +93,8 @@ public class SnLIngame implements Ingame { //TODO CHANGE INGAME OCCURENCES TO RO
     }
 
     @Override
-    public SnLRollHandler getIngameController() {
-        return ingameController;
+    public SnLRollHandler getRollHandler() {
+        return rollHandler;
     }
 
 }

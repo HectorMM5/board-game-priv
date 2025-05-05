@@ -20,7 +20,6 @@ public final class SnLBoardVisual extends BoardVisual {
 
     private final double dimension = ScreenDimension.getScreenHeight() - 200; // Example dimension, adjust as needed
     private final LadderLayer ladderLayer;
-    private final GridPane tileGrid = new GridPane();
     private final double TILE_SIZE = dimension / 10; 
     private final double spacing = TILE_SIZE + 4;
     
@@ -50,7 +49,7 @@ public final class SnLBoardVisual extends BoardVisual {
     public void initializeBoard() {
         tileGrid.setHgap(4); // horizontal gap between tiles
         tileGrid.setVgap(4); // vertical gap between tiles
-        tileGrid.setStyle("-fx-background-color: green;"); // background visible in gaps
+        tileGrid.setStyle("-fx-background-color: black;"); // background visible in gaps
 
         Boolean movesRight = false;
 
@@ -62,7 +61,7 @@ public final class SnLBoardVisual extends BoardVisual {
                 movesRight = !movesRight;
             }
         
-            int row = i / 10;
+            int row = 8 - (i / 10);
             int col = movesRight
                 ? i % 10
                 : 10 - ((i % 10) + 1);

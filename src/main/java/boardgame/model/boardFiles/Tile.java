@@ -14,7 +14,7 @@ import boardgame.model.effectFiles.SnL.Effect;
  */
 public class Tile {
     
-    private List<Player> players;
+    private final List<Player> players;
     private Effect effect;
     private final int number;
 

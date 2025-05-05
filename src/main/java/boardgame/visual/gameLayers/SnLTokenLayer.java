@@ -5,6 +5,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.IntStream;
 
 import boardgame.model.boardFiles.Player;
+import boardgame.utils.movementType;
 import boardgame.visual.elements.SnL.SnLBoardVisual;
 import javafx.animation.PauseTransition;
 import javafx.animation.TranslateTransition;
@@ -32,16 +33,6 @@ public class SnLTokenLayer extends TokenLayer {
      */
     public SnLTokenLayer(SnLBoardVisual boardVisual, List<Player> players) {
         super(boardVisual, players);
-        
-        for (Player player : players) {
-            ImageView token = new ImageView(new Image(player.getIcon()));
-            token.setFitWidth(50);
-            token.setFitHeight(50);
-            token.setLayoutX(boardVisual.getSpacing() / 2 - 25);
-            token.setLayoutY(boardVisual.getSpacing() / 2 - 25);
-            playerTokens.put(player, token);
-            this.getChildren().add(token);
-        }
 
         AtomicBoolean movesRight = new AtomicBoolean(false);
 
@@ -51,7 +42,7 @@ public class SnLTokenLayer extends TokenLayer {
                 movesRight.set(!movesRight.get());
             }
 
-            int row = i / 10;
+            int row = 8 - (i / 10);
             int col = movesRight.get()
                     ? i % 10
                     : 10 - ((i % 10) + 1);
@@ -59,8 +50,22 @@ public class SnLTokenLayer extends TokenLayer {
             cols.put(i + 1, col);
             rows.put(i + 1, row);
 
-
         });
+
+        double spacing = boardVisual.getSpacing();
+        
+        for (Player player : players) {
+            ImageView token = new ImageView(new Image(player.getIcon()));
+            token.setFitWidth(50);
+            token.setFitHeight(50);
+            token.setLayoutX(spacing / 2 - 25);
+            token.setLayoutY(spacing / 2 - 25);
+
+            token.setTranslateY(8 * spacing);
+            
+            playerTokens.put(player, token);
+            this.getChildren().add(token);
+        }
 
     }
 
@@ -105,5 +110,18 @@ public class SnLTokenLayer extends TokenLayer {
             pause.play();
         });
     }
+
+    
+    @Override
+    public void registerPlayerMove(Player player, int tileNumber, movementType movementType) {
+        switch (movementType) {
+
+            case INSTANT -> moveToken(player, tileNumber);
+
+            case PATH -> moveTokenThroughPath(player, tileNumber);
+
+        }
+    }
+    
 
 }
