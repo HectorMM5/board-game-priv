@@ -2,7 +2,6 @@ package boardgame.visual.scenes;
 
 import boardgame.controller.SceneManager;
 import boardgame.utils.GameType;
-import boardgame.visual.elements.Menu.GameInitVisual;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
