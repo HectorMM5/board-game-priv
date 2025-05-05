@@ -111,15 +111,15 @@ public class SnLTokenLayer extends TokenLayer {
         });
     }
 
-
-
     
     @Override
     public void registerPlayerMove(Player player, int tileNumber, movementType movementType) {
         switch (movementType) {
-            case PATH -> moveTokenThroughPath(player, tileNumber);
 
             case INSTANT -> moveToken(player, tileNumber);
+
+            case PATH -> moveTokenThroughPath(player, tileNumber);
+
         }
     }
     

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import boardgame.model.Observer.PlayerObserver;
+import boardgame.utils.movementType;
 
 /**
  * Represents a player in the board game, containing identity, icon, position,
@@ -46,8 +47,11 @@ public class Player {
      *
      * @param position the new tile position
      */
-    public void setPosition(int position) {
-        this.position = position;
+    public void setPosition(int newPosition, movementType movementType) {
+        getObservers().forEach(i -> i.registerPlayerMove(this, newPosition, movementType));
+
+        this.position = newPosition;
+
     }
 
     /**
@@ -97,5 +101,7 @@ public class Player {
     public List<PlayerObserver> getObservers() {
         return observers;
     }
+
+
 
 }

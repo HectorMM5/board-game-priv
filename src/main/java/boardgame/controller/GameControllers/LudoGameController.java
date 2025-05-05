@@ -83,7 +83,7 @@ public class LudoGameController extends GameController {
             playerColor.put(player, color);
 
             int startPosition = colorStartPositions.get(color);
-            player.setPosition(startPosition);
+            player.setPosition(startPosition, movementType.INSTANT);
             board.getTiles().get(startPosition - 1).addPlayer(player);
         });
 
@@ -99,11 +99,9 @@ public class LudoGameController extends GameController {
     @Override
     public void movePlayer(Player player, int tileNumber, movementType mT) {
         int adjustedNextPosition = tileNumber > 56 ? tileNumber - 56 : tileNumber;
-        player.getObservers().forEach(i -> i.registerPlayerMove(player, tileNumber, movementType.PATH));
-
         tiles.get(player.getPosition() - 1).popPlayer();
 
-        player.setPosition(adjustedNextPosition);
+        player.setPosition(adjustedNextPosition, mT);
         Tile targetTile = tiles.get(adjustedNextPosition - 1);
         targetTile.addPlayer(player);
 

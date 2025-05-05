@@ -56,51 +56,47 @@ public class SnLGameController extends GameController {
     public void movePlayer(Player player, int tileNumber, movementType mT) {
 
         int playerPosition = player.getPosition();
-        
 
         if (tileNumber >= 90) {
-            player.getObservers().forEach(i -> i.registerPlayerMove(player, 90, mT));
-
-            PauseTransition gameEndAnimation = new PauseTransition(Duration.millis((90 - playerPosition + 1) * 300 + 300));
-            gameEndAnimation.setOnFinished(event -> {
-                SceneManager.getInstance().changeScene(
-                new WinScreen(
-                    player.getName(), player.getIcon()
-                    ).getScene());
-            });
-            gameEndAnimation.play();
+            handleEndGame(player);
+            player.setPosition(90, mT);
             return;
         }
 
-        if (mT == movementType.PATH) {
-            // Notify path move for initial movement
-            System.out.println("REACHED PATH");
-            player.getObservers().forEach(o -> o.registerPlayerMove(player, tileNumber, movementType.PATH));
-        }
-
         tiles.get(playerPosition - 1).popPlayer();
-        player.setPosition(tileNumber);
+        player.setPosition(tileNumber, mT);
         Tile targetTile = tiles.get(tileNumber - 1);
         targetTile.addPlayer(player);
 
         if (targetTile.getEffect() != null) {
-            targetTile.getEffect().execute(player, this);
-
             if (targetTile.getEffect() instanceof MovementEffect movementEffect) {
                 int effectTarget = movementEffect.getTargetTileIndex();
 
                 PauseTransition pause = new PauseTransition(Duration.millis(Math.abs(tileNumber - playerPosition) * 300 + 350));
                 pause.setOnFinished(event -> {
-                    player.setPosition(effectTarget);
+                    movementEffect.execute(player, this);
+                    player.setPosition(effectTarget, movementType.INSTANT);
                     tiles.get(effectTarget - 1).addPlayer(player);
-                    System.out.println("REACHED EFFECT TRIGGER");
-                    player.getObservers().forEach(o -> o.registerPlayerMove(player, effectTarget, movementType.INSTANT)); // use direct jump
+
                 });
                 pause.play();
+
             }
         }
 
-        
+    }
+
+    public void handleEndGame(Player player) {
+        int playerPosition = player.getPosition();
+
+        PauseTransition gameEndAnimation = new PauseTransition(Duration.millis((90 - playerPosition + 1) * 300 + 300));
+        gameEndAnimation.setOnFinished(event -> {
+            SceneManager.getInstance().changeScene(
+                    new WinScreen(
+                            player.getName(), player.getIcon()
+                    ).getScene());
+        });
+        gameEndAnimation.play();
     }
 
     /**

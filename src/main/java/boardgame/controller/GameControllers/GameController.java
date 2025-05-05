@@ -53,7 +53,7 @@ public abstract class GameController {
     public void movePlayer(Player player, int tileNumber, movementType movementType) {
         tiles.get(player.getPosition() - 1).popPlayer();
 
-        player.setPosition(tileNumber);
+        player.setPosition(tileNumber, movementType);
         Tile targetTile = tiles.get(tileNumber - 1);
         targetTile.addPlayer(player);
     
