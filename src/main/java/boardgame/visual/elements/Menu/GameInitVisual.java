@@ -27,7 +27,7 @@ public class GameInitVisual {
     private GameType chosenGame;
 
     private final VBox playerRowsContainer;
-    private final HBox boardChoices = new HBox();
+    private final HBox boardChoices = new HBox(25);
     private final StackPane boardChoiceHolder = new StackPane();
     private final HBox sceneWrapper = new HBox(25);
 
@@ -63,6 +63,7 @@ public class GameInitVisual {
         VBox.setMargin(subtitleLabel, new Insets(0, 0, 50, 0));
 
         addPlayerButton.setOnAction(e -> addEmptyPlayerRow());
+        addPlayerButton.getStyleClass().add("button-common");
 
         startGameButton.setOnAction(e -> {
             boolean allNamesValid = playerRowsContainer.getChildren().stream()
@@ -85,6 +86,8 @@ public class GameInitVisual {
 
             GameInitController.handleGameStart(chosenGame, chosenBoard, players);
         });
+
+        startGameButton.getStyleClass().add("button-common");
 
         // Board preset buttons for SnL only
         if (chosenGame.equals(GameType.SnakesNLadders)) {

@@ -49,6 +49,8 @@ public class SideColumnVisual extends VBox {
             rollButton.setDisable(true);
         });
 
+        rollButton.getStyleClass().add("button-common");
+
         BorderPane diceWrapper = new BorderPane();
         diceWrapper.setCenter(diceAnimation);
         diceWrapper.setMaxWidth(Double.MAX_VALUE);
