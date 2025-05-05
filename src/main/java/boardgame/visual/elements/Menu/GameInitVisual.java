@@ -67,7 +67,7 @@ public class GameInitVisual {
         startGameButton.setOnAction(e -> {
             boolean allNamesValid = playerRowsContainer.getChildren().stream()
                 .filter(node -> node instanceof PlayerCreationRow)
-                .map(node -> ((PlayerCreationRow) node).getNameField().getText())
+                .map(node -> ((PlayerCreationRow) node).getNameField().getText().trim())
                 .allMatch(name -> !name.isBlank());
 
             if (!allNamesValid) {
