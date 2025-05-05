@@ -22,3 +22,10 @@
     background-color: #ffffff;
     -fx-background-color: linear-gradient(to bottom, #ffffff 5%, #ffffff 100%);
 }
+
+.side-column {
+    background-color: rgb(197, 197, 197);
+    -fx-background-color: rgb(197, 197, 197);
+    -fx-spacing: 150;
+    -fx-alignment: center;
+}
