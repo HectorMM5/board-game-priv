@@ -48,7 +48,10 @@ public class Player {
      * @param position the new tile position
      */
     public void setPosition(int newPosition, movementType movementType) {
-        getObservers().forEach(i -> i.registerPlayerMove(this, newPosition, movementType));
+        List<PlayerObserver> observers = getObservers();
+        if (!observers.isEmpty()) {
+            observers.forEach(i -> i.registerPlayerMove(this, newPosition, movementType));
+        }
 
         this.position = newPosition;
 
