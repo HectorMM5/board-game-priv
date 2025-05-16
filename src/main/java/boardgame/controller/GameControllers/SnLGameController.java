@@ -6,7 +6,6 @@ import boardgame.controller.SceneManager;
 import boardgame.model.boardFiles.Board;
 import boardgame.model.boardFiles.Player;
 import boardgame.model.boardFiles.Tile;
-import boardgame.model.effectFiles.SnL.MovementEffect;
 import boardgame.utils.movementType;
 import boardgame.visual.scenes.WinScreen;
 import javafx.animation.PauseTransition;
@@ -69,29 +68,14 @@ public class SnLGameController extends GameController {
         targetTile.addPlayer(player);
 
         if (targetTile.getEffect() != null) {
-            if (targetTile.getEffect() instanceof MovementEffect movementEffect) {
-                int effectTarget = movementEffect.getTargetTileIndex();
-
-                PauseTransition pause = new PauseTransition(Duration.millis((Math.abs(tileNumber - playerPosition) + 1) * 300 + 350));
-                pause.setOnFinished(event -> {
-                    movementEffect.execute(player, this);
-                    player.setPosition(effectTarget, movementType.INSTANT);
-                    tiles.get(effectTarget - 1).addPlayer(player);
-
-                });
-                pause.play();
-
-            } else {
                 targetTile.getEffect().execute(player, this);
-                
             }
         }
 
-    }
+    
 
     public void handleEndGame(Player player) {
         int playerPosition = player.getPosition();
-
         PauseTransition gameEndAnimation = new PauseTransition(Duration.millis((90 - playerPosition + 1) * 300 + 300));
         gameEndAnimation.setOnFinished(event -> {
             SceneManager.getInstance().changeScene(

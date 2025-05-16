@@ -9,14 +9,15 @@ import java.util.stream.IntStream;
 import boardgame.model.boardFiles.Player;
 import boardgame.utils.movementType;
 import boardgame.visual.elements.SnL.SnLBoardVisual;
+import javafx.animation.PauseTransition;
 import javafx.animation.TranslateTransition;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 
 /**
- * A stateless visual layer for animating player tokens on a Snakes and Ladders board.
- * Uses a single global queue to animate token movements one at a time.
+ * A stateless visual layer for animating player tokens on a Snakes and Ladders
+ * board. Uses a single global queue to animate token movements one at a time.
  */
 public class SnLTokenLayer extends TokenLayer {
 
@@ -73,11 +74,12 @@ public class SnLTokenLayer extends TokenLayer {
         move.setToY(targetY);
         move.setOnFinished(e -> runNextAnimation());
         move.play();
+
     }
 
     /**
-     * Enqueues multiple moveToken(...) calls, one per tile step.
-     * Actual animation is triggered by the moveToken method itself.
+     * Enqueues multiple moveToken(...) calls, one per tile step. Actual
+     * animation is triggered by the moveToken method itself.
      */
     @Override
     public void moveTokenThroughPath(Player player, int endTile) {
@@ -105,8 +107,16 @@ public class SnLTokenLayer extends TokenLayer {
     @Override
     public void registerPlayerMove(Player player, int tileNumber, movementType movementType) {
         switch (movementType) {
-            case INSTANT -> moveToken(player, tileNumber);
-            case PATH -> moveTokenThroughPath(player, tileNumber);
+            case INSTANT ->
+                animationQueue.add(() -> {
+                    PauseTransition pause = new PauseTransition(Duration.millis(400));
+                    pause.setOnFinished(e -> moveToken(player, tileNumber));
+                    pause.play();
+
+                });
+
+            case PATH ->
+                moveTokenThroughPath(player, tileNumber);
         }
 
     }
