@@ -68,11 +68,9 @@ public class SnLGameController extends GameController {
         targetTile.addPlayer(player);
 
         if (targetTile.getEffect() != null) {
-                targetTile.getEffect().execute(player, this);
-            }
+            targetTile.getEffect().execute(player, this);
         }
-
-    
+    }
 
     public void handleEndGame(Player player) {
         int playerPosition = player.getPosition();

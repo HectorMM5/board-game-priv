@@ -3,8 +3,11 @@ package boardgame.visual.gameLayers;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 
 import boardgame.controller.GameControllers.LudoGameController;
@@ -22,6 +25,9 @@ import javafx.util.Duration;
 public class LudoTokenLayer extends TokenLayer {
 
     private final Map<Color, List<Point>> colorHome = new HashMap<>();
+
+    private final Queue<Runnable> animationQueue = new LinkedList<>();
+    private boolean isAnimating = false;
 
     public LudoTokenLayer(LudoBoardVisual boardVisual, List<Player> players) {
         super(boardVisual, players);
@@ -76,6 +82,7 @@ public class LudoTokenLayer extends TokenLayer {
         TranslateTransition move = new TranslateTransition(Duration.millis(300), token);
         move.setToX(targetX);
         move.setToY(targetY);
+        move.setOnFinished(e -> runNextAnimation());
         move.play();
     }
 
@@ -124,17 +131,20 @@ public class LudoTokenLayer extends TokenLayer {
         int adjustedNextPosition = endTile < playerPosition ? endTile + 56 : endTile;
 
         IntStream.rangeClosed(0, Math.abs(adjustedNextPosition - playerPosition)).forEach(i -> {
-            PauseTransition pause = new PauseTransition(Duration.millis(i * 300));
-            pause.setOnFinished(event -> {
-                int nextPosition = playerPosition + i;
-                if (nextPosition > 56) { 
-                    nextPosition -= 56;
-                }
 
-                moveToken(player, nextPosition);
-            });
-            pause.play();
+            AtomicInteger nextTile = new AtomicInteger(playerPosition + i);
+            if (nextTile.get() > 56) {
+                nextTile.set(nextTile.get() - 56);
+            }
+
+            animationQueue.add(() -> moveToken(player, nextTile.get()));
+
         });
+
+        if (!isAnimating) {
+            isAnimating = true;
+            runNextAnimation(); // ✅ Called only once
+        }
     }
 
     public void moveToGoal(Player player) {
@@ -150,17 +160,30 @@ public class LudoTokenLayer extends TokenLayer {
 
     }
 
-    @Override
-    public void registerPlayerMove(Player player, int tileNumber, movementType movementType) {
-        switch (movementType) {
-            case PATH -> moveTokenThroughPath(player, tileNumber);
-
-            case INSTANT -> moveToken(player, tileNumber);
+    private void runNextAnimation() {
+        Runnable next = animationQueue.poll();
+        if (next != null) {
+            next.run(); // This will call moveToken, which sets the animation
+        } else {
+            isAnimating = false;
         }
     }
 
+    @Override
+    public void registerPlayerMove(Player player, int tileNumber, movementType movementType) {
+        switch (movementType) {
+            case INSTANT -> {
+                animationQueue.add(() -> moveToken(player, tileNumber));
+                if (!isAnimating) {
+                    isAnimating = true;
+                    runNextAnimation(); // ✅ Kick off the queue
+                }
+            }
 
+            case PATH ->
+                moveTokenThroughPath(player, tileNumber);
+        }
 
-
+    }
 
 }
