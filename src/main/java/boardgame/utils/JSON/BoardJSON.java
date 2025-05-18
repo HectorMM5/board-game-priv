@@ -76,6 +76,15 @@ public class BoardJSON {
      */
     public static void modifyEffectTileFromJSON(JSONObject tileWithEffect, SnLBoard board) {
         int tileNumber = tileWithEffect.getInt("tile");
+
+        if (tileNumber < 1 || tileNumber > board.getTiles().size()) {
+            throw new JSONParsingException("Tile number out of bounds.");
+        }
+
+        if (tileNumber == 1 || tileNumber == 90) {
+            throw new JSONParsingException("Tile number 1 and 90 cannot have an effect.");
+        }
+
         String effectType = tileWithEffect.getString("effect");
 
         Effect effect;
