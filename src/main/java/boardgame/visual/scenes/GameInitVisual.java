@@ -66,6 +66,12 @@ public class GameInitVisual {
         addPlayerButton.getStyleClass().add("button-common");
 
         startGameButton.setOnAction(e -> {
+
+            if (playerRowsContainer.getChildren().size() < 1) {
+                new PopUpAlert("At least 1 player is required.").show();
+                return;
+            }
+
             boolean allNamesValid = playerRowsContainer.getChildren().stream()
                 .filter(node -> node instanceof PlayerCreationRow)
                 .map(node -> ((PlayerCreationRow) node).getNameField().getText().trim())
