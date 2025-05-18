@@ -64,7 +64,6 @@ public class LudoRollHandler implements RollHandler {
 
         if (totalTilesMoved == 53) {
             int homePosition = gameController.getHomePosition().get(player);
-
             playerTokenLayer.movePlayerThroughHomePath(player, color, homePosition + steps, gameController);
 
             PauseTransition pause = new PauseTransition(Duration.millis((steps + 1) * 300));
@@ -76,14 +75,13 @@ public class LudoRollHandler implements RollHandler {
 
         } else if (totalTilesMoved + steps > 53) {
             int stepsUntilReachedHome = 53 - totalTilesMoved;
+            tilesMoved.replace(player, 53);
 
             gameController.movePlayer(player, startPosition + stepsUntilReachedHome, movementType.PATH);
 
-            tilesMoved.replace(player, 53);
+            gameController.disablePlayerOnBoard(player);
 
-            PauseTransition pause = new PauseTransition(Duration.millis((stepsUntilReachedHome + 1) * 300));
-            pause.setOnFinished(e -> {
-                gameController.disablePlayerOnBoard(player);
+            playerTokenLayer.addToAnimationQueue(() -> {
 
                 int remainingRoll = steps - stepsUntilReachedHome;
 
@@ -97,7 +95,6 @@ public class LudoRollHandler implements RollHandler {
                 homeStepPause.play();
 
             });
-            pause.play();
 
         } else {
             gameController.movePlayer(player, nextPosition, movementType.PATH);
@@ -107,7 +104,7 @@ public class LudoRollHandler implements RollHandler {
             PauseTransition pause = new PauseTransition(Duration.millis((steps + 1) * 300));
             pause.setOnFinished(e -> {
                 sideColumn.turnOnButton();
-                
+
             });
 
             pause.play();
@@ -142,10 +139,10 @@ public class LudoRollHandler implements RollHandler {
 
                 PauseTransition switchScreenPause = new PauseTransition(Duration.millis(600));
                 switchScreenPause.setOnFinished(e -> {
-                SceneManager.getInstance().changeScene(
-                        new WinScreen(
-                                currentPlayer.getName(), currentPlayer.getIcon()
-                        ).getScene());
+                    SceneManager.getInstance().changeScene(
+                            new WinScreen(
+                                    currentPlayer.getName(), currentPlayer.getIcon()
+                            ).getScene());
                 });
 
                 switchScreenPause.play();
