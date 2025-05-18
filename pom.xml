@@ -61,7 +61,17 @@
             <artifactId>json</artifactId>
             <version>20250107</version>
         </dependency>
+
+        
+        <!-- JUnit 5 API and Engine -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.10.0</version> <!-- You can use latest version -->
+            <scope>test</scope>
+        </dependency>
     </dependencies>
+
 
     <build>
         <plugins>
