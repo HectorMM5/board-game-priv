@@ -99,6 +99,7 @@ public class LudoTokenLayer extends TokenLayer {
         TranslateTransition move = new TranslateTransition(Duration.millis(300), token);
         move.setToX(targetX);
         move.setToY(targetY);
+        move.setOnFinished(e -> runNextAnimation());
         move.play();
 
     }
@@ -160,7 +161,7 @@ public class LudoTokenLayer extends TokenLayer {
 
     }
 
-    private void runNextAnimation() {
+    public void runNextAnimation() {
         Runnable next = animationQueue.poll();
         if (next != null) {
             next.run(); // This will call moveToken, which sets the animation
