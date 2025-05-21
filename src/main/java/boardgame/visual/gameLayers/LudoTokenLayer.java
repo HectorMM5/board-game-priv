@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import boardgame.controller.GameControllers.LudoGameController;
@@ -25,9 +26,19 @@ import javafx.util.Duration;
 public class LudoTokenLayer extends TokenLayer {
 
     private final Map<Color, List<Point>> colorHome = new HashMap<>();
+    private final Map<Player, Integer> positions = new HashMap<>();
 
     private final Queue<Runnable> animationQueue = new LinkedList<>();
     private boolean isAnimating = false;
+
+    private final Map<Player, Color> playerColors = new HashMap<>();
+
+private static final Map<Color, Integer> homeEntryTiles = Map.of(
+    Color.YELLOW, 40,
+    Color.RED, 54,
+    Color.BLUE, 12,
+    Color.GREEN, 26
+);
 
     public LudoTokenLayer(LudoBoardVisual boardVisual, List<Player> players) {
         super(boardVisual, players);
@@ -48,6 +59,8 @@ public class LudoTokenLayer extends TokenLayer {
 
         IntStream.range(0, players.size()).forEach(i -> {
             Player player = players.get(i);
+            Color color = colors.get(i);
+            playerColors.put(player, color); // 💡 Lagre farge
             ImageView token = new ImageView(new Image(player.getIcon()));
             token.setFitWidth(50);
             token.setFitHeight(50);
@@ -61,6 +74,8 @@ public class LudoTokenLayer extends TokenLayer {
             token.setTranslateX(x * spacing);
             token.setTranslateY(y * spacing);
 
+            positions.put(player, colorStartPositions.get(colors.get(i)));
+
         });
 
         colorHome.put(Color.YELLOW, boardVisual.getYellowHomeTiles());
@@ -71,6 +86,9 @@ public class LudoTokenLayer extends TokenLayer {
 
     @Override
     public void moveToken(Player player, int tileNumber) {
+        resetTokenSize(player);
+        positions.replace(player, tileNumber);
+
         ImageView token = playerTokens.get(player);
 
         Integer col = cols.get(tileNumber);
@@ -87,6 +105,7 @@ public class LudoTokenLayer extends TokenLayer {
     }
 
     public void moveTokenThroughHome(Player player, Color color, int tileNumber) {
+        resetTokenSize(player);
         ImageView token = playerTokens.get(player);
         List<Point> houseList = colorHome.get(color);
 
@@ -167,6 +186,7 @@ public class LudoTokenLayer extends TokenLayer {
             next.run(); // This will call moveToken, which sets the animation
         } else {
             isAnimating = false;
+            refreshTokenSizesAndPositions();
         }
     }
 
@@ -184,6 +204,95 @@ public class LudoTokenLayer extends TokenLayer {
             case PATH ->
                 moveTokenThroughPath(player, tileNumber);
         }
+
+    }
+
+    private static double[][] getTokenOffsets(int tokenCount) {
+        return switch (tokenCount) {
+            case 2 ->
+                new double[][]{{-0.1, -0.1}, {0.35, 0.35}};
+            case 3 ->
+                new double[][]{{-0.1, -0.1}, {0.125, 0.125}, {0.35, 0.35}};
+            case 4 ->
+                new double[][]{{-0.1, -0.1}, {-0.1, 0.35}, {0.35, -0.1}, {0.35, 0.35}};
+            case 5 ->
+                new double[][]{{-0.1, -0.1}, {-0.1, 0.35}, {0.125, 0.125}, {0.35, -0.1}, {0.35, 0.35}};
+            default ->
+                new double[][]{{0, 0}};
+        };
+    }
+
+    public void refreshTokenSizesAndPositions() {
+    double spacing = boardVisual.getSpacing();
+
+    List<List<Player>> playerGroups = positions.entrySet().stream()
+        .collect(Collectors.groupingBy(
+            Map.Entry::getValue,
+            Collectors.mapping(Map.Entry::getKey, Collectors.toList())
+        ))
+        .values().stream()
+        .toList();
+
+    for (List<Player> group : playerGroups) {
+        int tokenCount = group.size();
+        double[][] offsets = getTokenOffsets(tokenCount);
+
+        for (int i = 0; i < tokenCount; i++) {
+            Player player = group.get(i);
+            ImageView token = playerTokens.get(player);
+
+            int pos = positions.get(player);
+            Color color = playerColors.get(player);
+
+            Integer homeEntry = homeEntryTiles.get(color);
+            if (homeEntry != null && pos == homeEntry) {
+                continue; // Ikke flytt token hvis den er i inngangen til hjemstien
+            }
+
+            int col = cols.get(pos);
+            int row = rows.get(pos);
+
+            double baseX = col * spacing;
+            double baseY = row * spacing;
+
+            if (tokenCount > 1) {
+                token.setFitWidth(25);
+                token.setFitHeight(25);
+            } else {
+                token.setFitWidth(50);
+                token.setFitHeight(50);
+            }
+
+            double offsetX = offsets[i][0] * spacing;
+            double offsetY = offsets[i][1] * spacing;
+
+            token.setTranslateX(baseX + offsetX);
+            token.setTranslateY(baseY + offsetY);
+        }
+    }
+}
+
+
+    public void resetTokenSizeAndPosition(Player player) {
+        double spacing = boardVisual.getSpacing();
+        ImageView token = playerTokens.get(player);
+        int tile = positions.get(player);
+
+        int col = cols.get(tile);
+        int row = rows.get(tile);
+
+        token.setFitWidth(50);
+        token.setFitHeight(50);
+
+        token.setTranslateX(col * spacing);
+        token.setTranslateY(row * spacing);
+    }
+
+    public void resetTokenSize(Player player) {
+        ImageView token = playerTokens.get(player);
+
+        token.setFitWidth(50);
+        token.setFitHeight(50);
 
     }
 

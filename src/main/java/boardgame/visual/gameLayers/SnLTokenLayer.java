@@ -1,9 +1,12 @@
 package boardgame.visual.gameLayers;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import boardgame.model.boardFiles.Player;
@@ -23,6 +26,8 @@ public class SnLTokenLayer extends TokenLayer {
 
     private final Queue<Runnable> animationQueue = new LinkedList<>();
     private boolean isAnimating = false;
+
+    private final Map<Player, Integer> positions = new HashMap<>();
 
     public SnLTokenLayer(SnLBoardVisual boardVisual, List<Player> players) {
         super(boardVisual, players);
@@ -53,6 +58,8 @@ public class SnLTokenLayer extends TokenLayer {
 
             playerTokens.put(player, token);
             this.getChildren().add(token);
+
+            positions.put(player, 1);
         }
     }
 
@@ -61,6 +68,10 @@ public class SnLTokenLayer extends TokenLayer {
      */
     @Override
     public void moveToken(Player player, int tileNumber) {
+        resetTokenSize(player);
+
+        positions.replace(player, tileNumber);
+
         ImageView token = playerTokens.get(player);
 
         int col = cols.get(tileNumber);
@@ -74,6 +85,7 @@ public class SnLTokenLayer extends TokenLayer {
         move.setToY(targetY);
         move.setOnFinished(e -> runNextAnimation());
         move.play();
+
 
     }
 
@@ -100,6 +112,7 @@ public class SnLTokenLayer extends TokenLayer {
         if (next != null) {
             next.run(); // This will call moveToken, which sets the animation
         } else {
+            refreshTokenSizesAndPositions();
             isAnimating = false;
         }
     }
@@ -120,4 +133,85 @@ public class SnLTokenLayer extends TokenLayer {
         }
 
     }
+
+
+    private static double[][] getTokenOffsets(int tokenCount) {
+    return switch (tokenCount) {
+      case 2 -> new double[][] {{-0.1, -0.1}, {0.35, 0.35}};
+      case 3 -> new double[][] {{-0.1, -0.1}, {0.125, 0.125}, {0.35, 0.35}};
+      case 4 -> new double[][] {{-0.1, -0.1}, {-0.1, 0.35}, {0.35, -0.1}, {0.35, 0.35}};
+      case 5 -> new double[][] {{-0.1, -0.1}, {-0.1, 0.35}, {0.125, 0.125}, {0.35, -0.1}, {0.35, 0.35}};
+      default -> new double[][] {{0, 0}};
+    };
+  }
+
+    public void refreshTokenSizesAndPositions() {
+    double spacing = boardVisual.getSpacing();
+
+    List<List<Player>> playerGroups = positions.entrySet().stream()
+            .collect(Collectors.groupingBy(
+                    Map.Entry::getValue,
+                    Collectors.mapping(Map.Entry::getKey, Collectors.toList())
+            ))
+            .values().stream()
+            .toList();
+
+    for (List<Player> group : playerGroups) {
+        int tokenCount = group.size();
+        double[][] offsets = getTokenOffsets(tokenCount);
+
+        for (int i = 0; i < tokenCount; i++) {
+            Player player = group.get(i);
+            ImageView token = playerTokens.get(player);
+
+            int tile = positions.get(player);
+            int col = cols.get(tile);
+            int row = rows.get(tile);
+
+            double baseX = col * spacing;
+            double baseY = row * spacing;
+
+            // Size
+            if (tokenCount > 1) {
+                token.setFitWidth(25);
+                token.setFitHeight(25);
+            } else {
+                token.setFitWidth(50);
+                token.setFitHeight(50);
+            }
+
+            // Offset from normalized 0..1 range scaled by spacing
+            double offsetX = offsets[i][0] * spacing;
+            double offsetY = offsets[i][1] * spacing;
+
+            token.setTranslateX(baseX + offsetX);
+            token.setTranslateY(baseY + offsetY);
+        }
+    }
+}
+
+
+    public void resetTokenSize(Player player) {
+    double spacing = boardVisual.getSpacing();
+    ImageView token = playerTokens.get(player);
+    int tile = positions.get(player);
+
+    int col = cols.get(tile);
+    int row = rows.get(tile);
+
+    token.setFitWidth(50);
+    token.setFitHeight(50);
+
+    token.setTranslateX(col * spacing);
+    token.setTranslateY(row * spacing);
+}
+
+public void addToAnimationQueue(Runnable animation) {
+        animationQueue.add(animation);
+        if (!isAnimating) {
+            isAnimating = true;
+            runNextAnimation(); // ✅ Kick off the queue
+        }
+    }
+
 }
