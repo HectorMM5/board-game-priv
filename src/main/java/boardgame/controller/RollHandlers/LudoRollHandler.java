@@ -71,7 +71,7 @@ public class LudoRollHandler implements RollHandler {
 
                 PauseTransition pause = new PauseTransition(Duration.millis((steps * 300) + 100));
                 pause.setOnFinished(e -> {
-                    gameController.movePlayerThroughHomeBy(player, steps);
+                    applyHomeByMove(player, steps);
                     sideColumn.turnOnButton();
 
                 });
@@ -85,21 +85,17 @@ public class LudoRollHandler implements RollHandler {
 
             gameController.movePlayer(player, startPosition + stepsUntilReachedHome, movementType.PATH);
 
-            gameController.disablePlayerOnBoard(player);
+            int remainingRoll = steps - stepsUntilReachedHome;
 
             playerTokenLayer.addToAnimationQueue(() -> {
-
-                int remainingRoll = steps - stepsUntilReachedHome;
-
                 playerTokenLayer.movePlayerThroughHomePath(player, color, remainingRoll, gameController);
 
                 PauseTransition homeStepPause = new PauseTransition(Duration.millis((remainingRoll + 1) * 300));
                 homeStepPause.setOnFinished(z -> {
-                    gameController.movePlayerThroughHome(player, remainingRoll);
+                    applyHomeMove(player, remainingRoll);
                     sideColumn.turnOnButton();
                 });
                 homeStepPause.play();
-
             });
 
         } else {
@@ -164,6 +160,18 @@ public class LudoRollHandler implements RollHandler {
             gameController.advanceTurn();
         }
 
+    }
+
+    public void applyHomeByMove(Player player, int steps) {
+        gameController.movePlayerThroughHomeBy(player, steps);
+    }
+
+    public void applyHomeMove(Player player, int steps) {
+        gameController.movePlayerThroughHome(player, steps);
+    }
+
+    public Map<Player, Integer> getTilesMoved() {
+        return tilesMoved;
     }
 
 }
