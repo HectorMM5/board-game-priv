@@ -41,13 +41,6 @@ public class LudoGameController extends GameController {
 
     private static final Map<Color, Integer> colorStartPositions = LudoBoardTiles.getColorStartPositions();
 
-    private static final Map<Color, Integer> colorEndPositions = Map.of(
-            Color.YELLOW, 1,
-            Color.RED, 15,
-            Color.BLUE, 29,
-            Color.GREEN, 44
-    );
-
     private static final Map<Color, List<Tile>> colorTiles = Map.of(
             Color.YELLOW, yellowHomeTiles,
             Color.RED, redHomeTiles,
@@ -142,10 +135,6 @@ public class LudoGameController extends GameController {
 
     public Map<Color, Integer> getStartPositions() {
         return colorStartPositions;
-    }
-
-    public Map<Color, Integer> getEndPositions() {
-        return colorEndPositions;
     }
 
     public Map<Player, Color> getPlayerColor() {
