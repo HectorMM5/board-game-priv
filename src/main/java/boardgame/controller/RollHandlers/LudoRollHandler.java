@@ -130,8 +130,6 @@ public class LudoRollHandler implements RollHandler {
         Player currentPlayer = gameController.getCurrentPlayer();
         int homePosition = gameController.getHomePosition().get(currentPlayer);
 
-        System.out.println("HOME POSITION: " + homePosition);
-
         if (homePosition + diceRoll > 6) {
             int toGoal = 6 - homePosition;
             moveBy(gameController.getCurrentPlayer(), toGoal, buttonVisual);
