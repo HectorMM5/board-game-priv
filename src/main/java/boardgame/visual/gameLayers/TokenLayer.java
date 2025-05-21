@@ -18,12 +18,15 @@ public abstract class TokenLayer extends Pane implements PlayerObserver {
     protected final Map<Integer, Integer> rows = new HashMap<>();
     protected final BoardVisual boardVisual;
 
+    protected final List<Player> players;
     
     protected TokenLayer(BoardVisual boardVisual, List<Player> players) {
         this.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-background-color: transparent;");
         this.boardVisual = boardVisual;
         this.prefWidthProperty().bind(boardVisual.getTileGrid().widthProperty());
         this.prefHeightProperty().bind(boardVisual.getTileGrid().heightProperty());
+
+        this.players = players;
 
     }
 
