@@ -64,14 +64,20 @@ public class LudoRollHandler implements RollHandler {
 
         if (totalTilesMoved == 53) {
             int homePosition = gameController.getHomePosition().get(player);
-            playerTokenLayer.movePlayerThroughHomePath(player, color, homePosition + steps, gameController);
 
-            PauseTransition pause = new PauseTransition(Duration.millis((steps + 1) * 300));
-            pause.setOnFinished(e -> {
-                gameController.movePlayerThroughHomeBy(player, steps);
-                sideColumn.turnOnButton();
+            // Step 1: Animate the token
+            playerTokenLayer.addToAnimationQueue(() -> {
+                playerTokenLayer.movePlayerThroughHomePath(player, color, homePosition + steps, gameController);
+
+                PauseTransition pause = new PauseTransition(Duration.millis((steps * 300) + 100));
+                pause.setOnFinished(e -> {
+                    gameController.movePlayerThroughHomeBy(player, steps);
+                    sideColumn.turnOnButton();
+
+                });
+                pause.play();
+
             });
-            pause.play();
 
         } else if (totalTilesMoved + steps > 53) {
             int stepsUntilReachedHome = 53 - totalTilesMoved;
@@ -101,13 +107,16 @@ public class LudoRollHandler implements RollHandler {
 
             tilesMoved.replace(player, totalTilesMoved + steps);
 
-            PauseTransition pause = new PauseTransition(Duration.millis((steps + 1) * 300));
-            pause.setOnFinished(e -> {
-                sideColumn.turnOnButton();
+            playerTokenLayer.addToAnimationQueue(() -> {
+                PauseTransition pause = new PauseTransition(Duration.millis(100));
+                pause.setOnFinished(e -> {
+                    sideColumn.turnOnButton();
+                    playerTokenLayer.runNextAnimation();
 
+                });
+                pause.play();
             });
 
-            pause.play();
         }
     }
 
