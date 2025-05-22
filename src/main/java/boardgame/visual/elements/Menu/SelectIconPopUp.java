@@ -18,6 +18,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+/**
+ * A pop-up window that allows the user to select a player icon from a grid of available icons.
+ */
 public class SelectIconPopUp extends VBox {
 
     private static final int IMAGES_PER_ROW = 3;
@@ -25,12 +28,20 @@ public class SelectIconPopUp extends VBox {
     private String iconSelected;
     private final Consumer<String> onIconSelected;
 
+    /**
+     * Constructs a new {@code SelectIconPopUp} with a callback for when an icon is selected.
+     *
+     * @param onIconSelected a {@code Consumer} that accepts the name of the selected icon.
+     */
     public SelectIconPopUp(Consumer<String> onIconSelected) {
         this.onIconSelected = onIconSelected;
         this.iconGrid = new GridPane();
         init(); // Just builds the layout (no scene/stage)
     }
 
+    /**
+     * Shows the icon selection pop-up.
+     */
     public void showPopup() {
         Scene scene = new Scene(new SelectIconPopUp(onIconSelected)); // new instance for safety
         scene.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
@@ -47,7 +58,7 @@ public class SelectIconPopUp extends VBox {
         iconGrid.setHgap(10);
         iconGrid.setVgap(10);
 
-        String[] imageFiles = { "listhaug", "solbriller", "Red", "mythra", "daddyposter", "bingus" };
+        String[] imageFiles = {"Red", "Lime", "White", "Orange", "Purple", "Yellow"};
 
         List<StackPane> icons = List.of(imageFiles).stream().map(i -> {
             InputStream is = getClass().getResourceAsStream("/PlayerIcons/" + i + ".png");
@@ -95,6 +106,9 @@ public class SelectIconPopUp extends VBox {
         this.getChildren().addAll(iconGrid, saveButton);
     }
 
+    /**
+     * Removes the border highlighting from all icons in the grid.
+     */
     public void cleanChoice() {
         iconGrid.getChildren().forEach(node -> {
             if (node instanceof StackPane imageWrapper) {
@@ -103,6 +117,11 @@ public class SelectIconPopUp extends VBox {
         });
     }
 
+    /**
+     * Gets the name of the currently selected icon.
+     *
+     * @return the name of the selected icon, or null if none is selected.
+     */
     public String getIconChoice() {
         return iconSelected;
     }

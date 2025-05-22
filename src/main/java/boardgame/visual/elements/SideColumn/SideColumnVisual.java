@@ -3,7 +3,8 @@ package boardgame.visual.elements.SideColumn;
 import java.util.List;
 
 import boardgame.controller.GameControllers.GameController;
-import boardgame.model.boardFiles.Player;
+import boardgame.model.Player;
+import boardgame.utils.ScreenDimension;
 import boardgame.visual.scenes.Ingame.Ingame;
 import javafx.geometry.Pos;
 import javafx.scene.layout.BorderPane;
@@ -22,7 +23,6 @@ public class SideColumnVisual extends VBox {
     private final DiceAnimation diceAnimation;
     private final DiceButtonVisual rollButton;
 
-
     /**
      * Constructs the side column visual with a dice roller, roll button,
      * and a display of all players currently in the game.
@@ -34,15 +34,15 @@ public class SideColumnVisual extends VBox {
     public SideColumnVisual(GameController gameController, List<Player> players, Ingame ingame) {
         System.out.println("Reached SideColumnVisual with player list size: " + players.size());
 
-        this.setPrefWidth(500);
-        this.setSpacing(150);
+        this.setPrefWidth(ScreenDimension.getScreenWidth() * 0.25);
+        this.setSpacing(10);
         this.getStyleClass().add("side-column");
 
         this.diceAnimation = new DiceAnimation();
         this.rollButton = new DiceButtonVisual();
 
         rollButton.setOnAction(e -> {
-            ingame.getRollHandler().handleRollDice(rollButton);
+            ingame.getRollHandler().handleRollDice();
             rollButton.setDisable(true);
         });
 
@@ -51,7 +51,7 @@ public class SideColumnVisual extends VBox {
         BorderPane diceWrapper = new BorderPane();
         diceWrapper.setCenter(diceAnimation);
         diceWrapper.setMaxWidth(Double.MAX_VALUE);
-        diceWrapper.setPrefWidth(500);
+        diceWrapper.setPrefWidth(ScreenDimension.getScreenWidth() * 0.4);
 
         this.getChildren().add(diceWrapper);
         this.getChildren().add(rollButton);

@@ -15,7 +15,7 @@
                         { "tile": 88, "effect": "Snake", "target": 42 },
                         { "tile": 23, "effect": "LoseTurn"},
                         { "tile": 55, "effect": "LoseTurn"},
-                        { "tile": 90, "effect": "LoseTurn"},
+                        { "tile": 89, "effect": "LoseTurn"},
                         { "tile": 76, "effect": "Back"},
                         { "tile": 31, "effect": "Back"},
                         { "tile": 45, "effect": "Back"}
@@ -25,29 +25,41 @@
                 {
                     "name": "SnL2",
                     "tiles": [
-                        { "tile": 5, "effect": "Ladder", "target": 25 },
-                        { "tile": 12, "effect": "Snake", "target": 2 },
-                        { "tile": 30, "effect": "Ladder", "target": 60 },
-                        { "tile": 35, "effect": "LoseTurn"},
-                        { "tile": 50, "effect": "Back"},
-                        { "tile": 65, "effect": "LoseTurn"},
-                        { "tile": 72, "effect": "Ladder", "target": 76 },
-                        { "tile": 85, "effect": "Snake", "target": 45 }
+                        { "tile": 8, "effect": "Ladder", "target": 54 },
+                        { "tile": 17, "effect": "Ladder", "target": 60 },
+                        { "tile": 33, "effect": "Ladder", "target": 77 },
+                        { "tile": 44, "effect": "Ladder", "target": 88 },
+                        { "tile": 81, "effect": "Snake", "target": 29 },
+                        { "tile": 70, "effect": "Snake", "target": 22 },
+                        { "tile": 58, "effect": "Snake", "target": 14 },
+                        { "tile": 87, "effect": "Snake", "target": 41 },
+                        { "tile": 24, "effect": "LoseTurn"},
+                        { "tile": 53, "effect": "LoseTurn"},
+                        { "tile": 85, "effect": "LoseTurn"},
+                        { "tile": 78, "effect": "Back"},
+                        { "tile": 32, "effect": "Back"},
+                        { "tile": 47, "effect": "Back"}
                     ]
                 },
                 {
                     "name": "SnL3",
                     "tiles": [
-                        { "tile": 8, "effect": "Ladder", "target": 40 },
-                        { "tile": 18, "effect": "Snake", "target": 5 },
-                        { "tile": 25, "effect": "Ladder", "target": 55 },
-                        { "tile": 33, "effect": "LoseTurn"},
-                        { "tile": 48, "effect": "Back"},
-                        { "tile": 62, "effect": "LoseTurn"},
-                        { "tile": 75, "effect": "Ladder", "target": 90 },
-                        { "tile": 80, "effect": "Snake", "target": 50 }
+                        { "tile": 12, "effect": "Ladder", "target": 61 },
+                        { "tile": 25, "effect": "Ladder", "target": 67 },
+                        { "tile": 39, "effect": "Ladder", "target": 84 },
+                        { "tile": 62, "effect": "Ladder", "target": 85 },
+                        { "tile": 68, "effect": "Snake", "target": 34 },
+                        { "tile": 36, "effect": "Snake", "target": 17 },
+                        { "tile": 56, "effect": "Snake", "target": 13 },
+                        { "tile": 88, "effect": "Snake", "target": 42 },
+                        { "tile": 23, "effect": "LoseTurn"},
+                        { "tile": 55, "effect": "LoseTurn"},
+                        { "tile": 89, "effect": "LoseTurn"},
+                        { "tile": 76, "effect": "Back"},
+                        { "tile": 31, "effect": "Back"},
+                        { "tile": 45, "effect": "Back"}
                     ]
-                }
+                }           
             ]
         }
     ]

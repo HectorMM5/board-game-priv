@@ -12,12 +12,13 @@ import javafx.stage.Stage;
 /**
  * A reusable pop-up alert component to notify users about invalid actions.
  * Displays a given message string and a button to close the pop-up.
- *
+ * <p>
  * Usage example:
+ * <pre>
  * new PopUpAlert("Please enter a player name!").show();
- * 
+ * </pre>
  * Automatically resizes based on content.
- * 
+ *
  * @author Hector Mendana Morales
  */
 public class PopUpAlert extends VBox {
@@ -25,9 +26,9 @@ public class PopUpAlert extends VBox {
     private final Stage popupStage;
 
     /**
-     * Creates a new PopUpAlert with the specified message.
+     * Creates a new {@code PopUpAlert} with the specified message.
      *
-     * @param message the text to display inside the pop-up
+     * @param message the text to display inside the pop-up.
      */
     public PopUpAlert(String message) {
         this.setSpacing(20);
@@ -63,7 +64,7 @@ public class PopUpAlert extends VBox {
     }
 
     /**
-     * Shows the pop-up alert.
+     * Shows the pop-up alert and waits until it is closed by the user.
      */
     public void show() {
         popupStage.showAndWait();

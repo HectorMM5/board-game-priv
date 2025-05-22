@@ -3,7 +3,8 @@ package boardgame.model.boardFiles;
 import java.util.ArrayList;
 import java.util.List;
 
-import boardgame.model.effectFiles.SnL.Effect;
+import boardgame.model.Player;
+import boardgame.model.effectFiles.Effect;
 
 /**
  * Represents a single tile on the game board. A tile can have an associated {@link Effect}

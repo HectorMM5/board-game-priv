@@ -19,8 +19,17 @@
 }
 
 .button-common:hover {
-    background-color: #ffffff;
-    -fx-background-color: linear-gradient(to bottom, #ffffff 5%, #ffffff 100%);
+    background-color: #424242;
+    -fx-background-color: linear-gradient(to bottom, #424242 5%, #424242 100%);
+    -fx-text-fill: #ffffff;
+    color: #ffffff;
+}
+
+.button-common:focused {
+    border-color: #0096C9;
+    -fx-border-color: #0096C9;
+    border-width: 2px;
+    -fx-border-width: 2;
 }
 
 .side-column {

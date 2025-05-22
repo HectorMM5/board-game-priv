@@ -9,19 +9,38 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
+/**
+ * Represents the screen displayed when a player wins the game.
+ */
 public class WinScreen {
     private final String winnerName;
     private final String winnerIconPath;
 
+    /**
+     * Constructs a new {@code WinScreen}.
+     *
+     * @param winnerName     the name of the winning player.
+     * @param winnerIconPath the file path to the winner's icon.
+     */
     public WinScreen(String winnerName, String winnerIconPath) {
         this.winnerName = winnerName;
         this.winnerIconPath = winnerIconPath;
     }
 
+    /**
+     * Gets the name of the winner.
+     *
+     * @return the winner's name.
+     */
     public String getWinnerName() {
         return winnerName;
     }
 
+    /**
+     * Gets the file path to the winner's icon.
+     *
+     * @return the winner's icon file path.
+     */
     public String getWinnerIconPath() {
         return winnerIconPath;
     }
@@ -35,7 +54,7 @@ public class WinScreen {
         VBox root = new VBox(30);
         root.setAlignment(Pos.CENTER);
 
-        Label congratsLabel = new Label("🎉 Congratulations! 🎉");
+        Label congratsLabel = new Label("Congratulations!");
         congratsLabel.setStyle("-fx-font-size: 36px; -fx-text-fill: #333; -fx-font-weight: bold;");
 
         Label winnerLabel = new Label(winnerName + " wins!");
@@ -56,5 +75,5 @@ public class WinScreen {
         return new Scene(root, 600, 400);
     }
 
-    
+
 }

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-import boardgame.model.effectFiles.SnL.Effect;
+import boardgame.model.effectFiles.Effect;
 
 /**
  * Represents the game board consisting of a grid of {@link Tile} objects.

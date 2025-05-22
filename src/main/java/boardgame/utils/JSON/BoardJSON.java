@@ -8,13 +8,13 @@ import java.util.stream.IntStream;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import boardgame.model.boardFiles.SnL.SnLBoard;
-import boardgame.model.effectFiles.SnL.BackToStartEffect;
-import boardgame.model.effectFiles.SnL.Effect;
-import boardgame.model.effectFiles.SnL.LadderEffect;
-import boardgame.model.effectFiles.SnL.PlaceholderEffect;
-import boardgame.model.effectFiles.SnL.SkipTurnEffect;
-import boardgame.model.effectFiles.SnL.SnakeEffect;
+import boardgame.model.boardFiles.SnLBoard;
+import boardgame.model.effectFiles.BackToStartEffect;
+import boardgame.model.effectFiles.Effect;
+import boardgame.model.effectFiles.LadderEffect;
+import boardgame.model.effectFiles.PlaceholderEffect;
+import boardgame.model.effectFiles.SkipTurnEffect;
+import boardgame.model.effectFiles.SnakeEffect;
 import boardgame.utils.JSON.Exceptions.JSONParsingException;
 import boardgame.utils.JSON.Exceptions.UnknownEffectException;
 
@@ -76,6 +76,15 @@ public class BoardJSON {
      */
     public static void modifyEffectTileFromJSON(JSONObject tileWithEffect, SnLBoard board) {
         int tileNumber = tileWithEffect.getInt("tile");
+
+        if (tileNumber < 1 || tileNumber > board.getTiles().size()) {
+            throw new JSONParsingException("Tile number out of bounds.");
+        }
+
+        if (tileNumber == 1 || tileNumber == 90) {
+            throw new JSONParsingException("Tile number 1 and 90 cannot have an effect.");
+        }
+
         String effectType = tileWithEffect.getString("effect");
 
         Effect effect;
