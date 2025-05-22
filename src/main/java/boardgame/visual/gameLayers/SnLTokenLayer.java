@@ -210,7 +210,7 @@ public void addToAnimationQueue(Runnable animation) {
         animationQueue.add(animation);
         if (!isAnimating) {
             isAnimating = true;
-            runNextAnimation(); // ✅ Kick off the queue
+            runNextAnimation();
         }
     }
 
