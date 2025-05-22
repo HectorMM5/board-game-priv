@@ -4,8 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import boardgame.model.Player;
 import boardgame.model.Observer.PlayerObserver;
-import boardgame.model.boardFiles.Player;
 import boardgame.model.boardFiles.Tile;
 
 public class PlayerTest {

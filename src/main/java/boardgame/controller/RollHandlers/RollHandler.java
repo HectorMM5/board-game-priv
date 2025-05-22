@@ -1,6 +1,6 @@
 package boardgame.controller.RollHandlers;
 
-import boardgame.model.boardFiles.Player;
+import boardgame.model.Player;
 import boardgame.visual.elements.SideColumn.DiceButtonVisual;
 
 public interface RollHandler {

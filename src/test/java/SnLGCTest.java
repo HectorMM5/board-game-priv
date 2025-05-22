@@ -8,10 +8,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import boardgame.controller.GameControllers.SnLGameController;
-import boardgame.model.boardFiles.Player;
-import boardgame.model.boardFiles.SnL.SnLBoard;
+import boardgame.model.Player;
+import boardgame.model.boardFiles.SnLBoard;
 import boardgame.model.boardFiles.Tile;
-import boardgame.model.effectFiles.SnL.SnakeEffect;
+import boardgame.model.effectFiles.SnakeEffect;
 import boardgame.utils.movementType;
 
 public class SnLGCTest {

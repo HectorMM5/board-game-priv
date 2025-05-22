@@ -1,9 +1,10 @@
-package boardgame.model.boardFiles;
+package boardgame.model;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import boardgame.model.Observer.PlayerObserver;
+import boardgame.model.boardFiles.Tile;
 import boardgame.utils.movementType;
 
 /**
@@ -48,7 +49,6 @@ public class Player {
      * @param position the new tile position
      */
     public void setPosition(int newPosition, movementType movementType) {
-        List<PlayerObserver> observers = getObservers();
         if (!observers.isEmpty()) {
             observers.forEach(i -> i.registerPlayerMove(this, newPosition, movementType));
         }

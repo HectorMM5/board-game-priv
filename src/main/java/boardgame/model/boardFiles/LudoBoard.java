@@ -1,11 +1,8 @@
-package boardgame.model.boardFiles.Ludo;
+package boardgame.model.boardFiles;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
-
-import boardgame.model.boardFiles.Board;
-import boardgame.model.boardFiles.Tile;
 
 /**
  * Represents a Ludo game board (15x15 grid) with a predefined path layout.
@@ -30,7 +27,7 @@ public class LudoBoard extends Board {
             tiles.add(new Tile(i)); // Initialize each tile with a unique index
         });
 
-        IntStream.rangeClosed(1, 7).forEach(i -> {
+        IntStream.range(1, 7).forEach(i -> {
             redPath.add(new Tile(i)); // Initialize each tile with a unique index
             greenPath.add(new Tile(i)); // Initialize each tile with a unique index
             yellowPath.add(new Tile(i)); // Initialize each tile with a unique index

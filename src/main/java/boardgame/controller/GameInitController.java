@@ -2,7 +2,7 @@ package boardgame.controller;
 
 import java.util.List;
 
-import boardgame.model.boardFiles.Player;
+import boardgame.model.Player;
 import boardgame.utils.GameFactory;
 import boardgame.utils.GameType;
 

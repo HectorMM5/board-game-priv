@@ -2,7 +2,7 @@ package boardgame.visual.scenes.Ingame;
 
 import boardgame.controller.GameControllers.LudoGameController;
 import boardgame.controller.RollHandlers.LudoRollHandler;
-import boardgame.model.boardFiles.Ludo.LudoBoard;
+import boardgame.model.boardFiles.LudoBoard;
 import boardgame.utils.GameFactory;
 import boardgame.visual.elements.LudoBoardVisual;
 import boardgame.visual.elements.SideColumn.SideColumnVisual;

@@ -1,6 +1,6 @@
 package boardgame.model.Observer;
 
-import boardgame.model.boardFiles.Player;
+import boardgame.model.Player;
 import boardgame.utils.movementType;
 
 public interface PlayerObserver {

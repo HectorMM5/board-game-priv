@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import boardgame.model.boardFiles.Player;
+import boardgame.model.Player;
 import boardgame.utils.movementType;
 import boardgame.visual.elements.SnL.SnLBoardVisual;
 import javafx.animation.PauseTransition;
@@ -107,7 +107,7 @@ public class SnLTokenLayer extends TokenLayer {
         }
     }
 
-    private void runNextAnimation() {
+    public void runNextAnimation() {
         Runnable next = animationQueue.poll();
         if (next != null) {
             next.run(); // This will call moveToken, which sets the animation

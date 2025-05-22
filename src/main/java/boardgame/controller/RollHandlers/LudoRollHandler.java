@@ -7,7 +7,7 @@ import java.util.stream.IntStream;
 
 import boardgame.controller.GameControllers.LudoGameController;
 import boardgame.controller.SceneManager;
-import boardgame.model.boardFiles.Player;
+import boardgame.model.Player;
 import boardgame.model.diceFiles.Dice;
 import boardgame.utils.movementType;
 import boardgame.visual.elements.SideColumn.DiceButtonVisual;

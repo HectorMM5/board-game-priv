@@ -1,15 +1,12 @@
 package boardgame.controller.RollHandlers;
 
 import boardgame.controller.GameControllers.SnLGameController;
-import boardgame.model.boardFiles.Player;
+import boardgame.model.Player;
 import boardgame.model.diceFiles.Dice;
-import boardgame.model.effectFiles.SnL.MovementEffect;
 import boardgame.utils.movementType;
 import boardgame.visual.elements.SideColumn.DiceButtonVisual;
 import boardgame.visual.elements.SideColumn.SideColumnVisual;
 import boardgame.visual.gameLayers.SnLTokenLayer;
-import javafx.animation.PauseTransition;
-import javafx.util.Duration;
 
 /**
  * Controller for handling in-game actions such as dice rolls, player movement,
@@ -22,11 +19,13 @@ public class SnLRollHandler implements RollHandler {
 
     private final SnLGameController gameController;
     private final SideColumnVisual sideColumn;
+    private final SnLTokenLayer playerTokenLayer;
     private final Dice dice = new Dice(1);
 
     public SnLRollHandler(SnLGameController gameController, SnLTokenLayer playerTokenLayer, SideColumnVisual sideColumn) {
         this.gameController = gameController;
         this.sideColumn = sideColumn;
+        this.playerTokenLayer = playerTokenLayer;
     }
 
     /**
@@ -48,17 +47,10 @@ public class SnLRollHandler implements RollHandler {
             return;
         }
 
-        int additionalMsDelay = 0;
-        //Additional delay for the effect to be shown
-        if (gameController.getBoard().getTiles().get(nextPosition - 1).getEffect() instanceof MovementEffect) {
-            additionalMsDelay = 300;
-        }
-
-        PauseTransition buttonPause = new PauseTransition(Duration.millis((steps + 1) * 300 + additionalMsDelay));
-        buttonPause.setOnFinished(event -> {
+        playerTokenLayer.addToAnimationQueue(() -> {
             sideColumn.turnOnButton();
+            playerTokenLayer.runNextAnimation();
         });
-        buttonPause.play();
     }
 
     /**

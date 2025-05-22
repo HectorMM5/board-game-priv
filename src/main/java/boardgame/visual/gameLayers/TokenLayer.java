@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import boardgame.model.Player;
 import boardgame.model.Observer.PlayerObserver;
-import boardgame.model.boardFiles.Player;
 import boardgame.utils.movementType;
 import boardgame.visual.elements.BoardVisual;
 import javafx.scene.image.ImageView;

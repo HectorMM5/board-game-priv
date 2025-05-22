@@ -14,8 +14,8 @@ import static org.mockito.Mockito.verify;
 
 import boardgame.controller.GameControllers.LudoGameController;
 import boardgame.controller.RollHandlers.LudoRollHandler;
-import boardgame.model.boardFiles.Ludo.LudoBoard;
-import boardgame.model.boardFiles.Player;
+import boardgame.model.Player;
+import boardgame.model.boardFiles.LudoBoard;
 import boardgame.utils.movementType;
 import boardgame.visual.elements.SideColumn.DiceButtonVisual;
 import boardgame.visual.elements.SideColumn.SideColumnVisual;

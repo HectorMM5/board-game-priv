@@ -2,7 +2,7 @@ package boardgame.visual.scenes.Ingame;
 
 import boardgame.controller.GameControllers.SnLGameController;
 import boardgame.controller.RollHandlers.SnLRollHandler;
-import boardgame.model.boardFiles.SnL.SnLBoard;
+import boardgame.model.boardFiles.SnLBoard;
 import boardgame.utils.GameFactory;
 import boardgame.visual.elements.SideColumn.SideColumnVisual;
 import boardgame.visual.elements.SnL.SnLBoardVisual;

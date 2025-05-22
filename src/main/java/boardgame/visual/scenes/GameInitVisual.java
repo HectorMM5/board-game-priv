@@ -3,9 +3,9 @@ package boardgame.visual.scenes;
 import java.util.List;
 
 import boardgame.controller.GameInitController;
-import boardgame.model.boardFiles.Ludo.LudoBoard;
-import boardgame.model.boardFiles.Player;
-import boardgame.model.boardFiles.SnL.SnLBoard;
+import boardgame.model.Player;
+import boardgame.model.boardFiles.LudoBoard;
+import boardgame.model.boardFiles.SnLBoard;
 import boardgame.utils.GameType;
 import boardgame.utils.JSON.BoardJSON;
 import boardgame.visual.elements.LudoBoardVisual;

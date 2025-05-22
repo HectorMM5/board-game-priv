@@ -1,6 +1,6 @@
 package boardgame.visual.elements.SnL;
 
-import boardgame.model.boardFiles.SnL.SnLBoard;
+import boardgame.model.boardFiles.SnLBoard;
 import boardgame.model.boardFiles.Tile;
 import boardgame.utils.ScreenDimension;
 import boardgame.visual.elements.BoardVisual;

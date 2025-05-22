@@ -9,8 +9,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import boardgame.controller.GameControllers.LudoGameController;
-import boardgame.model.boardFiles.Ludo.LudoBoard;
-import boardgame.model.boardFiles.Player;
+import boardgame.model.Player;
+import boardgame.model.boardFiles.LudoBoard;
 import boardgame.utils.movementType;
 import javafx.scene.paint.Color;
 

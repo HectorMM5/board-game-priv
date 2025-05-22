@@ -2,7 +2,7 @@ package boardgame.visual.elements.SideColumn;
 
 import java.util.List;
 
-import boardgame.model.boardFiles.Player;
+import boardgame.model.Player;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;

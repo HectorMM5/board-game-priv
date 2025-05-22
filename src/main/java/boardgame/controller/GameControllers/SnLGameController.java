@@ -3,8 +3,8 @@ package boardgame.controller.GameControllers;
 import java.util.List;
 
 import boardgame.controller.SceneManager;
+import boardgame.model.Player;
 import boardgame.model.boardFiles.Board;
-import boardgame.model.boardFiles.Player;
 import boardgame.model.boardFiles.Tile;
 import boardgame.utils.movementType;
 import boardgame.visual.scenes.WinScreen;

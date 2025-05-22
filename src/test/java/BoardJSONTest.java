@@ -7,12 +7,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import boardgame.model.boardFiles.SnL.SnLBoard;
-import boardgame.model.effectFiles.SnL.BackToStartEffect;
-import boardgame.model.effectFiles.SnL.Effect;
-import boardgame.model.effectFiles.SnL.LadderEffect;
-import boardgame.model.effectFiles.SnL.SkipTurnEffect;
-import boardgame.model.effectFiles.SnL.SnakeEffect;
+import boardgame.model.boardFiles.SnLBoard;
+import boardgame.model.effectFiles.BackToStartEffect;
+import boardgame.model.effectFiles.Effect;
+import boardgame.model.effectFiles.LadderEffect;
+import boardgame.model.effectFiles.SkipTurnEffect;
+import boardgame.model.effectFiles.SnakeEffect;
 import boardgame.utils.JSON.BoardJSON;
 import boardgame.utils.JSON.Exceptions.JSONParsingException;
 import boardgame.utils.JSON.Exceptions.UnknownEffectException;

@@ -1,7 +1,7 @@
-package boardgame.model.effectFiles.SnL;
+package boardgame.model.effectFiles;
 
 import boardgame.controller.GameControllers.SnLGameController;
-import boardgame.model.boardFiles.Player;
+import boardgame.model.Player;
 import javafx.scene.paint.Color;
 
 /**

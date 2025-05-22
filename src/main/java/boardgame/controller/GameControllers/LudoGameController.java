@@ -6,8 +6,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
 
+import boardgame.model.Player;
 import boardgame.model.boardFiles.Board;
-import boardgame.model.boardFiles.Player;
+import boardgame.model.boardFiles.LudoBoard;
 import boardgame.model.boardFiles.Tile;
 import boardgame.utils.LudoBoardTiles;
 import boardgame.utils.movementType;
@@ -23,25 +24,16 @@ public class LudoGameController extends GameController {
 
     private final List<Color> colors = new ArrayList<>(List.of(Color.YELLOW, Color.RED, Color.BLUE, Color.GREEN));
 
-    private static final List<Tile> yellowHomeTiles = new ArrayList<>();
-    private static final List<Tile> redHomeTiles = new ArrayList<>();
-    private static final List<Tile> blueHomeTiles = new ArrayList<>();
-    private static final List<Tile> greenHomeTiles = new ArrayList<>();
+    private final List<Tile> yellowHomeTiles = ((LudoBoard) board).getYellowPath();
+    private final List<Tile> redHomeTiles = ((LudoBoard) board).getRedPath();
+    private final List<Tile> blueHomeTiles = ((LudoBoard) board).getBluePath();
+    private final List<Tile> greenHomeTiles = ((LudoBoard) board).getGreenPath();
 
     private Map<Player, Integer> homePosition = new HashMap<>();
 
-    static {
-        IntStream.rangeClosed(1, 6).forEach(i -> {
-            yellowHomeTiles.add(new Tile(i));
-            redHomeTiles.add(new Tile(i));
-            blueHomeTiles.add(new Tile(i));
-            greenHomeTiles.add(new Tile(i));
-        });
-    }
-
     private static final Map<Color, Integer> colorStartPositions = LudoBoardTiles.getColorStartPositions();
 
-    private static final Map<Color, List<Tile>> colorTiles = Map.of(
+    private final Map<Color, List<Tile>> colorTiles = Map.of(
             Color.YELLOW, yellowHomeTiles,
             Color.RED, redHomeTiles,
             Color.BLUE, blueHomeTiles,
@@ -58,6 +50,7 @@ public class LudoGameController extends GameController {
      */
     public LudoGameController(Board board, List<Player> players) {
         super(board, players);
+
 
         IntStream.range(0, players.size()).forEach(i -> {
             homePosition.put(players.get(i), 0);
@@ -141,19 +134,19 @@ public class LudoGameController extends GameController {
         return playerColor;
     }
 
-    public static List<Tile> getYellowHomeTiles() {
+    public List<Tile> getYellowHomeTiles() {
         return yellowHomeTiles;
     }
 
-    public static List<Tile> getRedHomeTiles() {
+    public List<Tile> getRedHomeTiles() {
         return redHomeTiles;
     }
 
-    public static List<Tile> getBlueHomeTiles() {
+    public List<Tile> getBlueHomeTiles() {
         return blueHomeTiles;
     }
 
-    public static List<Tile> getGreenHomeTiles() {
+    public List<Tile> getGreenHomeTiles() {
         return greenHomeTiles;
     }
 

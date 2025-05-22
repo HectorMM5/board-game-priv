@@ -3,7 +3,7 @@ package boardgame.visual.elements.SideColumn;
 import java.util.List;
 
 import boardgame.controller.GameControllers.GameController;
-import boardgame.model.boardFiles.Player;
+import boardgame.model.Player;
 import boardgame.visual.scenes.Ingame.Ingame;
 import javafx.geometry.Pos;
 import javafx.scene.layout.BorderPane;

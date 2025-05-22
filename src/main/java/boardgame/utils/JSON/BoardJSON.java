@@ -8,13 +8,13 @@ import java.util.stream.IntStream;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import boardgame.model.boardFiles.SnL.SnLBoard;
-import boardgame.model.effectFiles.SnL.BackToStartEffect;
-import boardgame.model.effectFiles.SnL.Effect;
-import boardgame.model.effectFiles.SnL.LadderEffect;
-import boardgame.model.effectFiles.SnL.PlaceholderEffect;
-import boardgame.model.effectFiles.SnL.SkipTurnEffect;
-import boardgame.model.effectFiles.SnL.SnakeEffect;
+import boardgame.model.boardFiles.SnLBoard;
+import boardgame.model.effectFiles.BackToStartEffect;
+import boardgame.model.effectFiles.Effect;
+import boardgame.model.effectFiles.LadderEffect;
+import boardgame.model.effectFiles.PlaceholderEffect;
+import boardgame.model.effectFiles.SkipTurnEffect;
+import boardgame.model.effectFiles.SnakeEffect;
 import boardgame.utils.JSON.Exceptions.JSONParsingException;
 import boardgame.utils.JSON.Exceptions.UnknownEffectException;
 

@@ -2,8 +2,8 @@ package boardgame.controller.GameControllers;
 
 import java.util.List;
 
+import boardgame.model.Player;
 import boardgame.model.boardFiles.Board;
-import boardgame.model.boardFiles.Player;
 import boardgame.model.boardFiles.Tile;
 import boardgame.utils.LoopingIterator;
 import boardgame.utils.movementType;

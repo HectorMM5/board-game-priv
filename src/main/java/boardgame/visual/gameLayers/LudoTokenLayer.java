@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import boardgame.controller.GameControllers.LudoGameController;
-import boardgame.model.boardFiles.Player;
+import boardgame.model.Player;
 import boardgame.utils.LudoBoardTiles;
 import boardgame.utils.movementType;
 import boardgame.visual.elements.LudoBoardVisual;
