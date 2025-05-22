@@ -316,43 +316,43 @@ public class LudoTokenLayer extends TokenLayer {
                 .values().stream()
                 .toList();
 
-        for (List<Player> group : playerGroups) {
+        playerGroups.stream().forEach(group -> {
             int tokenCount = group.size();
             double[][] offsets = getTokenOffsets(tokenCount);
 
-            for (int i = 0; i < tokenCount; i++) {
-                Player player = group.get(i);
-                ImageView token = playerTokens.get(player);
+            IntStream.range(0, tokenCount).forEach(i -> {
+            Player player = group.get(i);
+            ImageView token = playerTokens.get(player);
 
-                int pos = positions.get(player);
-                Color color = playerColors.get(player);
+            int pos = positions.get(player);
+            Color color = playerColors.get(player);
 
-                Integer homeEntry = homeEntryTiles.get(color);
-                if (homeEntry != null && pos == homeEntry) {
-                    continue; // Don't move token if it's at the home path entry
-                }
-
-                Integer col = cols.get(pos);
-                Integer row = rows.get(pos);
-
-                double baseX = col * spacing;
-                double baseY = row * spacing;
-
-                if (tokenCount > 1) {
-                    token.setFitWidth(25);
-                    token.setFitHeight(25);
-                } else {
-                    token.setFitWidth(50);
-                    token.setFitHeight(50);
-                }
-
-                double offsetX = offsets[i][0] * spacing;
-                double offsetY = offsets[i][1] * spacing;
-
-                token.setTranslateX(baseX + offsetX);
-                token.setTranslateY(baseY + offsetY);
+            Integer homeEntry = homeEntryTiles.get(color);
+            if (homeEntry != null && pos == homeEntry) {
+                return; // Don't move token if it's at the home path entry
             }
-        }
+
+            Integer col = cols.get(pos);
+            Integer row = rows.get(pos);
+
+            double baseX = col * spacing;
+            double baseY = row * spacing;
+
+            if (tokenCount > 1) {
+                token.setFitWidth(25);
+                token.setFitHeight(25);
+            } else {
+                token.setFitWidth(50);
+                token.setFitHeight(50);
+            }
+
+            double offsetX = offsets[i][0] * spacing;
+            double offsetY = offsets[i][1] * spacing;
+
+            token.setTranslateX(baseX + offsetX);
+            token.setTranslateY(baseY + offsetY);
+            });
+        });
     }
 
 

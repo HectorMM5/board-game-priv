@@ -28,8 +28,8 @@ import javafx.stage.Stage;
  */
 public class PlayerCSV {
 
-    private final static String path = "src/main/resources/playerProfiles.csv";
-    private static final File DEFAULT_FILE = new File(path);
+    private final static String PATH = "src/main/resources/playerProfiles.csv";
+    private static final File DEFAULT_FILE = new File(PATH);
     private static File currentFile = DEFAULT_FILE; // Use this to track the current file
     private static PlayerCSV instance = null;
 
@@ -164,12 +164,10 @@ public class PlayerCSV {
      */
     public static void changeIcon(String name, String icon) {
         ArrayList<String[]> allPlayers = getCSVContent();
-        for (String[] row : allPlayers) {
-            if (row[0].equals(name)) {
-                row[1] = icon;
-                break;
-            }
-        }
+        allPlayers.stream()
+            .filter(row -> row[0].equals(name))
+            .findFirst()
+            .ifPresent(row -> row[1] = icon);
         rewriteFile(allPlayers);
     }
 
@@ -180,11 +178,9 @@ public class PlayerCSV {
      */
     public String[] getPlayerNames() {
         ArrayList<String[]> content = getCSVContent();
-        String[] playerNames = new String[content.size()];
-        for (int i = 0; i < playerNames.length; i++) {
-            playerNames[i] = content.get(i)[0];
-        }
-        return playerNames;
+        return content.stream()
+            .map(row -> row[0])
+            .toArray(String[]::new);
     }
 
     /**

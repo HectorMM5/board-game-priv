@@ -1,5 +1,6 @@
 package boardgame.model.diceFiles;
 import java.util.ArrayList;
+import java.util.stream.IntStream;
 
 /**
  * Represents a set of dice that can be rolled to produce a sum.
@@ -15,9 +16,8 @@ public class Dice {
      */
     public Dice(int numberOfDice) {
         dice.clear();
-        for (int i = 0; i < numberOfDice; i++) {
-            dice.add(new Die());
-        }
+        IntStream.range(0, numberOfDice)
+            .forEach(i -> dice.add(new Die()));
     }
 
     /**
@@ -26,11 +26,9 @@ public class Dice {
      * @return the total value of the dice roll.
      */
     public int roll() {
-        int sum = 0;
-        for (Die die : dice) {
-            die.roll();
-            sum += die.getValue();
-        }
-        return sum;
+        return dice.stream()
+            .peek(Die::roll)
+            .mapToInt(Die::getValue)
+            .sum();
     }
 }

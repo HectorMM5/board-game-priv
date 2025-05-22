@@ -49,13 +49,13 @@ public class LadderLayer extends Pane {
         this.prefWidthProperty().bind(boardVisual.getTileGrid().widthProperty());
         this.prefHeightProperty().bind(boardVisual.getTileGrid().heightProperty());
 
-        for (Tile tile : tilesWithLadders) {
-            renderEffect((MovementEffect) tile.getEffect(), EffectType.LADDER);
-        }
+        tilesWithLadders.stream()
+            .map(tile -> (MovementEffect) tile.getEffect())
+            .forEach(effect -> renderEffect(effect, EffectType.LADDER));
 
-        for (Tile tile : tilesWithSnakes) {
-            renderEffect((MovementEffect) tile.getEffect(), EffectType.SNAKE);
-        }
+        tilesWithSnakes.stream()
+            .map(tile -> (MovementEffect) tile.getEffect())
+            .forEach(effect -> renderEffect(effect, EffectType.SNAKE));
     
     }
 

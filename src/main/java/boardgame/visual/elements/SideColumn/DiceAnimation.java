@@ -119,9 +119,7 @@ public class DiceAnimation extends GridPane {
      * corresponding to the 3x3 grid).
      */
     private void setPips(int... indices) {
-        for (int i : indices) {
-            points.get(i).setFill(Color.BLACK);
-        }
+        IntStream.of(indices).forEach(i -> points.get(i).setFill(Color.BLACK));
     }
 
 }

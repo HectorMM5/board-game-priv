@@ -39,9 +39,7 @@ public class SnLGameController extends GameController {
      */
     @Override
     public void start() {
-        for (Player player : players) {
-            board.getTiles().get(0).addPlayer(player);
-        }
+        players.stream().forEach(player -> board.getTiles().get(0).addPlayer(player));
     }
 
     /**

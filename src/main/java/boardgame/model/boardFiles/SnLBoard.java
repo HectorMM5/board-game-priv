@@ -1,6 +1,5 @@
 package boardgame.model.boardFiles;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -54,15 +53,10 @@ public class SnLBoard extends Board {
      * @return a list of tiles with ladders.
      */
     public List<Tile> getTilesWithLadders() {
-        List<Tile> tilesWithLadders = new ArrayList<>();
-        for (Tile tile : tiles) {
-            if (tile.getEffect() instanceof LadderEffect) {
-                tilesWithLadders.add(tile);
-            }
-        }
-        return tilesWithLadders;
+        return tiles.stream()
+                .filter(tile -> tile.getEffect() instanceof LadderEffect)
+                .toList();
     }
-
 
     /**
      * Returns a list of tiles that have a {@link SnakeEffect} associated with them.
@@ -70,13 +64,9 @@ public class SnLBoard extends Board {
      * @return a list of tiles with snakes.
      */
     public List<Tile> getTilesWithSnakes() {
-        List<Tile> tilesWithSnakes = new ArrayList<>();
-        for (Tile tile : tiles) {
-            if (tile.getEffect() instanceof SnakeEffect) {
-                tilesWithSnakes.add(tile);
-            }
-        }
-        return tilesWithSnakes;
+        return tiles.stream()
+                .filter(tile -> tile.getEffect() instanceof SnakeEffect)
+                .toList();
     }
 
 

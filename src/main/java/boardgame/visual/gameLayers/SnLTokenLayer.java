@@ -54,7 +54,7 @@ public final class SnLTokenLayer extends TokenLayer {
 
         double spacing = boardVisual.getSpacing();
 
-        for (Player player : players) {
+        players.stream().forEach(player -> {
             ImageView token = new ImageView(new Image(player.getIcon()));
             token.setFitWidth(50);
             token.setFitHeight(50);
@@ -66,7 +66,7 @@ public final class SnLTokenLayer extends TokenLayer {
             this.getChildren().add(token);
 
             positions.put(player, 1);
-        }
+        });
 
         refreshTokenSizesAndPositions();
     }
@@ -185,38 +185,38 @@ public final class SnLTokenLayer extends TokenLayer {
                 .values().stream()
                 .toList();
 
-        for (List<Player> group : playerGroups) {
+        playerGroups.forEach(group -> {
             int tokenCount = group.size();
             double[][] offsets = getTokenOffsets(tokenCount);
 
-            for (int i = 0; i < tokenCount; i++) {
-                Player player = group.get(i);
-                ImageView token = playerTokens.get(player);
+            IntStream.range(0, tokenCount).forEach(i -> {
+            Player player = group.get(i);
+            ImageView token = playerTokens.get(player);
 
-                int tile = positions.get(player);
-                int col = cols.get(tile);
-                int row = rows.get(tile);
+            int tile = positions.get(player);
+            int col = cols.get(tile);
+            int row = rows.get(tile);
 
-                double baseX = col * spacing;
-                double baseY = row * spacing;
+            double baseX = col * spacing;
+            double baseY = row * spacing;
 
-                // Size
-                if (tokenCount > 1) {
-                    token.setFitWidth(25);
-                    token.setFitHeight(25);
-                } else {
-                    token.setFitWidth(50);
-                    token.setFitHeight(50);
-                }
-
-                // Offset from normalized 0..1 range scaled by spacing
-                double offsetX = offsets[i][0] * spacing;
-                double offsetY = offsets[i][1] * spacing;
-
-                token.setTranslateX(baseX + offsetX);
-                token.setTranslateY(baseY + offsetY);
+            // Size
+            if (tokenCount > 1) {
+                token.setFitWidth(25);
+                token.setFitHeight(25);
+            } else {
+                token.setFitWidth(50);
+                token.setFitHeight(50);
             }
-        }
+
+            // Offset from normalized 0..1 range scaled by spacing
+            double offsetX = offsets[i][0] * spacing;
+            double offsetY = offsets[i][1] * spacing;
+
+            token.setTranslateX(baseX + offsetX);
+            token.setTranslateY(baseY + offsetY);
+            });
+        });
     }
 
     /**

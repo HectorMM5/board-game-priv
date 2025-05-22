@@ -14,7 +14,7 @@ import boardgame.model.boardFiles.Tile;
 public class LudoBoardTest {
 
     //TESTS IN THIS CLASS ARE LARGELY WRITTEN WITH THE ASSISTANCE OF AI
-
+    
     private LudoBoard ludoBoard;
 
     @BeforeEach
