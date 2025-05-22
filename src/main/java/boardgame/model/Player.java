@@ -105,6 +105,4 @@ public class Player {
         return observers;
     }
 
-
-
 }
