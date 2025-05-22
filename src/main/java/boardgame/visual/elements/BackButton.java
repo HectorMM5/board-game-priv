@@ -7,7 +7,6 @@ import boardgame.visual.scenes.StartScreenView;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
 
 public class BackButton extends Button {
 
@@ -18,8 +17,7 @@ public class BackButton extends Button {
      * @param withPopup Whether to show a confirmation popup.
      */
     public BackButton(boolean withPopup) {
-        Label label = new Label("Back");
-        this.getChildren().add(label);
+        super("Back");
         getStyleClass().add("button-common");
 
         this.setOnAction(e -> {

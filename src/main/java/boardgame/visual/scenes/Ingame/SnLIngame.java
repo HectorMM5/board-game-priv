@@ -4,6 +4,7 @@ import boardgame.controller.GameControllers.SnLGameController;
 import boardgame.controller.RollHandlers.SnLRollHandler;
 import boardgame.model.boardFiles.SnLBoard;
 import boardgame.utils.GameFactory;
+import boardgame.visual.elements.BackButton;
 import boardgame.visual.elements.SideColumn.SideColumnVisual;
 import boardgame.visual.elements.SnL.SnLBoardVisual;
 import boardgame.visual.gameLayers.SnLTokenLayer;
@@ -33,6 +34,8 @@ public class SnLIngame implements Ingame {
     public final SideColumnVisual sideColumn;
     public final SnLTokenLayer playerTokenLayer;
 
+    private final BackButton backButton = new BackButton(true);
+
     /**
      * Constructs an in-game scene for Snakes and Ladders based on the given game setup.
      *
@@ -58,6 +61,8 @@ public class SnLIngame implements Ingame {
      */
     @Override
     public Scene getScene() {
+        StackPane sceneStacker = new StackPane();
+        
         gameController.setIngame(this);
 
         // Main wrapper HBox
@@ -83,7 +88,11 @@ public class SnLIngame implements Ingame {
         // Assemble
         sceneWrapper.getChildren().addAll(boardContainer, sideColumn);
 
-        Scene scene = new Scene(sceneWrapper);
+        // Align the back button to the top-left within the StackPane
+        StackPane.setAlignment(backButton, Pos.TOP_LEFT);
+        sceneStacker.getChildren().addAll(sceneWrapper, backButton);
+
+        Scene scene = new Scene(sceneStacker);
 
         gameController.start();
 

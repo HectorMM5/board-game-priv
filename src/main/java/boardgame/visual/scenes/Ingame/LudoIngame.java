@@ -4,6 +4,7 @@ import boardgame.controller.GameControllers.LudoGameController;
 import boardgame.controller.RollHandlers.LudoRollHandler;
 import boardgame.model.boardFiles.LudoBoard;
 import boardgame.utils.GameFactory;
+import boardgame.visual.elements.BackButton;
 import boardgame.visual.elements.LudoBoardVisual;
 import boardgame.visual.elements.SideColumn.SideColumnVisual;
 import boardgame.visual.gameLayers.LudoTokenLayer;
@@ -33,6 +34,8 @@ public class LudoIngame implements Ingame {
     public final SideColumnVisual sideColumn;
     public final LudoTokenLayer playerTokenLayer;
 
+    private final BackButton backButton = new BackButton(true);
+
     /**
      * Constructs an in-game scene for Ludo based on the given game setup.
      *
@@ -58,6 +61,9 @@ public class LudoIngame implements Ingame {
      */
     @Override
     public Scene getScene() {
+
+        StackPane sceneStacker = new StackPane();
+
         gameController.setIngame(this);
 
         // Main wrapper HBox
@@ -83,7 +89,11 @@ public class LudoIngame implements Ingame {
         // Assemble
         sceneWrapper.getChildren().addAll(boardContainer, sideColumn);
 
-        Scene scene = new Scene(sceneWrapper);
+        // Align the back button to the top-left within the StackPane
+        StackPane.setAlignment(backButton, Pos.TOP_LEFT);
+        sceneStacker.getChildren().addAll(sceneWrapper, backButton);
+
+        Scene scene = new Scene(sceneStacker);
 
         gameController.start();
 
