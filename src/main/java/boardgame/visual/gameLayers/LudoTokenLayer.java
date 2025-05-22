@@ -76,6 +76,34 @@ private static final Map<Color, Integer> homeEntryTiles = Map.of(
 
             positions.put(player, colorStartPositions.get(colors.get(i)));
 
+            ImageView startPortrait = new ImageView(new Image(player.getIcon()));
+            startPortrait.setFitWidth(spacing * 3);
+            startPortrait.setFitHeight(spacing * 3);
+
+            switch (i) {
+                case 0 -> {
+                    startPortrait.setTranslateX(spacing * 1);
+                    startPortrait.setTranslateY(spacing * 1);
+                }
+
+                case 1 -> {
+                    startPortrait.setTranslateX(spacing * 11);
+                    startPortrait.setTranslateY(spacing * 1);
+                }
+                case 2 -> {
+                    startPortrait.setTranslateX(spacing * 11);
+                    startPortrait.setTranslateY(spacing * 11);
+                }
+
+                case 3 -> {
+                    startPortrait.setTranslateX(spacing * 1);
+                    startPortrait.setTranslateY(spacing * 11);
+                }
+
+            }
+
+            this.getChildren().add(startPortrait);
+
         });
 
         colorHome.put(Color.YELLOW, boardVisual.getYellowHomeTiles());
@@ -300,7 +328,7 @@ private static final Map<Color, Integer> homeEntryTiles = Map.of(
         animationQueue.add(animation);
         if (!isAnimating) {
             isAnimating = true;
-            runNextAnimation(); // ✅ Kick off the queue
+            runNextAnimation(); 
         }
     }
 
