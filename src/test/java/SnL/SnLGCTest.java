@@ -1,3 +1,4 @@
+package SnL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +16,8 @@ import boardgame.model.effectFiles.SnakeEffect;
 import boardgame.utils.movementType;
 
 public class SnLGCTest {
+
+    //TESTS IN THIS CLASS ARE LARGELY WRITTEN WITH THE ASSISTANCE OF AI
 
     private SnLGameController controller;
     private SnLBoard board;

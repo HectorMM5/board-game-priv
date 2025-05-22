@@ -19,6 +19,8 @@ import boardgame.utils.JSON.Exceptions.UnknownEffectException;
 
 public class BoardJSONTest {
 
+    //TESTS IN THIS CLASS ARE LARGELY WRITTEN WITH THE ASSISTANCE OF AI
+
     private JSONObject validLadderTile;
     private JSONObject validSnakeTile;
     private JSONObject skipTurnTile;

@@ -4,11 +4,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import boardgame.model.Player;
 import boardgame.model.Observer.PlayerObserver;
+import boardgame.model.Player;
 import boardgame.model.boardFiles.Tile;
 
 public class PlayerTest {
+
+    //TESTS IN THIS CLASS ARE LARGELY WRITTEN WITH THE ASSISTANCE OF AI
 
     private Player player;
 

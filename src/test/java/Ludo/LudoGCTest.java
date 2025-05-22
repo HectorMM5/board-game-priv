@@ -1,3 +1,4 @@
+package Ludo;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,8 @@ import boardgame.utils.movementType;
 import javafx.scene.paint.Color;
 
 public class LudoGCTest {
+
+    //TESTS IN THIS CLASS ARE LARGELY WRITTEN WITH THE ASSISTANCE OF AI
 
     private LudoGameController controller;
     private LudoBoard board;
