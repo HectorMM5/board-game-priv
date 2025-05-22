@@ -10,7 +10,6 @@ import boardgame.controller.SceneManager;
 import boardgame.model.Player;
 import boardgame.model.diceFiles.Dice;
 import boardgame.utils.movementType;
-import boardgame.visual.elements.SideColumn.DiceButtonVisual;
 import boardgame.visual.elements.SideColumn.SideColumnVisual;
 import boardgame.visual.gameLayers.LudoTokenLayer;
 import boardgame.visual.scenes.WinScreen;
@@ -56,57 +55,66 @@ public class LudoRollHandler implements RollHandler {
     /**
      * Animates and completes a player's move by a number of steps.
      *
-     * @param player the player to move
-     * @param steps the number of tiles to move
-     * @param buttonVisual the button to re-enable after animation
+     * @param player       the player to move
+     * @param steps        the number of tiles to move
      */
     @Override
-    public void moveBy(Player player, int steps, DiceButtonVisual buttonVisual) {
+    public void moveBy(Player player, int steps) {
         int startPosition = player.getPosition();
         int nextPosition = startPosition + steps;
         Color color = gameController.getPlayerColor().get(player);
         int totalTilesMoved = tilesMoved.get(player);
 
         if (totalTilesMoved == 53) {
-            int homePosition = gameController.getHomePosition().get(player);
-            playerTokenLayer.addToAnimationQueue(() -> {
-                playerTokenLayer.movePlayerThroughHomePath(player, color, homePosition + steps, gameController);
-                PauseTransition pause = new PauseTransition(Duration.millis((steps * 300) + 100));
-                pause.setOnFinished(e -> {
-                    applyHomeByMove(player, steps);
-                    sideColumn.turnOnButton();
-                });
-                pause.play();
-            });
-
+            handleMoveThroughHome(player, steps, color);
         } else if (totalTilesMoved + steps > 53) {
-            int stepsUntilReachedHome = 53 - totalTilesMoved;
-            tilesMoved.replace(player, 53);
-            gameController.movePlayer(player, startPosition + stepsUntilReachedHome, movementType.PATH);
-
-            int remainingRoll = steps - stepsUntilReachedHome;
-            playerTokenLayer.addToAnimationQueue(() -> {
-                playerTokenLayer.movePlayerThroughHomePath(player, color, remainingRoll, gameController);
-                PauseTransition homeStepPause = new PauseTransition(Duration.millis((remainingRoll + 1) * 300));
-                homeStepPause.setOnFinished(z -> {
-                    applyHomeMove(player, remainingRoll);
-                    sideColumn.turnOnButton();
-                });
-                homeStepPause.play();
-            });
-
+            handleMoveTowardsHome(player, steps, totalTilesMoved, startPosition, color);
         } else {
-            gameController.movePlayer(player, nextPosition, movementType.PATH);
-            tilesMoved.replace(player, totalTilesMoved + steps);
-            playerTokenLayer.addToAnimationQueue(() -> {
-                PauseTransition pause = new PauseTransition(Duration.millis(100));
-                pause.setOnFinished(e -> {
-                    sideColumn.turnOnButton();
-                    playerTokenLayer.runNextAnimation();
-                });
-                pause.play();
-            });
+            handleNormalMove(player, steps, nextPosition);
         }
+    }
+
+    private void handleMoveThroughHome(Player player, int steps, Color color) {
+        int homePosition = gameController.getHomePosition().get(player);
+        playerTokenLayer.addToAnimationQueue(() -> {
+            playerTokenLayer.movePlayerThroughHomePath(player, color, homePosition + steps, gameController);
+            PauseTransition pause = new PauseTransition(Duration.millis((steps * 300) + 100));
+            pause.setOnFinished(e -> {
+                applyHomeByMove(player, steps);
+                sideColumn.turnOnButton();
+            });
+            pause.play();
+        });
+    }
+
+    private void handleMoveTowardsHome(Player player, int steps, int totalTilesMoved, int startPosition, Color color) {
+        int stepsUntilReachedHome = 53 - totalTilesMoved;
+        tilesMoved.replace(player, 53);
+        gameController.movePlayer(player, startPosition + stepsUntilReachedHome, movementType.PATH);
+
+        int remainingRoll = steps - stepsUntilReachedHome;
+        playerTokenLayer.addToAnimationQueue(() -> {
+            playerTokenLayer.movePlayerThroughHomePath(player, color, remainingRoll, gameController);
+            PauseTransition homeStepPause = new PauseTransition(Duration.millis((remainingRoll + 1) * 300));
+            homeStepPause.setOnFinished(z -> {
+                applyHomeMove(player, remainingRoll);
+                sideColumn.turnOnButton();
+            });
+            homeStepPause.play();
+        });
+    }
+
+    private void handleNormalMove(Player player, int steps, int nextPosition) {
+        gameController.movePlayer(player, nextPosition, movementType.PATH);
+        tilesMoved.replace(player, tilesMoved.get(player) + steps);
+        playerTokenLayer.addToAnimationQueue(() -> {
+            PauseTransition pause = new PauseTransition(Duration.millis(100));
+            pause.setOnFinished(e -> {
+                sideColumn.turnOnButton();
+                playerTokenLayer.runNextAnimation();
+            });
+            pause.play();
+        });
     }
 
     /**
@@ -115,7 +123,7 @@ public class LudoRollHandler implements RollHandler {
      * @param buttonVisual the roll button that was pressed
      */
     @Override
-    public void handleRollDice(DiceButtonVisual buttonVisual) {
+    public void handleRollDice() {
         int diceRoll = dice.roll();
         sideColumn.displayRoll(diceRoll);
 
@@ -123,33 +131,36 @@ public class LudoRollHandler implements RollHandler {
         int homePosition = gameController.getHomePosition().get(currentPlayer);
 
         if (homePosition + diceRoll > 6) {
-            int toGoal = 6 - homePosition;
-            moveBy(gameController.getCurrentPlayer(), toGoal, buttonVisual);
-
-            PauseTransition gameEndAnimation = new PauseTransition(Duration.millis(toGoal * 300 + 300));
-            gameEndAnimation.setOnFinished(event -> {
-                playerTokenLayer.moveToGoal(currentPlayer);
-                PauseTransition switchScreenPause = new PauseTransition(Duration.millis(600));
-                switchScreenPause.setOnFinished(e -> {
-                    SceneManager.getInstance().changeScene(
-                        new WinScreen(currentPlayer.getName(), currentPlayer.getIcon()).getScene()
-                    );
-                });
-                switchScreenPause.play();
-            });
-            gameEndAnimation.play();
-
+            handleGoalReached(currentPlayer, homePosition);
         } else {
-            moveBy(gameController.getCurrentPlayer(), diceRoll, buttonVisual);
+            moveBy(currentPlayer, diceRoll);
             gameController.advanceTurn();
         }
+    }
+
+    private void handleGoalReached(Player currentPlayer, int homePosition) {
+        int toGoal = 6 - homePosition;
+        moveBy(currentPlayer, toGoal);
+
+        PauseTransition gameEndAnimation = new PauseTransition(Duration.millis(toGoal * 300 + 300));
+        gameEndAnimation.setOnFinished(event -> {
+            playerTokenLayer.moveToGoal(currentPlayer);
+            PauseTransition switchScreenPause = new PauseTransition(Duration.millis(600));
+            switchScreenPause.setOnFinished(e -> {
+                SceneManager.getInstance().changeScene(
+                        new WinScreen(currentPlayer.getName(), currentPlayer.getIcon()).getScene()
+                );
+            });
+            switchScreenPause.play();
+        });
+        gameEndAnimation.play();
     }
 
     /**
      * Moves player forward through home tiles by a number of steps.
      *
      * @param player the player to move
-     * @param steps the number of tiles to move
+     * @param steps  the number of tiles to move
      */
     public void applyHomeByMove(Player player, int steps) {
         gameController.movePlayerThroughHomeBy(player, steps);

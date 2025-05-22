@@ -66,6 +66,8 @@ public class LudoIngame implements Ingame {
 
         gameController.setIngame(this);
 
+        //ChatGPT
+
         // Main wrapper HBox
         HBox sceneWrapper = new HBox(25);
 

@@ -4,7 +4,6 @@ import boardgame.controller.GameControllers.SnLGameController;
 import boardgame.model.Player;
 import boardgame.model.diceFiles.Dice;
 import boardgame.utils.movementType;
-import boardgame.visual.elements.SideColumn.DiceButtonVisual;
 import boardgame.visual.elements.SideColumn.SideColumnVisual;
 import boardgame.visual.gameLayers.SnLTokenLayer;
 
@@ -37,7 +36,7 @@ public class SnLRollHandler implements RollHandler {
      * @param buttonVisual the roll button to be re-enabled after move
      */
     @Override
-    public void moveBy(Player player, int steps, DiceButtonVisual buttonVisual) {
+    public void moveBy(Player player, int steps) {
         int startPosition = player.getPosition();
         int nextPosition = startPosition + steps;
 
@@ -60,11 +59,11 @@ public class SnLRollHandler implements RollHandler {
      * @param buttonVisual the roll button that was pressed
      */
     @Override
-    public void handleRollDice(DiceButtonVisual buttonVisual) {
+    public void handleRollDice() {
         int diceRoll = dice.roll();
         sideColumn.displayRoll(diceRoll);
 
-        moveBy(gameController.getCurrentPlayer(), diceRoll, buttonVisual);
+        moveBy(gameController.getCurrentPlayer(), diceRoll);
         gameController.advanceTurn();
     }
 

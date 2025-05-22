@@ -62,8 +62,10 @@ public class SnLIngame implements Ingame {
     @Override
     public Scene getScene() {
         StackPane sceneStacker = new StackPane();
-        
+
         gameController.setIngame(this);
+
+        //ChatGPT
 
         // Main wrapper HBox
         HBox sceneWrapper = new HBox(25);
