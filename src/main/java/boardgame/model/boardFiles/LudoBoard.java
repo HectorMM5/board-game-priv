@@ -8,7 +8,7 @@ import java.util.stream.IntStream;
  * Represents a Ludo game board (15x15 grid) with a predefined path layout.
  * Only specific tile indices are used as playable path tiles.
  * The layout corresponds to the traditional Ludo cross-style board.
- * 
+ *
  * @author Hector
  */
 public class LudoBoard extends Board {
@@ -36,18 +36,38 @@ public class LudoBoard extends Board {
 
     }
 
+    /**
+     * Returns the list of tiles that constitute the red player's path to the home.
+     *
+     * @return the list of red path tiles.
+     */
     public List<Tile> getRedPath() {
         return redPath;
     }
 
+    /**
+     * Returns the list of tiles that constitute the green player's path to the home.
+     *
+     * @return the list of green path tiles.
+     */
     public List<Tile> getGreenPath() {
         return greenPath;
     }
 
+    /**
+     * Returns the list of tiles that constitute the yellow player's path to the home.
+     *
+     * @return the list of yellow path tiles.
+     */
     public List<Tile> getYellowPath() {
         return yellowPath;
     }
-      
+
+    /**
+     * Returns the list of tiles that constitute the blue player's path to the home.
+     *
+     * @return the list of blue path tiles.
+     */
     public List<Tile> getBluePath() {
         return bluePath;
     }

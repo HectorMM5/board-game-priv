@@ -12,9 +12,11 @@ import javafx.animation.PauseTransition;
 import javafx.util.Duration;
 
 /**
- * Handles the core logic of the game, including player movement, turn
- * advancement, and interaction with the board and effects.
- *
+ * Handles the core logic of the Snakes and Ladders game.
+ * Manages player movement, effect execution, turn control, and win detection.
+ * 
+ * Extends the abstract GameController class.
+ * 
  * @author Hector Mendana Morales
  */
 public class SnLGameController extends GameController {
@@ -22,20 +24,18 @@ public class SnLGameController extends GameController {
     private Player playerToSkip = null;
 
     /**
-     * Constructs a new GameController with the specified board and player list.
+     * Constructs a new SnLGameController with the specified board and player list.
      *
-     * @param board the game board
+     * @param board the Snakes and Ladders game board
      * @param players the list of players participating in the game
      */
     public SnLGameController(Board board, List<Player> players) {
         super(board, players);
-
         System.out.println("Reached SnL with players: " + players.toString());
-
     }
 
     /**
-     * Starts the game by placing all players on the first tile.
+     * Initializes the game by placing all players on the first tile.
      */
     @Override
     public void start() {
@@ -45,15 +45,15 @@ public class SnLGameController extends GameController {
     }
 
     /**
-     * Moves the given player to the specified tile number and executes any
-     * effect present on the target tile.
+     * Moves the given player to the specified tile and executes any tile effects.
+     * If the player reaches or passes tile 90, the game is ended.
      *
      * @param player the player to move
-     * @param tileNumber the target tile number to move the player to
+     * @param tileNumber the target tile number
+     * @param mT the movement type (e.g., animated, instant)
      */
     @Override
     public void movePlayer(Player player, int tileNumber, movementType mT) {
-
         int playerPosition = player.getPosition();
 
         if (tileNumber >= 90) {
@@ -72,30 +72,37 @@ public class SnLGameController extends GameController {
         }
     }
 
+    /**
+     * Triggers the win screen and ends the game for the given player.
+     *
+     * @param player the player who reached the end tile
+     */
     public void handleEndGame(Player player) {
         int playerPosition = player.getPosition();
-        PauseTransition gameEndAnimation = new PauseTransition(Duration.millis((90 - playerPosition + 1) * 300 + 300));
+        PauseTransition gameEndAnimation = new PauseTransition(
+            Duration.millis((90 - playerPosition + 1) * 300 + 300)
+        );
+
         gameEndAnimation.setOnFinished(event -> {
             SceneManager.getInstance().changeScene(
-                    new WinScreen(
-                            player.getName(), player.getIcon()
-                    ).getScene());
+                new WinScreen(player.getName(), player.getIcon()).getScene()
+            );
         });
+
         gameEndAnimation.play();
     }
 
     /**
      * Marks a player to skip their next turn.
      *
-     * @param player the player who should skip their next turn
+     * @param player the player to be skipped
      */
     public void markPlayerToSkip(Player player) {
         playerToSkip = player;
     }
 
     /**
-     * Advances the turn to the next player, skipping any player who is marked
-     * to be skipped.
+     * Advances the turn to the next player, skipping any player marked for skip.
      */
     @Override
     public void advanceTurn() {

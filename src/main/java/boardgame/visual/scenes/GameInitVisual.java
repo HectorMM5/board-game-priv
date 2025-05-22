@@ -8,6 +8,8 @@ import boardgame.model.boardFiles.LudoBoard;
 import boardgame.model.boardFiles.SnLBoard;
 import boardgame.utils.GameType;
 import boardgame.utils.JSON.BoardJSON;
+import boardgame.utils.ScreenDimension;
+import boardgame.visual.elements.BackButton;
 import boardgame.visual.elements.LudoBoardVisual;
 import boardgame.visual.elements.Menu.PlayerCreationRow;
 import boardgame.visual.elements.Menu.PopUpAlert;
@@ -23,6 +25,10 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
+/**
+ * Visual interface for the game initialization screen, allowing users to
+ * select the game, board (if applicable), and create players.
+ */
 public class GameInitVisual {
 
     private int chosenBoard;
@@ -35,13 +41,23 @@ public class GameInitVisual {
 
     private final Button addPlayerButton = new Button("Add Player");
     private final Button startGameButton = new Button("Start Game");
+    private final BackButton backButton = new BackButton(false);
 
+    /**
+     * Constructs a new {@code GameInitVisual}.
+     */
     public GameInitVisual() {
         this.chosenBoard = 0;
         this.playerRowsContainer = new VBox(10);
         playerRowsContainer.setStyle("-fx-padding: 20;");
     }
 
+    /**
+     * Creates and returns the scene for game initialization based on the chosen game.
+     *
+     * @param chosenGame the type of game to initialize.
+     * @return the game initialization scene.
+     */
     public Scene getScene(GameType chosenGame) {
         this.chosenGame = chosenGame;
         addEmptyPlayerRow();
@@ -73,9 +89,9 @@ public class GameInitVisual {
             }
 
             boolean allNamesValid = playerRowsContainer.getChildren().stream()
-                .filter(node -> node instanceof PlayerCreationRow)
-                .map(node -> ((PlayerCreationRow) node).getNameField().getText().trim())
-                .allMatch(name -> !name.isBlank());
+                    .filter(node -> node instanceof PlayerCreationRow)
+                    .map(node -> ((PlayerCreationRow) node).getNameField().getText().trim())
+                    .allMatch(name -> !name.isBlank());
 
             if (!allNamesValid) {
                 new PopUpAlert("Player names cannot be empty.").show();
@@ -83,12 +99,12 @@ public class GameInitVisual {
             }
 
             List<Player> players = playerRowsContainer.getChildren().stream()
-                .filter(node -> node instanceof PlayerCreationRow)
-                .map(node -> {
-                    PlayerCreationRow row = (PlayerCreationRow) node;
-                    return new Player(row.getSelectedIconName(), row.getNameField().getText());
-                })
-                .toList();
+                    .filter(node -> node instanceof PlayerCreationRow)
+                    .map(node -> {
+                        PlayerCreationRow row = (PlayerCreationRow) node;
+                        return new Player(row.getSelectedIconName(), row.getNameField().getText());
+                    })
+                    .toList();
 
             GameInitController.handleGameStart(chosenGame, chosenBoard, players);
         });
@@ -121,7 +137,7 @@ public class GameInitVisual {
         boardSide.getChildren().add(boardChoiceHolder);
 
         VBox sideColumn = new VBox(20);
-        sideColumn.getChildren().addAll(titleLabel, subtitleLabel);
+        sideColumn.getChildren().addAll(backButton, titleLabel, subtitleLabel);
 
         if (chosenGame.equals(GameType.SnakesNLadders)) {
             sideColumn.getChildren().add(boardChoices);
@@ -129,7 +145,7 @@ public class GameInitVisual {
 
         sideColumn.getChildren().addAll(playerRowsContainer, addPlayerButton, startGameButton);
         sideColumn.setPadding(new Insets(20));
-        sideColumn.setPrefWidth(400);
+        sideColumn.setPrefWidth(ScreenDimension.getScreenWidth() * 0.3);
         sideColumn.setAlignment(Pos.TOP_CENTER);
 
         HBox.setHgrow(boardSide, Priority.NEVER);
@@ -143,6 +159,10 @@ public class GameInitVisual {
         return new Scene(sceneWrapper);
     }
 
+    /**
+     * Adds an empty player creation row to the UI. Limits the number of players
+     * based on the chosen game.
+     */
     public void addEmptyPlayerRow() {
         switch (chosenGame) {
             case SnakesNLadders -> {
@@ -152,7 +172,7 @@ public class GameInitVisual {
             }
 
             case Ludo -> {
-                if (playerRowsContainer.getChildren().size() == 3) {
+                if (playerRowsContainer.getChildren().size() == 3) { // Ludo supports up to 4 players
                     addPlayerButton.setDisable(true);
                 }
             }
@@ -161,7 +181,7 @@ public class GameInitVisual {
         PlayerCreationRow row = new PlayerCreationRow();
         row.setDeleteRowAction(() -> {
             playerRowsContainer.getChildren().remove(row);
-            if (playerRowsContainer.getChildren().size() < 3) {
+            if (playerRowsContainer.getChildren().size() < (chosenGame == GameType.SnakesNLadders ? 5 : 4)) {
                 addPlayerButton.setDisable(false);
             }
         });
@@ -169,6 +189,11 @@ public class GameInitVisual {
         playerRowsContainer.getChildren().add(row);
     }
 
+    /**
+     * Loads the visual representation of the selected board.
+     *
+     * @param boardIndex the index of the board to load (for games with multiple board presets).
+     */
     private void loadBoard(int boardIndex) {
         this.chosenBoard = boardIndex;
         switch (chosenGame) {
@@ -177,6 +202,11 @@ public class GameInitVisual {
         }
     }
 
+    /**
+     * Handles the loading of a Snakes and Ladders board based on the index.
+     *
+     * @param boardIndex the index of the Snakes and Ladders board to load.
+     */
     private void handleSnL(int boardIndex) {
         SnLBoard board = BoardJSON.constructSnLBoardFromJSON(boardIndex);
         SnLBoardVisual boardVisual = new SnLBoardVisual(board);
@@ -186,6 +216,9 @@ public class GameInitVisual {
         boardChoiceHolder.getChildren().addAll(boardVisual, ladderLayer);
     }
 
+    /**
+     * Handles the loading of the Ludo board.
+     */
     private void handleLudo() {
         LudoBoard ludoBoard = new LudoBoard();
         LudoBoardVisual ludoBoardVisual = new LudoBoardVisual(ludoBoard);

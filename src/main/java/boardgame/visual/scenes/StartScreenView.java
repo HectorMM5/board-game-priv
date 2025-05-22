@@ -10,8 +10,17 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
+/**
+ * The initial screen of the application, allowing users to select which game
+ * they want to play.
+ */
 public class StartScreenView {
 
+    /**
+     * Creates and returns the scene for the start screen.
+     *
+     * @return the start screen scene.
+     */
     public static Scene getScene() {
         VBox root = new VBox();
         root.setSpacing(30);
@@ -32,7 +41,6 @@ public class StartScreenView {
         menuPane.setAlignment(Pos.CENTER);
 
         GameInitVisual gameInitVisual = new GameInitVisual();
-
         SceneManager sceneManager = SceneManager.getInstance();
 
         Button SnLButton = new Button("Snakes & Ladders");

@@ -32,8 +32,8 @@ public class SnLRollHandler implements RollHandler {
      * Animates and completes a player's move by a number of steps. Updates
      * token layer, invokes game logic, and re-enables the roll button.
      *
-     * @param player the player to move
-     * @param steps the number of tiles to move
+     * @param player       the player to move
+     * @param steps        the number of tiles to move
      * @param buttonVisual the roll button to be re-enabled after move
      */
     @Override

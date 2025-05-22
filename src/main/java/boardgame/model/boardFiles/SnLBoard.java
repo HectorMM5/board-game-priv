@@ -10,10 +10,10 @@ import boardgame.model.effectFiles.SnakeEffect;
 /**
  * Represents the game board consisting of a grid of {@link Tile} objects.
  * Provides access to tile layout, dimensions, and applied effects.
- * 
+ * <p>
  * A default board has a width of 10 and height of 9 (i.e., 90 tiles).
  * Each tile is initialized with a unique index and may be associated with a game effect.
- * 
+ *
  * @author Hector Mendana Morales
  */
 public class SnLBoard extends Board {
@@ -30,13 +30,13 @@ public class SnLBoard extends Board {
         this.tileCount = boardWidth * boardHeight;
 
         IntStream.rangeClosed(1, tileCount)
-            .forEach(i -> tiles.add(new Tile(i)));
+                .forEach(i -> tiles.add(new Tile(i)));
     }
 
     /**
      * Constructs a custom-sized board with the given width and height.
      *
-     * @param boardWidth the number of tiles in each row
+     * @param boardWidth  the number of tiles in each row
      * @param boardHeight the number of tiles in each column
      */
     public SnLBoard(int boardWidth, int boardHeight) {
@@ -45,9 +45,14 @@ public class SnLBoard extends Board {
         this.tileCount = boardWidth * boardHeight;
 
         IntStream.rangeClosed(1, tileCount)
-            .forEach(i -> tiles.add(new Tile(i)));
+                .forEach(i -> tiles.add(new Tile(i)));
     }
 
+    /**
+     * Returns a list of tiles that have a {@link LadderEffect} associated with them.
+     *
+     * @return a list of tiles with ladders.
+     */
     public List<Tile> getTilesWithLadders() {
         List<Tile> tilesWithLadders = new ArrayList<>();
         for (Tile tile : tiles) {
@@ -57,8 +62,13 @@ public class SnLBoard extends Board {
         }
         return tilesWithLadders;
     }
-    
 
+
+    /**
+     * Returns a list of tiles that have a {@link SnakeEffect} associated with them.
+     *
+     * @return a list of tiles with snakes.
+     */
     public List<Tile> getTilesWithSnakes() {
         List<Tile> tilesWithSnakes = new ArrayList<>();
         for (Tile tile : tiles) {

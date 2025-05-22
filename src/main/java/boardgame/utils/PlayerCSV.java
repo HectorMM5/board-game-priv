@@ -13,10 +13,10 @@ import com.opencsv.CSVWriter;
 /**
  * Manages player profile data stored in a CSV file, including player
  * registration, win tracking, and icon updates.
- *
+ * <p>
  * This class utilizes OpenCSV to read and write player information from
  * 'playerProfiles.csv', which is stored in the resources folder.
- *
+ * <p>
  * Each row in the CSV file represents a player and contains: [player name, icon
  * path, win count]
  *
@@ -28,19 +28,25 @@ public class PlayerCSV {
     private static final File FILE = new File("src/main/resources/playerProfiles.csv");
     private static PlayerCSV instance = null;
 
+    /**
+     * Returns the singleton instance of the {@code PlayerCSV} class.
+     * If no instance exists, a new one is created.
+     *
+     * @return the singleton instance of {@code PlayerCSV}.
+     */
     public static PlayerCSV instance() {
         if (instance == null) {
             instance = new PlayerCSV();
         }
         return instance;
-
     }
 
     /**
      * Reads and returns the contents of the CSV file as a list of string
-     * arrays.
+     * arrays. Each inner array represents a row of player data.
      *
-     * @return a list of all player data rows from the CSV file
+     * @return a list of all player data rows from the CSV file.
+     * @throws IllegalArgumentException if there is an issue reading the CSV file.
      */
     public static ArrayList<String[]> getCSVContent() {
         ArrayList<String[]> allPlayers = new ArrayList<>();
@@ -58,10 +64,11 @@ public class PlayerCSV {
     }
 
     /**
-     * Rewrites the entire CSV file with the provided player data.
+     * Rewrites the entire CSV file with the provided list of player data.
      *
      * @param allPlayers the updated list of all player rows to write to the
-     * file
+     * file.
+     * @throws IllegalArgumentException if there is an issue writing to the CSV file.
      */
     private static void rewriteFile(ArrayList<String[]> allPlayers) {
         try (CSVWriter writer = new CSVWriter(new FileWriter(FILE))) {
@@ -72,11 +79,12 @@ public class PlayerCSV {
     }
 
     /**
-     * Registers a new player with the given name and icon. Throws an exception
-     * if a player with the same name already exists.
+     * Registers a new player with the given name and icon. If a player with the
+     * same name already exists, their icon will be updated instead.
      *
-     * @param name the name of the player to register
-     * @param icon the icon path for the player
+     * @param name the name of the player to register.
+     * @param icon the icon path for the player.
+     * @throws IllegalArgumentException if the player name is empty.
      */
     public void registerNewPlayer(String name, String icon) {
         if (name == null || name.isEmpty()) {
@@ -97,17 +105,16 @@ public class PlayerCSV {
         }
 
         if (!found) {
-            allPlayers.add(new String[]{name, icon});
+            allPlayers.add(new String[]{name, icon, "0"}); // Initialize win count to 0
             rewriteFile(allPlayers);
         }
-
     }
 
     /**
      * Changes the icon path for the player with the specified name.
      *
-     * @param name the name of the player
-     * @param icon the new icon path to assign to the player
+     * @param name the name of the player.
+     * @param icon the new icon path to assign to the player.
      */
     public static void changeIcon(String name, String icon) {
         ArrayList<String[]> allPlayers = getCSVContent();
@@ -128,7 +135,7 @@ public class PlayerCSV {
     /**
      * Returns an array of all player names stored in the CSV file.
      *
-     * @return an array of player names
+     * @return an array of player names.
      */
     public String[] getPlayerNames() {
         ArrayList<String[]> content = getCSVContent();
@@ -142,9 +149,9 @@ public class PlayerCSV {
     /**
      * Retrieves the icon path associated with the specified player name.
      *
-     * @param playerName the name of the player to look up
-     * @return the icon path of the player
-     * @throws IllegalArgumentException if the player is not found
+     * @param playerName the name of the player to look up.
+     * @return the icon path of the player.
+     * @throws IllegalArgumentException if the player is not found.
      */
     public String getPlayerIconByPlayerName(String playerName) {
         ArrayList<String[]> content = getCSVContent();

@@ -34,6 +34,13 @@ public class LudoRollHandler implements RollHandler {
 
     private final Map<Player, Integer> tilesMoved = new HashMap<>();
 
+    /**
+     * Constructs a LudoRollHandler to manage rolling logic and animations.
+     *
+     * @param gameController the controller handling Ludo game logic
+     * @param playerTokenLayer the token animation layer
+     * @param sideColumn the UI column for status display
+     */
     public LudoRollHandler(LudoGameController gameController, LudoTokenLayer playerTokenLayer, SideColumnVisual sideColumn) {
         this.gameController = gameController;
         this.playerTokenLayer = playerTokenLayer;
@@ -44,16 +51,14 @@ public class LudoRollHandler implements RollHandler {
         IntStream.range(0, players.size()).forEach(i -> {
             tilesMoved.put(players.get(i), 0);
         });
-
     }
 
     /**
-     * Animates and completes a player's move by a number of steps. Updates
-     * token layer, invokes game logic, and re-enables the roll button.
+     * Animates and completes a player's move by a number of steps.
      *
      * @param player the player to move
      * @param steps the number of tiles to move
-     * @param buttonVisual the roll button to be re-enabled after move
+     * @param buttonVisual the button to re-enable after animation
      */
     @Override
     public void moveBy(Player player, int steps, DiceButtonVisual buttonVisual) {
@@ -64,32 +69,24 @@ public class LudoRollHandler implements RollHandler {
 
         if (totalTilesMoved == 53) {
             int homePosition = gameController.getHomePosition().get(player);
-
-            // Step 1: Animate the token
             playerTokenLayer.addToAnimationQueue(() -> {
                 playerTokenLayer.movePlayerThroughHomePath(player, color, homePosition + steps, gameController);
-
                 PauseTransition pause = new PauseTransition(Duration.millis((steps * 300) + 100));
                 pause.setOnFinished(e -> {
                     applyHomeByMove(player, steps);
                     sideColumn.turnOnButton();
-
                 });
                 pause.play();
-
             });
 
         } else if (totalTilesMoved + steps > 53) {
             int stepsUntilReachedHome = 53 - totalTilesMoved;
             tilesMoved.replace(player, 53);
-
             gameController.movePlayer(player, startPosition + stepsUntilReachedHome, movementType.PATH);
 
             int remainingRoll = steps - stepsUntilReachedHome;
-
             playerTokenLayer.addToAnimationQueue(() -> {
                 playerTokenLayer.movePlayerThroughHomePath(player, color, remainingRoll, gameController);
-
                 PauseTransition homeStepPause = new PauseTransition(Duration.millis((remainingRoll + 1) * 300));
                 homeStepPause.setOnFinished(z -> {
                     applyHomeMove(player, remainingRoll);
@@ -100,25 +97,20 @@ public class LudoRollHandler implements RollHandler {
 
         } else {
             gameController.movePlayer(player, nextPosition, movementType.PATH);
-
             tilesMoved.replace(player, totalTilesMoved + steps);
-
             playerTokenLayer.addToAnimationQueue(() -> {
                 PauseTransition pause = new PauseTransition(Duration.millis(100));
                 pause.setOnFinished(e -> {
                     sideColumn.turnOnButton();
                     playerTokenLayer.runNextAnimation();
-
                 });
                 pause.play();
             });
-
         }
     }
 
     /**
-     * Handles the dice roll event, initiates player movement and updates the
-     * display.
+     * Handles the dice roll, moves the player and checks for game end.
      *
      * @param buttonVisual the roll button that was pressed
      */
@@ -134,22 +126,16 @@ public class LudoRollHandler implements RollHandler {
             int toGoal = 6 - homePosition;
             moveBy(gameController.getCurrentPlayer(), toGoal, buttonVisual);
 
-            System.out.println("REACHED END");
-
             PauseTransition gameEndAnimation = new PauseTransition(Duration.millis(toGoal * 300 + 300));
             gameEndAnimation.setOnFinished(event -> {
                 playerTokenLayer.moveToGoal(currentPlayer);
-
                 PauseTransition switchScreenPause = new PauseTransition(Duration.millis(600));
                 switchScreenPause.setOnFinished(e -> {
                     SceneManager.getInstance().changeScene(
-                            new WinScreen(
-                                    currentPlayer.getName(), currentPlayer.getIcon()
-                            ).getScene());
+                        new WinScreen(currentPlayer.getName(), currentPlayer.getIcon()).getScene()
+                    );
                 });
-
                 switchScreenPause.play();
-
             });
             gameEndAnimation.play();
 
@@ -157,19 +143,34 @@ public class LudoRollHandler implements RollHandler {
             moveBy(gameController.getCurrentPlayer(), diceRoll, buttonVisual);
             gameController.advanceTurn();
         }
-
     }
 
+    /**
+     * Moves player forward through home tiles by a number of steps.
+     *
+     * @param player the player to move
+     * @param steps the number of tiles to move
+     */
     public void applyHomeByMove(Player player, int steps) {
         gameController.movePlayerThroughHomeBy(player, steps);
     }
 
+    /**
+     * Moves player directly to a specific home tile.
+     *
+     * @param player the player to move
+     * @param steps how far into home area the player should be placed
+     */
     public void applyHomeMove(Player player, int steps) {
         gameController.movePlayerThroughHome(player, steps);
     }
 
+    /**
+     * Returns the internal map tracking how far each player has moved.
+     *
+     * @return a map of players and their movement progress
+     */
     public Map<Player, Integer> getTilesMoved() {
         return tilesMoved;
     }
-
 }

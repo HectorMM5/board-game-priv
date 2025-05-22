@@ -17,11 +17,18 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
+/**
+ * Visual representation of a six-sided die animation. It displays a sequence
+ * of random rolls before settling on the final result.
+ */
 public class DiceAnimation extends GridPane {
 
     private List<Circle> points;
     private final Random random = new Random();
 
+    /**
+     * Constructs a new {@code DiceAnimation}.
+     */
     public DiceAnimation() {
         this.points = new ArrayList<>(9);
 
@@ -29,7 +36,7 @@ public class DiceAnimation extends GridPane {
         this.setVgap(0);
         this.setPadding(Insets.EMPTY);
         this.setAlignment(Pos.CENTER);
-        this.setPrefWidth(225);
+        this.setPrefWidth(100);
         this.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
         this.setStyle("-fx-background-color: white;");
 
@@ -48,6 +55,13 @@ public class DiceAnimation extends GridPane {
 
     }
 
+    /**
+     * Initiates the dice roll animation, displaying a sequence of random
+     * values before showing the final roll result.
+     *
+     * @param finalRoll the result of the dice roll to be displayed at the end
+     * of the animation.
+     */
     public void displayRoll(int finalRoll) {
         Timeline timeline = new Timeline();
 
@@ -70,27 +84,40 @@ public class DiceAnimation extends GridPane {
         timeline.play();
     }
 
+    /**
+     * Updates the visual representation of the die to show the face corresponding
+     * to the given roll value.
+     *
+     * @param roll the value of the die roll (between 1 and 6).
+     * @throws IllegalArgumentException if the roll value is not between 1 and 6.
+     */
     public void displayFace(int roll) {
         points.forEach(c -> c.setFill(Color.WHITE));
 
         switch (roll) {
             case 1 ->
-                setPips(4);
+                    setPips(4);
             case 2 ->
-                setPips(0, 8);
+                    setPips(0, 8);
             case 3 ->
-                setPips(0, 4, 8);
+                    setPips(0, 4, 8);
             case 4 ->
-                setPips(0, 2, 6, 8);
+                    setPips(0, 2, 6, 8);
             case 5 ->
-                setPips(0, 2, 4, 6, 8);
+                    setPips(0, 2, 4, 6, 8);
             case 6 ->
-                setPips(0, 2, 3, 5, 6, 8);
+                    setPips(0, 2, 3, 5, 6, 8);
             default ->
-                throw new IllegalArgumentException("Roll must be between 1 and 6");
+                    throw new IllegalArgumentException("Roll must be between 1 and 6");
         }
     }
 
+    /**
+     * Sets the pips (black circles) on the die face at the specified indices.
+     *
+     * @param indices the indices of the points to be displayed as pips (0-8,
+     * corresponding to the 3x3 grid).
+     */
     private void setPips(int... indices) {
         for (int i : indices) {
             points.get(i).setFill(Color.BLACK);

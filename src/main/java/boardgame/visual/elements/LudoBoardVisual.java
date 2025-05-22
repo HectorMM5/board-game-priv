@@ -14,6 +14,11 @@ import boardgame.utils.ScreenDimension;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 
+/**
+ * Visual representation of the Ludo game board using JavaFX's {@link GridPane}.
+ * This class arranges {@link TileVisual} and {@link FillerTile} components
+ * to create the Ludo board layout based on the underlying {@link LudoBoard} logic.
+ */
 public final class LudoBoardVisual extends BoardVisual {
 
     private final double TILE_SIZE = (ScreenDimension.getScreenHeight() - 200) / 15;
@@ -24,21 +29,32 @@ public final class LudoBoardVisual extends BoardVisual {
     private final List<Point> greenHomeTiles = new ArrayList<>();
     private final List<Point> blueHomeTiles = new ArrayList<>();
 
+    /**
+     * Constructs a new visual Ludo board based on the provided {@link LudoBoard} logic.
+     * Initializes layout settings and populates the grid with visual tile elements.
+     *
+     * @param board the logical Ludo board to visualize.
+     */
     public LudoBoardVisual(LudoBoard board) {
         super(board);
         initializeBoard();
-        
+
         tileGrid.setVgap(-1);
         tileGrid.setHgap(-1);
         this.prefWidthProperty().bind(tileGrid.widthProperty());
         this.prefHeightProperty().bind(tileGrid.heightProperty());
         this.setMaxSize(USE_PREF_SIZE, USE_PREF_SIZE);
+        this.getChildren().add(tileGrid);
     }
 
+    /**
+     * Initializes the Ludo board layout by placing playable tiles, home paths,
+     * starting areas, and filler tiles into the grid.
+     */
     @Override
     public void initializeBoard() {
         List<Point> playableTiles = LudoBoardTiles.getPlayableTiles();
-        
+
         List<Point> yellowStartTiles = new ArrayList<>();
         List<Point> redStartTiles = new ArrayList<>();
         List<Point> greenStartTiles = new ArrayList<>();
@@ -119,36 +135,64 @@ public final class LudoBoardVisual extends BoardVisual {
         // Add playable tile visuals
         IntStream.rangeClosed(1, playableTiles.size()).forEach(i -> {
             Point point = playableTiles.get(i - 1);
-            Tile tile = tileLogic.get(i-1);
+            Tile tile = tileLogic.get(i - 1);
             TileVisual tileVisual = new TileVisual(tile, TILE_SIZE, TILE_SIZE);
             tileGrid.add(tileVisual, point.x, point.y);
         });
-
-        this.getChildren().add(tileGrid);
     }
 
+    /**
+     * Returns the JavaFX GridPane used to lay out the tiles visually.
+     *
+     * @return the tile grid.
+     */
     @Override
     public GridPane getTileGrid() {
         return tileGrid;
     }
 
+    /**
+     * Returns the spacing between the visual tiles.
+     *
+     * @return the spacing.
+     */
     @Override
     public double getSpacing() {
         return spacing;
     }
 
+    /**
+     * Returns the list of coordinates for the yellow player's home path tiles.
+     *
+     * @return the list of yellow home tile coordinates.
+     */
     public List<Point> getYellowHomeTiles() {
         return yellowHomeTiles;
     }
 
+    /**
+     * Returns the list of coordinates for the red player's home path tiles.
+     *
+     * @return the list of red home tile coordinates.
+     */
     public List<Point> getRedHomeTiles() {
         return redHomeTiles;
     }
-    
+
+    /**
+     * Returns the list of coordinates for the blue player's home path tiles.
+     *
+     * @return the list of blue home tile coordinates.
+     */
     public List<Point> getBlueHomeTiles() {
         return blueHomeTiles;
     }
 
+    /**
+     * Returns the list of coordinates for the green player's home path tiles.
+     *
+     * @return the list of green home tile coordinates.
+     */
     public List<Point> getGreenHomeTiles() {
         return greenHomeTiles;
     }

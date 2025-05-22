@@ -11,18 +11,18 @@ import javafx.scene.layout.GridPane;
  * Visual representation of the game board using JavaFX's {@link GridPane}.
  * This class arranges {@link TileVisual} components based on the logic from
  * the underlying {@link SnLBoard} object and supports updating the board display.
- * 
+ * <p>
  * The tiles are laid out in a zig-zag (snaking) pattern across the grid.
- * 
+ *
  * @author Hector Mendana Morales
  */
 public final class SnLBoardVisual extends BoardVisual {
 
     private final double dimension = ScreenDimension.getScreenHeight() - 200; // Example dimension, adjust as needed
     private final LadderLayer ladderLayer;
-    private final double TILE_SIZE = dimension / 10; 
+    private final double TILE_SIZE = dimension / 10;
     private final double spacing = TILE_SIZE + 4;
-    
+
 
     /**
      * Constructs a new visual board based on the provided {@link SnLBoard} logic.
@@ -34,9 +34,9 @@ public final class SnLBoardVisual extends BoardVisual {
         super(board);
 
         initializeBoard();
-        this.ladderLayer = new LadderLayer(this, board.getTilesWithLadders(), board.getTilesWithSnakes()); 
+        this.ladderLayer = new LadderLayer(this, board.getTilesWithLadders(), board.getTilesWithSnakes());
         this.prefWidthProperty().bind(tileGrid.widthProperty());
-        this.prefHeightProperty().bind(tileGrid.heightProperty());    
+        this.prefHeightProperty().bind(tileGrid.heightProperty());
         this.setMaxSize(USE_PREF_SIZE, USE_PREF_SIZE);
         this.getChildren().addAll(tileGrid, ladderLayer);
     }
@@ -56,26 +56,36 @@ public final class SnLBoardVisual extends BoardVisual {
         for (int i = 0; i < 90; i++) {
             Tile tile = tileLogic.get(i);
             TileVisual tileVisual = new TileVisual(tile, TILE_SIZE, TILE_SIZE);
-        
+
             if ((i % 10) == 0) {
                 movesRight = !movesRight;
             }
-        
+
             int row = 8 - (i / 10);
             int col = movesRight
-                ? i % 10
-                : 10 - ((i % 10) + 1);
+                    ? i % 10
+                    : 10 - ((i % 10) + 1);
 
             tileGrid.add(tileVisual, col, row);
         }
-        
+
     }
 
+    /**
+     * Returns the JavaFX GridPane used to lay out the tiles visually.
+     *
+     * @return the tile grid.
+     */
     @Override
     public GridPane getTileGrid() {
         return tileGrid;
     }
 
+    /**
+     * Returns the spacing between the visual tiles.
+     *
+     * @return the spacing.
+     */
     @Override
     public double getSpacing() {
         return spacing;

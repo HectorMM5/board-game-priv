@@ -22,13 +22,19 @@ import javafx.util.Duration;
  * A stateless visual layer for animating player tokens on a Snakes and Ladders
  * board. Uses a single global queue to animate token movements one at a time.
  */
-public class SnLTokenLayer extends TokenLayer {
+public final class SnLTokenLayer extends TokenLayer {
 
     private final Queue<Runnable> animationQueue = new LinkedList<>();
     private boolean isAnimating = false;
 
     private final Map<Player, Integer> positions = new HashMap<>();
 
+    /**
+     * Constructs a new {@code SnLTokenLayer}.
+     *
+     * @param boardVisual the visual representation of the Snakes and Ladders board.
+     * @param players     the list of players in the game.
+     */
     public SnLTokenLayer(SnLBoardVisual boardVisual, List<Player> players) {
         super(boardVisual, players);
 
@@ -61,10 +67,12 @@ public class SnLTokenLayer extends TokenLayer {
 
             positions.put(player, 1);
         }
+
+        refreshTokenSizesAndPositions();
     }
 
     /**
-     * Instantly moves the player's token to a given tile.
+     * Instantly moves the player's token to a given tile with a small animation.
      */
     @Override
     public void moveToken(Player player, int tileNumber) {
@@ -90,8 +98,8 @@ public class SnLTokenLayer extends TokenLayer {
     }
 
     /**
-     * Enqueues multiple moveToken(...) calls, one per tile step. Actual
-     * animation is triggered by the moveToken method itself.
+     * Enqueues multiple {@code moveToken(...)} calls, one per tile step, to animate movement.
+     * The actual animation is triggered sequentially.
      */
     @Override
     public void moveTokenThroughPath(Player player, int endTile) {
@@ -107,6 +115,10 @@ public class SnLTokenLayer extends TokenLayer {
         }
     }
 
+    /**
+     * Executes the next animation in the queue. If the queue is empty, it refreshes
+     * token sizes and positions and resets the animating flag.
+     */
     public void runNextAnimation() {
         Runnable next = animationQueue.poll();
         if (next != null) {
@@ -117,96 +129,114 @@ public class SnLTokenLayer extends TokenLayer {
         }
     }
 
+    /**
+     * Registers a player's move and adds a delayed instant move animation to the queue.
+     *
+     * @param player        the player making the move.
+     * @param tileNumber    the target tile number.
+     * @param movementType  the type of movement (INSTANT or PATH).
+     */
     @Override
     public void registerPlayerMove(Player player, int tileNumber, movementType movementType) {
         switch (movementType) {
             case INSTANT ->
-                animationQueue.add(() -> {
-                    PauseTransition pause = new PauseTransition(Duration.millis(400));
-                    pause.setOnFinished(e -> moveToken(player, tileNumber));
-                    pause.play();
+                    animationQueue.add(() -> {
+                        PauseTransition pause = new PauseTransition(Duration.millis(400));
+                        pause.setOnFinished(e -> moveToken(player, tileNumber));
+                        pause.play();
 
-                });
+                    });
 
             case PATH ->
-                moveTokenThroughPath(player, tileNumber);
+                    moveTokenThroughPath(player, tileNumber);
         }
 
     }
 
 
+    /**
+     * Calculates the offset for tokens occupying the same tile to prevent overlap.
+     *
+     * @param tokenCount the number of tokens on the tile.
+     * @return a 2D array of x and y offsets for each token.
+     */
     private static double[][] getTokenOffsets(int tokenCount) {
-    return switch (tokenCount) {
-      case 2 -> new double[][] {{-0.1, -0.1}, {0.35, 0.35}};
-      case 3 -> new double[][] {{-0.1, -0.1}, {0.125, 0.125}, {0.35, 0.35}};
-      case 4 -> new double[][] {{-0.1, -0.1}, {-0.1, 0.35}, {0.35, -0.1}, {0.35, 0.35}};
-      case 5 -> new double[][] {{-0.1, -0.1}, {-0.1, 0.35}, {0.125, 0.125}, {0.35, -0.1}, {0.35, 0.35}};
-      default -> new double[][] {{0, 0}};
-    };
-  }
+        return switch (tokenCount) {
+            case 2 -> new double[][]{{-0.1, -0.1}, {0.35, 0.35}};
+            case 3 -> new double[][]{{-0.1, -0.1}, {0.125, 0.125}, {0.35, 0.35}};
+            case 4 -> new double[][]{{-0.1, -0.1}, {-0.1, 0.35}, {0.35, -0.1}, {0.35, 0.35}};
+            case 5 -> new double[][]{{-0.1, -0.1}, {-0.1, 0.35}, {0.125, 0.125}, {0.35, -0.1}, {0.35, 0.35}};
+            default -> new double[][]{{0, 0}};
+        };
+    }
 
+    /**
+     * Adjusts the size and position of tokens on the board to handle multiple
+     * tokens on the same tile.
+     */
     public void refreshTokenSizesAndPositions() {
-    double spacing = boardVisual.getSpacing();
+        double spacing = boardVisual.getSpacing();
 
-    List<List<Player>> playerGroups = positions.entrySet().stream()
-            .collect(Collectors.groupingBy(
-                    Map.Entry::getValue,
-                    Collectors.mapping(Map.Entry::getKey, Collectors.toList())
-            ))
-            .values().stream()
-            .toList();
+        List<List<Player>> playerGroups = positions.entrySet().stream()
+                .collect(Collectors.groupingBy(
+                        Map.Entry::getValue,
+                        Collectors.mapping(Map.Entry::getKey, Collectors.toList())
+                ))
+                .values().stream()
+                .toList();
 
-    for (List<Player> group : playerGroups) {
-        int tokenCount = group.size();
-        double[][] offsets = getTokenOffsets(tokenCount);
+        for (List<Player> group : playerGroups) {
+            int tokenCount = group.size();
+            double[][] offsets = getTokenOffsets(tokenCount);
 
-        for (int i = 0; i < tokenCount; i++) {
-            Player player = group.get(i);
-            ImageView token = playerTokens.get(player);
+            for (int i = 0; i < tokenCount; i++) {
+                Player player = group.get(i);
+                ImageView token = playerTokens.get(player);
 
-            int tile = positions.get(player);
-            int col = cols.get(tile);
-            int row = rows.get(tile);
+                int tile = positions.get(player);
+                int col = cols.get(tile);
+                int row = rows.get(tile);
 
-            double baseX = col * spacing;
-            double baseY = row * spacing;
+                double baseX = col * spacing;
+                double baseY = row * spacing;
 
-            // Size
-            if (tokenCount > 1) {
-                token.setFitWidth(25);
-                token.setFitHeight(25);
-            } else {
-                token.setFitWidth(50);
-                token.setFitHeight(50);
+                // Size
+                if (tokenCount > 1) {
+                    token.setFitWidth(25);
+                    token.setFitHeight(25);
+                } else {
+                    token.setFitWidth(50);
+                    token.setFitHeight(50);
+                }
+
+                // Offset from normalized 0..1 range scaled by spacing
+                double offsetX = offsets[i][0] * spacing;
+                double offsetY = offsets[i][1] * spacing;
+
+                token.setTranslateX(baseX + offsetX);
+                token.setTranslateY(baseY + offsetY);
             }
-
-            // Offset from normalized 0..1 range scaled by spacing
-            double offsetX = offsets[i][0] * spacing;
-            double offsetY = offsets[i][1] * spacing;
-
-            token.setTranslateX(baseX + offsetX);
-            token.setTranslateY(baseY + offsetY);
         }
     }
-}
 
-
+    /**
+     * Resets the size of a player's token to its default.
+     *
+     * @param player the player whose token size to reset.
+     */
     public void resetTokenSize(Player player) {
-    double spacing = boardVisual.getSpacing();
-    ImageView token = playerTokens.get(player);
-    int tile = positions.get(player);
+        ImageView token = playerTokens.get(player);
 
-    int col = cols.get(tile);
-    int row = rows.get(tile);
+        token.setFitWidth(50);
+        token.setFitHeight(50);
+    }
 
-    token.setFitWidth(50);
-    token.setFitHeight(50);
-
-    token.setTranslateX(col * spacing);
-    token.setTranslateY(row * spacing);
-}
-
-public void addToAnimationQueue(Runnable animation) {
+    /**
+     * Adds an animation to the animation queue to be executed sequentially.
+     *
+     * @param animation the {@code Runnable} representing the animation.
+     */
+    public void addToAnimationQueue(Runnable animation) {
         animationQueue.add(animation);
         if (!isAnimating) {
             isAnimating = true;

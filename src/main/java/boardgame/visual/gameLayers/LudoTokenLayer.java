@@ -23,6 +23,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
+/**
+ * Visual layer for Ludo game tokens, managing their placement and movement
+ * on the Ludo board.
+ */
 public class LudoTokenLayer extends TokenLayer {
 
     private final Map<Color, List<Point>> colorHome = new HashMap<>();
@@ -33,13 +37,19 @@ public class LudoTokenLayer extends TokenLayer {
 
     private final Map<Player, Color> playerColors = new HashMap<>();
 
-private static final Map<Color, Integer> homeEntryTiles = Map.of(
-    Color.YELLOW, 40,
-    Color.RED, 54,
-    Color.BLUE, 12,
-    Color.GREEN, 26
-);
+    private static final Map<Color, Integer> homeEntryTiles = Map.of(
+            Color.YELLOW, 40,
+            Color.RED, 54,
+            Color.BLUE, 12,
+            Color.GREEN, 26
+    );
 
+    /**
+     * Constructs a new {@code LudoTokenLayer}.
+     *
+     * @param boardVisual the visual representation of the Ludo board.
+     * @param players     the list of players in the game.
+     */
     public LudoTokenLayer(LudoBoardVisual boardVisual, List<Player> players) {
         super(boardVisual, players);
 
@@ -48,7 +58,6 @@ private static final Map<Color, Integer> homeEntryTiles = Map.of(
         IntStream.rangeClosed(1, playableTileCoordinates.size()).forEach(i -> {
             cols.put(i, playableTileCoordinates.get(i - 1).x);
             rows.put(i, playableTileCoordinates.get(i - 1).y);
-
         });
 
         Map<Color, Integer> colorStartPositions = LudoBoardTiles.getColorStartPositions();
@@ -60,7 +69,7 @@ private static final Map<Color, Integer> homeEntryTiles = Map.of(
         IntStream.range(0, players.size()).forEach(i -> {
             Player player = players.get(i);
             Color color = colors.get(i);
-            playerColors.put(player, color); // 💡 Lagre farge
+            playerColors.put(player, color); // Store player color
             ImageView token = new ImageView(new Image(player.getIcon()));
             token.setFitWidth(50);
             token.setFitHeight(50);
@@ -112,6 +121,12 @@ private static final Map<Color, Integer> homeEntryTiles = Map.of(
         colorHome.put(Color.GREEN, boardVisual.getGreenHomeTiles());
     }
 
+    /**
+     * Moves a player's token to a specific tile number on the main path.
+     *
+     * @param player     the player whose token to move.
+     * @param tileNumber the target tile number.
+     */
     @Override
     public void moveToken(Player player, int tileNumber) {
         resetTokenSize(player);
@@ -132,6 +147,13 @@ private static final Map<Color, Integer> homeEntryTiles = Map.of(
         move.play();
     }
 
+    /**
+     * Moves a player's token through their home path to a specific tile number within the home path.
+     *
+     * @param player     the player whose token to move.
+     * @param color      the color of the player, used to determine the home path.
+     * @param tileNumber the target tile number within the home path (0-indexed).
+     */
     public void moveTokenThroughHome(Player player, Color color, int tileNumber) {
         resetTokenSize(player);
         ImageView token = playerTokens.get(player);
@@ -151,6 +173,14 @@ private static final Map<Color, Integer> homeEntryTiles = Map.of(
 
     }
 
+    /**
+     * Animates a player's token moving through their home path.
+     *
+     * @param player         the player whose token to move.
+     * @param color          the color of the player, used to determine the home path.
+     * @param stopTile       the final tile number to reach within the home path (exclusive).
+     * @param gameController the Ludo game controller to access game state.
+     */
     public void movePlayerThroughHomePath(Player player, Color color, int stopTile, LudoGameController gameController) {
         // Find current position in home path (0 if not yet inside)
         int currentPosition = gameController.getHomePosition().get(player);
@@ -165,12 +195,11 @@ private static final Map<Color, Integer> homeEntryTiles = Map.of(
     }
 
     /**
-     * Animates a player's token as it moves across multiple tiles from its
-     * current position to the end tile. A short delay is introduced between
-     * each step to simulate progression.
+     * Animates a player's token moving across multiple tiles on the main path.
+     * A short delay is introduced between each step.
      *
-     * @param player the player to move
-     * @param endTile the final tile number to reach
+     * @param player  the player to move.
+     * @param endTile the final tile number to reach on the main path.
      */
     @Override
     public void moveTokenThroughPath(Player player, int endTile) {
@@ -191,10 +220,15 @@ private static final Map<Color, Integer> homeEntryTiles = Map.of(
 
         if (!isAnimating) {
             isAnimating = true;
-            runNextAnimation(); // ✅ Called only once
+            runNextAnimation();
         }
     }
 
+    /**
+     * Moves a player's token to the goal tile.
+     *
+     * @param player the player whose token to move.
+     */
     public void moveToGoal(Player player) {
         ImageView token = playerTokens.get(player);
 
@@ -208,6 +242,10 @@ private static final Map<Color, Integer> homeEntryTiles = Map.of(
 
     }
 
+    /**
+     * Executes the next animation in the queue. If the queue is empty, it resets the animation flag
+     * and refreshes token sizes and positions.
+     */
     public void runNextAnimation() {
         Runnable next = animationQueue.poll();
         if (next != null) {
@@ -218,6 +256,13 @@ private static final Map<Color, Integer> homeEntryTiles = Map.of(
         }
     }
 
+    /**
+     * Registers a player's move and initiates the corresponding visual animation.
+     *
+     * @param player        the player who made the move.
+     * @param tileNumber    the target tile number.
+     * @param movementType  the type of movement (INSTANT or PATH).
+     */
     @Override
     public void registerPlayerMove(Player player, int tileNumber, movementType movementType) {
         switch (movementType) {
@@ -230,77 +275,92 @@ private static final Map<Color, Integer> homeEntryTiles = Map.of(
             }
 
             case PATH ->
-                moveTokenThroughPath(player, tileNumber);
+                    moveTokenThroughPath(player, tileNumber);
         }
 
     }
 
+    /**
+     * Calculates the offset for tokens occupying the same tile to prevent overlap.
+     *
+     * @param tokenCount the number of tokens on the tile.
+     * @return a 2D array of x and y offsets for each token.
+     */
     private static double[][] getTokenOffsets(int tokenCount) {
         return switch (tokenCount) {
             case 2 ->
-                new double[][]{{-0.1, -0.1}, {0.35, 0.35}};
+                    new double[][]{{-0.1, -0.1}, {0.35, 0.35}};
             case 3 ->
-                new double[][]{{-0.1, -0.1}, {0.125, 0.125}, {0.35, 0.35}};
+                    new double[][]{{-0.1, -0.1}, {0.125, 0.125}, {0.35, 0.35}};
             case 4 ->
-                new double[][]{{-0.1, -0.1}, {-0.1, 0.35}, {0.35, -0.1}, {0.35, 0.35}};
+                    new double[][]{{-0.1, -0.1}, {-0.1, 0.35}, {0.35, -0.1}, {0.35, 0.35}};
             case 5 ->
-                new double[][]{{-0.1, -0.1}, {-0.1, 0.35}, {0.125, 0.125}, {0.35, -0.1}, {0.35, 0.35}};
+                    new double[][]{{-0.1, -0.1}, {-0.1, 0.35}, {0.125, 0.125}, {0.35, -0.1}, {0.35, 0.35}};
             default ->
-                new double[][]{{0, 0}};
+                    new double[][]{{0, 0}};
         };
     }
 
+    /**
+     * Adjusts the size and position of tokens on the board to handle multiple
+     * tokens on the same tile.
+     */
     public void refreshTokenSizesAndPositions() {
-    double spacing = boardVisual.getSpacing();
+        double spacing = boardVisual.getSpacing();
 
-    List<List<Player>> playerGroups = positions.entrySet().stream()
-        .collect(Collectors.groupingBy(
-            Map.Entry::getValue,
-            Collectors.mapping(Map.Entry::getKey, Collectors.toList())
-        ))
-        .values().stream()
-        .toList();
+        List<List<Player>> playerGroups = positions.entrySet().stream()
+                .collect(Collectors.groupingBy(
+                        Map.Entry::getValue,
+                        Collectors.mapping(Map.Entry::getKey, Collectors.toList())
+                ))
+                .values().stream()
+                .toList();
 
-    for (List<Player> group : playerGroups) {
-        int tokenCount = group.size();
-        double[][] offsets = getTokenOffsets(tokenCount);
+        for (List<Player> group : playerGroups) {
+            int tokenCount = group.size();
+            double[][] offsets = getTokenOffsets(tokenCount);
 
-        for (int i = 0; i < tokenCount; i++) {
-            Player player = group.get(i);
-            ImageView token = playerTokens.get(player);
+            for (int i = 0; i < tokenCount; i++) {
+                Player player = group.get(i);
+                ImageView token = playerTokens.get(player);
 
-            int pos = positions.get(player);
-            Color color = playerColors.get(player);
+                int pos = positions.get(player);
+                Color color = playerColors.get(player);
 
-            Integer homeEntry = homeEntryTiles.get(color);
-            if (homeEntry != null && pos == homeEntry) {
-                continue; // Ikke flytt token hvis den er i inngangen til hjemstien
+                Integer homeEntry = homeEntryTiles.get(color);
+                if (homeEntry != null && pos == homeEntry) {
+                    continue; // Don't move token if it's at the home path entry
+                }
+
+                Integer col = cols.get(pos);
+                Integer row = rows.get(pos);
+
+                double baseX = col * spacing;
+                double baseY = row * spacing;
+
+                if (tokenCount > 1) {
+                    token.setFitWidth(25);
+                    token.setFitHeight(25);
+                } else {
+                    token.setFitWidth(50);
+                    token.setFitHeight(50);
+                }
+
+                double offsetX = offsets[i][0] * spacing;
+                double offsetY = offsets[i][1] * spacing;
+
+                token.setTranslateX(baseX + offsetX);
+                token.setTranslateY(baseY + offsetY);
             }
-
-            int col = cols.get(pos);
-            int row = rows.get(pos);
-
-            double baseX = col * spacing;
-            double baseY = row * spacing;
-
-            if (tokenCount > 1) {
-                token.setFitWidth(25);
-                token.setFitHeight(25);
-            } else {
-                token.setFitWidth(50);
-                token.setFitHeight(50);
-            }
-
-            double offsetX = offsets[i][0] * spacing;
-            double offsetY = offsets[i][1] * spacing;
-
-            token.setTranslateX(baseX + offsetX);
-            token.setTranslateY(baseY + offsetY);
         }
     }
-}
 
 
+    /**
+     * Resets a player's token to its standard size and its current position.
+     *
+     * @param player the player whose token to reset.
+     */
     public void resetTokenSizeAndPosition(Player player) {
         double spacing = boardVisual.getSpacing();
         ImageView token = playerTokens.get(player);
@@ -316,6 +376,11 @@ private static final Map<Color, Integer> homeEntryTiles = Map.of(
         token.setTranslateY(row * spacing);
     }
 
+    /**
+     * Resets a player's token to its standard size.
+     *
+     * @param player the player whose token size to reset.
+     */
     public void resetTokenSize(Player player) {
         ImageView token = playerTokens.get(player);
 
@@ -324,11 +389,16 @@ private static final Map<Color, Integer> homeEntryTiles = Map.of(
 
     }
 
+    /**
+     * Adds an animation to the animation queue to be played sequentially.
+     *
+     * @param animation the {@code Runnable} representing the animation.
+     */
     public void addToAnimationQueue(Runnable animation) {
         animationQueue.add(animation);
         if (!isAnimating) {
             isAnimating = true;
-            runNextAnimation(); 
+            runNextAnimation();
         }
     }
 
