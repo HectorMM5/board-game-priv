@@ -26,8 +26,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 /**
- * Visual interface for the game initialization screen, allowing users to
- * select the game, board (if applicable), and create players.
+ * Visual interface for the game initialization screen, allowing users to select
+ * the game, board (if applicable), and create players.
  */
 public class GameInitVisual {
 
@@ -53,7 +53,8 @@ public class GameInitVisual {
     }
 
     /**
-     * Creates and returns the scene for game initialization based on the chosen game.
+     * Creates and returns the scene for game initialization based on the chosen
+     * game.
      *
      * @param chosenGame the type of game to initialize.
      * @return the game initialization scene.
@@ -66,9 +67,12 @@ public class GameInitVisual {
         Label subtitleLabel = new Label("Create your players!");
 
         switch (chosenGame) {
-            case SnakesNLadders -> titleLabel = new Label("Snakes & Ladders");
-            case Ludo -> titleLabel = new Label("Ludo");
-            default -> throw new AssertionError("Unknown game: " + chosenGame);
+            case SnakesNLadders ->
+                titleLabel = new Label("Snakes & Ladders");
+            case Ludo ->
+                titleLabel = new Label("Ludo");
+            default ->
+                throw new AssertionError("Unknown game: " + chosenGame);
         }
 
         titleLabel.setAlignment(Pos.CENTER);
@@ -76,7 +80,7 @@ public class GameInitVisual {
 
         subtitleLabel.setAlignment(Pos.CENTER);
         subtitleLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #555;");
-        VBox.setMargin(subtitleLabel, new Insets(0, 0, 50, 0));
+        VBox.setMargin(subtitleLabel, new Insets(0, 0, 25, 0));
 
         addPlayerButton.setOnAction(e -> addEmptyPlayerRow());
         addPlayerButton.getStyleClass().add("button-common");
@@ -127,10 +131,12 @@ public class GameInitVisual {
             board3Button.getStyleClass().add("button-common");
 
             boardChoices.getChildren().addAll(board1Button, board2Button, board3Button);
-            boardChoices.setAlignment(Pos.CENTER);
+
         } else {
             boardChoices.getChildren().clear(); // Don't show board choices for Ludo
         }
+
+        boardChoices.setAlignment(Pos.CENTER);
 
         VBox boardSide = new VBox();
         boardSide.setAlignment(Pos.CENTER);
@@ -192,13 +198,16 @@ public class GameInitVisual {
     /**
      * Loads the visual representation of the selected board.
      *
-     * @param boardIndex the index of the board to load (for games with multiple board presets).
+     * @param boardIndex the index of the board to load (for games with multiple
+     * board presets).
      */
     private void loadBoard(int boardIndex) {
         this.chosenBoard = boardIndex;
         switch (chosenGame) {
-            case SnakesNLadders -> handleSnL(boardIndex);
-            case Ludo -> handleLudo();
+            case SnakesNLadders ->
+                handleSnL(boardIndex);
+            case Ludo ->
+                handleLudo();
         }
     }
 

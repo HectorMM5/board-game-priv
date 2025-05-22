@@ -2,6 +2,7 @@ package boardgame.visual.scenes;
 
 import boardgame.controller.SceneManager;
 import boardgame.utils.GameType;
+import boardgame.utils.PlayerCSV;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -33,7 +34,7 @@ public class StartScreenView {
         titleLabel.setStyle("-fx-font-size: 80px; -fx-text-fill: #333; -fx-font-weight: bold;");
         subtitleLabel.setAlignment(Pos.CENTER);
         subtitleLabel.setStyle("-fx-font-size: 32px; -fx-text-fill: #555;");
-        VBox.setMargin(subtitleLabel, new Insets(50, 0, 50, 0));
+        VBox.setMargin(subtitleLabel, new Insets(25, 0, 25, 0));
 
         GridPane menuPane = new GridPane();
         menuPane.setHgap(50);
@@ -57,6 +58,14 @@ public class StartScreenView {
 
         menuPane.add(SnLButton, 0, 0);
         menuPane.add(LudoButton, 1, 0);
+
+        Button importCSVButton = new Button("Import CSV");
+        importCSVButton.setOnAction(e -> {
+            PlayerCSV.instance().handleImport(SceneManager.getPrimaryStage());
+        });
+        importCSVButton.getStyleClass().add("button-common");
+
+        root.getChildren().add(importCSVButton);
 
         return new Scene(root);
 

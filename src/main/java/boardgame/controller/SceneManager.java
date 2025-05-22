@@ -6,7 +6,7 @@ import javafx.stage.Stage;
 public class SceneManager {
 
     private static SceneManager instance;
-    private Stage primaryStage;
+    private static Stage primaryStage;
 
     private SceneManager() {
         // Private constructor to prevent instantiation
@@ -31,8 +31,8 @@ public class SceneManager {
      *
      * @param primaryStage the primary stage.
      */
-    public void setPrimaryStage(Stage primaryStage) {
-        this.primaryStage = primaryStage;
+    public void setPrimaryStage(Stage primaryStageIn) {
+        primaryStage = primaryStageIn;
     }
 
     /**
@@ -40,7 +40,7 @@ public class SceneManager {
      *
      * @return the primary stage.
      */
-    public Stage getPrimaryStage() {
+    public static Stage getPrimaryStage() {
         return primaryStage;
     }
 

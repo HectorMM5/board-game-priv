@@ -10,6 +10,9 @@ import java.util.Iterator;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+
 /**
  * Manages player profile data stored in a CSV file, including player
  * registration, win tracking, and icon updates.
@@ -25,8 +28,14 @@ import com.opencsv.CSVWriter;
  */
 public class PlayerCSV {
 
-    private static final File FILE = new File("src/main/resources/playerProfiles.csv");
+    private final static String path = "src/main/resources/playerProfiles.csv";
+    private static final File DEFAULT_FILE = new File(path);
+    private static File currentFile = DEFAULT_FILE; // Use this to track the current file
     private static PlayerCSV instance = null;
+
+    private PlayerCSV() {
+        // Private constructor to prevent instantiation
+    }
 
     /**
      * Returns the singleton instance of the {@code PlayerCSV} class.
@@ -42,39 +51,76 @@ public class PlayerCSV {
     }
 
     /**
-     * Reads and returns the contents of the CSV file as a list of string
-     * arrays. Each inner array represents a row of player data.
+     * Sets the file that PlayerCSV will operate on. This is useful for imports.
+     *
+     * @param file The new CSV file to use.
+     */
+    private static void setCurrentFile(File file) {
+        currentFile = file;
+    }
+
+    /**
+     * Gets the file that PlayerCSV is currently operating on.
+     *
+     * @return The current CSV file.
+     */
+    private static File getCurrentFile() {
+        return currentFile;
+    }
+
+    /**
+     * Shows a file chooser dialog and allows the user to select a CSV file
+     * for importing player data. If a file is selected, it sets this file
+     * as the current file for PlayerCSV.
+     *
+     * @param primaryStage The primary stage of the application.
+     * @return true if a file was successfully selected, false otherwise.
+     */
+    public boolean importProfiles(Stage primaryStage) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Import Player Profiles");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV files (*.csv)", "*.csv"));
+        File selectedFile = fileChooser.showOpenDialog(primaryStage);
+        if (selectedFile != null) {
+            setCurrentFile(selectedFile);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Reads and returns the contents of the currently active CSV file as a list
+     * of string arrays. Each inner array represents a row of player data.
      *
      * @return a list of all player data rows from the CSV file.
      * @throws IllegalArgumentException if there is an issue reading the CSV file.
      */
     public static ArrayList<String[]> getCSVContent() {
         ArrayList<String[]> allPlayers = new ArrayList<>();
-
-        try (CSVReader reader = new CSVReader(new FileReader(FILE))) {
+        File fileToRead = getCurrentFile();
+        try (CSVReader reader = new CSVReader(new FileReader(fileToRead))) {
             String[] row;
             while ((row = reader.readNext()) != null) {
                 allPlayers.add(row);
             }
         } catch (IOException e) {
-            throw new IllegalArgumentException("Failed to read CSV player file.");
+            throw new IllegalArgumentException("Failed to read CSV player file: " + fileToRead.getAbsolutePath(), e);
         }
-
         return allPlayers;
     }
 
     /**
-     * Rewrites the entire CSV file with the provided list of player data.
+     * Rewrites the currently active CSV file with the provided list of player data.
      *
-     * @param allPlayers the updated list of all player rows to write to the
-     * file.
+     * @param allPlayers the updated list of all player rows to write to the file.
      * @throws IllegalArgumentException if there is an issue writing to the CSV file.
      */
     private static void rewriteFile(ArrayList<String[]> allPlayers) {
-        try (CSVWriter writer = new CSVWriter(new FileWriter(FILE))) {
+        File fileToWrite = getCurrentFile();
+        try (CSVWriter writer = new CSVWriter(new FileWriter(fileToWrite, false))) { // Overwrite the file
             writer.writeAll(allPlayers);
         } catch (IOException e) {
-            throw new IllegalArgumentException("Failed to read CSV player file.");
+            throw new IllegalArgumentException("Failed to write to CSV player file: " + fileToWrite.getAbsolutePath(), e);
         }
     }
 
@@ -93,21 +139,21 @@ public class PlayerCSV {
 
         ArrayList<String[]> allPlayers = getCSVContent();
         Iterator<String[]> iterator = allPlayers.iterator();
-
         boolean found = false;
 
         while (iterator.hasNext()) {
-            if (iterator.next()[0].equals(name)) {
+            String[] row = iterator.next();
+            if (row[0].equals(name)) {
                 found = true;
-                changeIcon(name, icon);
+                row[1] = icon; // Update the icon
                 break;
             }
         }
 
         if (!found) {
             allPlayers.add(new String[]{name, icon, "0"}); // Initialize win count to 0
-            rewriteFile(allPlayers);
         }
+        rewriteFile(allPlayers);
     }
 
     /**
@@ -118,17 +164,12 @@ public class PlayerCSV {
      */
     public static void changeIcon(String name, String icon) {
         ArrayList<String[]> allPlayers = getCSVContent();
-        Iterator<String[]> iterator = allPlayers.iterator();
-        String[] row;
-
-        while (iterator.hasNext()) {
-            row = iterator.next();
+        for (String[] row : allPlayers) {
             if (row[0].equals(name)) {
                 row[1] = icon;
                 break;
             }
         }
-
         rewriteFile(allPlayers);
     }
 
@@ -155,13 +196,28 @@ public class PlayerCSV {
      */
     public String getPlayerIconByPlayerName(String playerName) {
         ArrayList<String[]> content = getCSVContent();
-
         for (String[] row : content) {
             if (row[0].equals(playerName)) {
                 return row[1];
             }
         }
-
         throw new IllegalArgumentException("Player not found.");
+    }
+
+    /**
+     * Imports player profiles from a user-selected CSV file, replacing the
+     * currently loaded profiles.
+     *
+     * @param primaryStage The primary stage for the file chooser.
+     * @return true if import was successful, false otherwise.
+     */
+    public boolean handleImport(Stage primaryStage) {
+        if (importProfiles(primaryStage)) {
+            // Optionally, you could reload the content or notify other parts of the application
+            System.out.println("Player profiles imported successfully from: " + getCurrentFile().getAbsolutePath());
+            return true;
+        }
+        System.out.println("No file selected for import.");
+        return false;
     }
 }
