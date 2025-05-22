@@ -40,7 +40,7 @@ public class PlayerCreationRow extends HBox {
         this.nameField = new TextField();
         this.saveButton = new Button("Save Player");
         this.deleteRowButton = new Button("X");
-        this.fetchButton = new MenuButton("->");
+        this.fetchButton = new MenuButton("Profiles");
 
         saveButton.getStyleClass().add("button-common");
         deleteRowButton.getStyleClass().add("button-common");
