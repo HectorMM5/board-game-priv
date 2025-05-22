@@ -11,15 +11,15 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 
 /**
- * Manages player profile data stored in a CSV file, including player registration,
- * win tracking, and icon updates.
- * 
+ * Manages player profile data stored in a CSV file, including player
+ * registration, win tracking, and icon updates.
+ *
  * This class utilizes OpenCSV to read and write player information from
  * 'playerProfiles.csv', which is stored in the resources folder.
- * 
- * Each row in the CSV file represents a player and contains:
- * [player name, icon path, win count]
- * 
+ *
+ * Each row in the CSV file represents a player and contains: [player name, icon
+ * path, win count]
+ *
  * @author Hector Mendana Morales
  * @author Bjørn Adam Vangen
  */
@@ -28,17 +28,17 @@ public class PlayerCSV {
     private static final File FILE = new File("src/main/resources/playerProfiles.csv");
     private static PlayerCSV instance = null;
 
-
     public static PlayerCSV instance() {
         if (instance == null) {
             instance = new PlayerCSV();
         }
         return instance;
-        
+
     }
 
     /**
-     * Reads and returns the contents of the CSV file as a list of string arrays.
+     * Reads and returns the contents of the CSV file as a list of string
+     * arrays.
      *
      * @return a list of all player data rows from the CSV file
      */
@@ -60,7 +60,8 @@ public class PlayerCSV {
     /**
      * Rewrites the entire CSV file with the provided player data.
      *
-     * @param allPlayers the updated list of all player rows to write to the file
+     * @param allPlayers the updated list of all player rows to write to the
+     * file
      */
     private static void rewriteFile(ArrayList<String[]> allPlayers) {
         try (CSVWriter writer = new CSVWriter(new FileWriter(FILE))) {
@@ -71,8 +72,8 @@ public class PlayerCSV {
     }
 
     /**
-     * Registers a new player with the given name and icon.
-     * Throws an exception if a player with the same name already exists.
+     * Registers a new player with the given name and icon. Throws an exception
+     * if a player with the same name already exists.
      *
      * @param name the name of the player to register
      * @param icon the icon path for the player
@@ -85,35 +86,21 @@ public class PlayerCSV {
         ArrayList<String[]> allPlayers = getCSVContent();
         Iterator<String[]> iterator = allPlayers.iterator();
 
+        boolean found = false;
+
         while (iterator.hasNext()) {
             if (iterator.next()[0].equals(name)) {
-                throw new IllegalArgumentException("A player profile with the given name already exists.");
-            }
-        }
-
-        allPlayers.add(new String[]{name, icon, "0"});
-        rewriteFile(allPlayers);
-    }
-
-    /**
-     * Increments the win count for the player with the given name.
-     *
-     * @param name the name of the player whose win count to increment
-     */
-    public static void incrementPlayerWins(String name) {
-        ArrayList<String[]> allPlayers = getCSVContent();
-        Iterator<String[]> iterator = allPlayers.iterator();
-        String[] row;
-
-        while (iterator.hasNext()) {
-            row = iterator.next();
-            if (row[0].equals(name)) {
-                row[2] = Integer.toString(Integer.parseInt(row[2]) + 1);
+                found = true;
+                changeIcon(name, icon);
                 break;
             }
         }
 
-        rewriteFile(allPlayers);
+        if (!found) {
+            allPlayers.add(new String[]{name, icon});
+            rewriteFile(allPlayers);
+        }
+
     }
 
     /**
