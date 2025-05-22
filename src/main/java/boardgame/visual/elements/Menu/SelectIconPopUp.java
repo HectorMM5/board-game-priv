@@ -47,7 +47,7 @@ public class SelectIconPopUp extends VBox {
         iconGrid.setHgap(10);
         iconGrid.setVgap(10);
 
-        String[] imageFiles = { "listhaug", "solbriller", "Red", "mythra", "daddyposter", "bingus" };
+        String[] imageFiles = { "Red", "Lime", "White", "Orange", "Purple", "Yellow"};
 
         List<StackPane> icons = List.of(imageFiles).stream().map(i -> {
             InputStream is = getClass().getResourceAsStream("/PlayerIcons/" + i + ".png");
