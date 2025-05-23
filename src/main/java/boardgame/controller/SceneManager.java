@@ -1,5 +1,6 @@
 package boardgame.controller;
 
+import boardgame.utils.ErrorDialog;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -56,7 +57,7 @@ public class SceneManager {
             primaryStage.setScene(scene);
             primaryStage.show();
         } else {
-            System.out.println("Primary stage is not set. Cannot change scene.");
+            ErrorDialog.showAndExit("Error", "Primary Stage Not Set", "An unexpected error has occured.");
         }
     }
 
