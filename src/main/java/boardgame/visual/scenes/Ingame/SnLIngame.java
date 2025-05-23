@@ -23,7 +23,7 @@ import javafx.scene.layout.VBox;
  * <p>
  * This class connects the game's logic (SnLGameController) with the visual layers.
  *
- * @author Hector Mendana Morales
+ *  
  */
 public class SnLIngame implements Ingame {
 

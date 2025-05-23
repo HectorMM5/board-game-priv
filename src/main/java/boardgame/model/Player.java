@@ -13,7 +13,7 @@ import boardgame.utils.movementType;
  *
  * The player starts at position 1 by default.
  *
- * @author Hector Mendana Morales
+ *  
  */
 public class Player {
 

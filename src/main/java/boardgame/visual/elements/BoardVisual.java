@@ -14,7 +14,7 @@ import javafx.scene.layout.StackPane;
  * for arranging the visual tiles. Subclasses are responsible for implementing
  * the specific layout of the tiles.
  *
- * @author Hector Mendana Morales
+ *  
  */
 public abstract class BoardVisual extends StackPane {
 

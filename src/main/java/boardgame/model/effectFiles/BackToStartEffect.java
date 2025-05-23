@@ -8,7 +8,7 @@ import javafx.scene.paint.Color;
 /**
  * Effect that moves a player back to the starting position (tile index 1) when triggered.
  *
- * @author Hector Mendana Morales
+ *  
  */
 public class BackToStartEffect extends MovementEffect {
     /**

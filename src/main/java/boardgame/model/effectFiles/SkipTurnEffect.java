@@ -9,7 +9,7 @@ import javafx.scene.paint.Color;
  * 
  * This effect is visually represented using the color red.
  * 
- * @author Hector Mendana Morales
+ *  
  */
 public class SkipTurnEffect implements Effect {
 

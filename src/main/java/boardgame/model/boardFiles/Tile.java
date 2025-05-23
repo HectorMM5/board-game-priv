@@ -11,7 +11,7 @@ import boardgame.model.effectFiles.Effect;
  * and may contain one or more {@link Player} instances.
  * Each tile has a unique number identifying its position.
  * 
- * @author Hector Mendana Morales
+ *  
  */
 public class Tile {
     

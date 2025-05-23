@@ -14,7 +14,7 @@ import javafx.scene.layout.GridPane;
  * <p>
  * The tiles are laid out in a zig-zag (snaking) pattern across the grid.
  *
- * @author Hector Mendana Morales
+ *  
  */
 public final class SnLBoardVisual extends BoardVisual {
 

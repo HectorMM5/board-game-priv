@@ -10,7 +10,7 @@ import javafx.scene.control.Button;
  * 
  * This class can be extended or styled further for visual consistency.
  * 
- * @author Hector Mendana Morales
+ *  
  */
 public class DiceButtonVisual extends Button {
 

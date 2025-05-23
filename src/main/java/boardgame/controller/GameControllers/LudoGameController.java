@@ -23,7 +23,7 @@ import javafx.scene.paint.Color;
  * start positions.
  * </p>
  * 
- * @author Hector
+ * 
  */
 public class LudoGameController extends GameController {
 

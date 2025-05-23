@@ -25,7 +25,7 @@ import javafx.stage.Stage;
  * Each row in the CSV file represents a player and contains: [player name, icon
  * path, win count]
  *
- * @author Hector Mendana Morales
+ *  
  * @author Bjørn Adam Vangen
  */
 public class PlayerCSV {

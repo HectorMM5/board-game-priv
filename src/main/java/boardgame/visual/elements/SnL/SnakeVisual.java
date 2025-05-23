@@ -13,7 +13,7 @@ import javafx.scene.shape.Rectangle;
  * The snake is dynamically rotated and positioned by {@link LadderLayer}
  * to connect two tiles visually.
  * 
- * @author Hector Mendana Morales
+ *  
  */
 public class SnakeVisual extends Group {
 

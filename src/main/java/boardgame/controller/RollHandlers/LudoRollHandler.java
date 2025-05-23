@@ -22,7 +22,7 @@ import javafx.util.Duration;
  * and updating side UI elements during gameplay. Connects game logic to the
  * visual layer.
  *
- * @author Hector Mendana Morales
+ *  
  */
 public class LudoRollHandler implements RollHandler {
 

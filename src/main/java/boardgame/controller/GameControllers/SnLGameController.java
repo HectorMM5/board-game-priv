@@ -17,7 +17,7 @@ import javafx.util.Duration;
  * 
  * Extends the abstract GameController class.
  * 
- * @author Hector Mendana Morales
+ *  
  */
 public class SnLGameController extends GameController {
 

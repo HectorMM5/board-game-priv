@@ -21,7 +21,7 @@ import boardgame.visual.scenes.Ingame.SnLIngame;
  * This class serves as a central container for game-related components
  * and provides methods to launch the game UI.
  * 
- * @author Hector Mendana Morales
+ *  
  */
 public class GameFactory {
 

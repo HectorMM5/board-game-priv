@@ -22,7 +22,7 @@ import javafx.scene.text.FontWeight;
  * 
  * Each row is styled with padding, spacing, and consistent fonts and sizes.
  * 
- * @author Hector Mendana Morales
+ *  
  */
 public class PlayerRowsVisual extends VBox {
 

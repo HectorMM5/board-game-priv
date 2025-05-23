@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @param <Item> the type of elements returned by this iterator
  * 
- * @author Hector Mendana Morales
+ *  
  */
 public class LoopingIterator<Item> implements Iterator<Item> {
     private final List<Item> list;

@@ -12,8 +12,6 @@ import boardgame.visual.scenes.Ingame.Ingame;
 /**
  * Handles the core logic of the game, including player movement,
  * turn advancement, and interaction with the board and effects.
- * 
- * @author Hector Mendana Morales
  */
 public abstract class GameController {
     public final Board board;

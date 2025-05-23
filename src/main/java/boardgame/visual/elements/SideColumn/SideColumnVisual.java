@@ -16,7 +16,7 @@ import javafx.scene.layout.VBox;
  * 
  * It is used as an interactive and informative sidebar during gameplay.
  * 
- * @author Hector Mendana Morales
+ *  
  */
 public class SideColumnVisual extends VBox {
 

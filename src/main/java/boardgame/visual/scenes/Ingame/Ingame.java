@@ -13,7 +13,7 @@ import javafx.scene.Scene;
  * to the scene itself and the roll handler. Implementations of this interface
  * connect the game's logic with the visual layers.
  *
- * @author Hector Mendana Morales
+ *  
  */
 public interface Ingame {
 
