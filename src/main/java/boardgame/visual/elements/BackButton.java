@@ -35,5 +35,7 @@ public class BackButton extends Button {
                 SceneManager.getInstance().changeScene(StartScreenView.getScene());
             }
         });
+
+        this.setFocusTraversable(false);
     }
 }
