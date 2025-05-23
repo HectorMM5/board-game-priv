@@ -237,12 +237,6 @@ public class PlayerCSV {
      * @return true if import was successful, false otherwise.
      */
     public boolean handleImport(Stage primaryStage) {
-        if (importProfiles(primaryStage)) {
-            // Optionally, you could reload the content or notify other parts of the application
-            System.out.println("Player profiles imported successfully from: " + getCurrentFile().getAbsolutePath());
-            return true;
-        }
-        System.out.println("No file selected for import.");
-        return false;
+        return importProfiles(primaryStage);
     }
 }
