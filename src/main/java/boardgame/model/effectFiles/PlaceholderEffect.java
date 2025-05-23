@@ -11,7 +11,7 @@ import javafx.scene.paint.Color;
  * 
  * The visual color representation of this effect is gray.
  * 
- * @author Hector Mendana Morales
+ *  
  */
 public class PlaceholderEffect implements Effect {
 

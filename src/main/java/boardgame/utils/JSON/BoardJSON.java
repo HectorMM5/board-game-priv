@@ -25,7 +25,7 @@ import boardgame.utils.JSON.Exceptions.UnknownEffectException;
  * It supports various tile effects such as Ladder, Snake, LoseTurn, and BackToStart,
  * and populates the board accordingly.
  * 
- * @author Hector Mendana Morales
+ *  
  */
 public class BoardJSON {
 

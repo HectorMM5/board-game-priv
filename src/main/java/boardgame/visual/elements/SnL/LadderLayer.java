@@ -22,7 +22,7 @@ import javafx.scene.transform.Rotate;
  * This layer is purely decorative and uses transformations to draw rotated
  * {@link LadderVisual} and {@link SnakeVisual} elements between tile positions.
  * 
- * @author Hector Mendana Morales
+ *  
  */
 public class LadderLayer extends Pane {
 

@@ -13,7 +13,7 @@ import boardgame.model.effectFiles.Effect;
  * A default board has a width of 10 and height of 9 (i.e., 90 tiles).
  * Each tile is initialized with a unique index and may be associated with a game effect.
  * 
- * @author Hector Mendana Morales
+ *  
  */
 public abstract class Board {
     public final Random randomGenerator;

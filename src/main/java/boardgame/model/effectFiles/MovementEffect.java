@@ -12,7 +12,7 @@ import boardgame.utils.movementType;
  * 
  * Subclasses must define how the effect is visually represented through {@code getColor()}.
  * 
- * @author Hector Mendana Morales
+ *  
  */
 public abstract class MovementEffect implements Effect {
     public int baseTileIndex;

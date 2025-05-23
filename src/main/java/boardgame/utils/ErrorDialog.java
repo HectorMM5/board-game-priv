@@ -24,8 +24,6 @@ public class ErrorDialog {
             if (response == ButtonType.OK) {
                 // Code to close the JavaFX application
                 System.exit(0); // This will forcefully terminate the JVM
-                // Alternatively, if you have a JavaFX Application class:
-                // Platform.exit();
             }
         });
     }

@@ -11,7 +11,7 @@ import javafx.scene.paint.Color;
  * All effect implementations must define their behavior via {@code execute},
  * and provide a visual color representation for display purposes.
  * 
- * @author Hector Mendana Morales
+ *  
  */
 public interface Effect {
 

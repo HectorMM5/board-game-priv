@@ -19,7 +19,7 @@ import javafx.stage.Stage;
  * </pre>
  * Automatically resizes based on content.
  *
- * @author Hector Mendana Morales
+ *  
  */
 public class PopUpAlert extends VBox {
 

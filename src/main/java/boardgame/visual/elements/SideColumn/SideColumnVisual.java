@@ -16,7 +16,7 @@ import javafx.scene.layout.VBox;
  * 
  * It is used as an interactive and informative sidebar during gameplay.
  * 
- * @author Hector Mendana Morales
+ *  
  */
 public class SideColumnVisual extends VBox {
 
@@ -32,7 +32,6 @@ public class SideColumnVisual extends VBox {
      * @param ingame reference to the main ingame UI for callbacks
      */
     public SideColumnVisual(GameController gameController, List<Player> players, Ingame ingame) {
-        System.out.println("Reached SideColumnVisual with player list size: " + players.size());
 
         this.setPrefWidth(ScreenDimension.getScreenWidth() * 0.25);
         this.setSpacing(10);

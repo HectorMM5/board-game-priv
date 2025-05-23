@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.stream.IntStream;
 
+import boardgame.utils.ErrorDialog;
 import boardgame.utils.PlayerCSV;
 import boardgame.utils.ScreenDimension;
 import javafx.geometry.Insets;
@@ -117,7 +118,7 @@ public class PlayerCreationRow extends HBox {
             this.selectedIconName = iconName;
             iconDisplay.setImage(new Image(is));
         } else {
-            System.out.println("Icon not found: " + iconName);
+            ErrorDialog.showAndExit("Error", "Icon not found", "An unexpected error has occured.");
         }
     }
 

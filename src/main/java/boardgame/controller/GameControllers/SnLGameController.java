@@ -17,7 +17,7 @@ import javafx.util.Duration;
  * 
  * Extends the abstract GameController class.
  * 
- * @author Hector Mendana Morales
+ *  
  */
 public class SnLGameController extends GameController {
 
@@ -31,7 +31,6 @@ public class SnLGameController extends GameController {
      */
     public SnLGameController(Board board, List<Player> players) {
         super(board, players);
-        System.out.println("Reached SnL with players: " + players.toString());
     }
 
     /**

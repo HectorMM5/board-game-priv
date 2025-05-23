@@ -13,7 +13,7 @@ import javafx.scene.paint.Color;
  * 
  * Inherits movement logic from {@link MovementEffect}.
  * 
- * @author Hector Mendana Morales
+ *  
  */
 public class LadderEffect extends MovementEffect {
 

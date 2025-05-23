@@ -15,7 +15,7 @@ import javafx.scene.shape.Rectangle;
  * The ladder is rotated and placed dynamically by the {@link LadderLayer} class
  * to connect two tiles on the board.
  * 
- * @author Hector Mendana Morales
+ *  
  */
 public class LadderVisual extends Group {
 
@@ -31,14 +31,14 @@ public class LadderVisual extends Group {
         leftPillar.setX(0);
         leftPillar.setWidth(10);
         leftPillar.setHeight(length);
-        leftPillar.setFill(Color.RED);
+        leftPillar.setFill(Color.BROWN);
 
         Rectangle rightPillar = new Rectangle();
         rightPillar.setY(0);
         rightPillar.setX(40);
         rightPillar.setWidth(10);
         rightPillar.setHeight(length);
-        rightPillar.setFill(Color.GREEN);
+        rightPillar.setFill(Color.BROWN);
 
         ArrayList<Rectangle> steps = new ArrayList<>();
         int stepAmount = (int) length / 25;
@@ -49,7 +49,7 @@ public class LadderVisual extends Group {
             step.setY(25 + i * 25);
             step.setWidth(30);
             step.setHeight(5);
-            step.setFill(Color.RED);
+            step.setFill(Color.BROWN);
             steps.add(step);
         });
 

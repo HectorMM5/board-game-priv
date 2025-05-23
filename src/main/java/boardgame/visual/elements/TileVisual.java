@@ -29,7 +29,7 @@ import javafx.scene.shape.Rectangle;
  * The visual is updated using {@link #updateVisual()} based on the tile state.
  * </p>
  *
- * @author Hector Mendana Morales
+ *  
  */
 public class TileVisual extends StackPane {
 

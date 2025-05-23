@@ -12,7 +12,7 @@ import boardgame.visual.gameLayers.SnLTokenLayer;
  * and updating side UI elements during gameplay. Connects game logic to the
  * visual layer.
  *
- * @author Hector Mendana Morales
+ *  
  */
 public class SnLRollHandler implements RollHandler {
 

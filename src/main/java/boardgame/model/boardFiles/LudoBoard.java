@@ -9,7 +9,7 @@ import java.util.stream.IntStream;
  * Only specific tile indices are used as playable path tiles.
  * The layout corresponds to the traditional Ludo cross-style board.
  *
- * @author Hector
+ * 
  */
 public class LudoBoard extends Board {
 
