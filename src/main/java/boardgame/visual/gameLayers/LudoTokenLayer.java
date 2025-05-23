@@ -185,8 +185,6 @@ public class LudoTokenLayer extends TokenLayer {
         // Find current position in home path (0 if not yet inside)
         int currentPosition = gameController.getHomePosition().get(player);
 
-        System.out.println("CURRENT POSITION = " + currentPosition);
-
         IntStream.range(currentPosition, stopTile).forEach(i -> {
             PauseTransition pause = new PauseTransition(Duration.millis((i - currentPosition) * 300));
             pause.setOnFinished(event -> moveTokenThroughHome(player, color, i));

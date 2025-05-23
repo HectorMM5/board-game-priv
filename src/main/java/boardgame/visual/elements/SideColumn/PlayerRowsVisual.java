@@ -33,7 +33,6 @@ public class PlayerRowsVisual extends VBox {
      * @param players the list of players to display
      */
     public PlayerRowsVisual(List<Player> players) {
-        System.out.println("Reached PlayerRowsVisual with player list size: " + players.size());
         players.stream().forEach(this::createPlayerRow);
     }
 
