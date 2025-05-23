@@ -5,7 +5,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
@@ -30,8 +32,10 @@ public class PlayerCSV {
 
     private final static String PATH = "src/main/resources/playerProfiles.csv";
     private static final File DEFAULT_FILE = new File(PATH);
-    private static File currentFile = DEFAULT_FILE; // Use this to track the current file
+    private static File currentFile = DEFAULT_FILE;
     private static PlayerCSV instance = null;
+    private static final List<String> ALLOWED_COLORS = Arrays.asList("Red", "White", "Orange", "Purple", "Lime", "Yellow");
+
 
     private PlayerCSV() {
         // Private constructor to prevent instantiation
@@ -77,6 +81,7 @@ public class PlayerCSV {
      * @return true if a file was successfully selected, false otherwise.
      */
     public boolean importProfiles(Stage primaryStage) {
+        //ChatGPT
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Import Player Profiles");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV files (*.csv)", "*.csv"));
@@ -101,13 +106,37 @@ public class PlayerCSV {
         try (CSVReader reader = new CSVReader(new FileReader(fileToRead))) {
             String[] row;
             while ((row = reader.readNext()) != null) {
+                if (row.length > 1) {
+                    String iconColor = row[1].trim();
+                    if (!ALLOWED_COLORS.stream().anyMatch(color -> color.equalsIgnoreCase(iconColor))) {
+                        ErrorDialog.showAndExit(
+                                "Invalid Player Data",
+                                "Invalid color found in player profile.",
+                                String.format("Color '%s' not supported. Please remove it.", iconColor)
+                        );
+                        return new ArrayList<>(); // Return empty list to indicate failure
+                    }
+                } else if (row.length < 3) {
+                    ErrorDialog.showAndExit(
+                            "Invalid Player Data",
+                            "Incorrect number of columns in player profile.",
+                            "Each row must contain at least 'name, color, win_count'."
+                    );
+                    return new ArrayList<>();
+                }
                 allPlayers.add(row);
             }
         } catch (IOException e) {
-            throw new IllegalArgumentException("Failed to read CSV player file: " + fileToRead.getAbsolutePath(), e);
+            ErrorDialog.showAndExit(
+                    "File Reading Error",
+                    "Could not read the player profiles file.",
+                    "Please ensure the file exists and is in the correct format.\n" + e.getMessage()
+            );
+            return new ArrayList<>(); // Return empty list on read failure
         }
         return allPlayers;
     }
+
 
     /**
      * Rewrites the currently active CSV file with the provided list of player data.
