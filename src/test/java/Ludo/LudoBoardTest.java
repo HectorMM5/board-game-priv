@@ -18,20 +18,20 @@ public class LudoBoardTest {
     private LudoBoard ludoBoard;
 
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         ludoBoard = new LudoBoard();
     }
 
     @Test
     @DisplayName("Should initialize main tiles list with 56 tiles")
-    void shouldInitializeMainTilesListWithCorrectSize() {
+    public void shouldInitializeMainTilesListWithCorrectSize() {
         assertNotNull(ludoBoard.getTiles(), "Tiles list should not be null");
         assertEquals(56, ludoBoard.getTiles().size(), "Main tiles list should contain 56 tiles");
     }
 
     @Test
     @DisplayName("Should initialize main tiles with correct 1-based indices")
-    void shouldInitializeMainTilesWithCorrectIndices() {
+    public void shouldInitializeMainTilesWithCorrectIndices() {
         List<Tile> tiles = ludoBoard.getTiles();
         for (int i = 0; i < 56; i++) {
             assertNotNull(tiles.get(i), "Tile at index " + i + " should not be null");
@@ -41,35 +41,35 @@ public class LudoBoardTest {
 
     @Test
     @DisplayName("Should initialize redPath with 6 tiles")
-    void shouldInitializeRedPathWithCorrectSize() {
+    public void shouldInitializeRedPathWithCorrectSize() {
         assertNotNull(ludoBoard.getRedPath(), "Red path should not be null");
         assertEquals(6, ludoBoard.getRedPath().size(), "Red path should contain 6 tiles");
     }
 
     @Test
     @DisplayName("Should initialize greenPath with 6 tiles")
-    void shouldInitializeGreenPathWithCorrectSize() {
+    public void shouldInitializeGreenPathWithCorrectSize() {
         assertNotNull(ludoBoard.getGreenPath(), "Green path should not be null");
         assertEquals(6, ludoBoard.getGreenPath().size(), "Green path should contain 6 tiles");
     }
 
     @Test
     @DisplayName("Should initialize yellowPath with 6 tiles")
-    void shouldInitializeYellowPathWithCorrectSize() {
+    public void shouldInitializeYellowPathWithCorrectSize() {
         assertNotNull(ludoBoard.getYellowPath(), "Yellow path should not be null");
         assertEquals(6, ludoBoard.getYellowPath().size(), "Yellow path should contain 6 tiles");
     }
 
     @Test
     @DisplayName("Should initialize bluePath with 6 tiles")
-    void shouldInitializeBluePathWithCorrectSize() {
+    public void shouldInitializeBluePathWithCorrectSize() {
         assertNotNull(ludoBoard.getBluePath(), "Blue path should not be null");
         assertEquals(6, ludoBoard.getBluePath().size(), "Blue path should contain 6 tiles");
     }
 
     @Test
     @DisplayName("Should initialize color paths with correct 1-based indices")
-    void shouldInitializeColorPathsWithCorrectIndices() {
+    public void shouldInitializeColorPathsWithCorrectIndices() {
         // All paths are initialized with tiles numbered 1 to 6
         List<List<Tile>> colorPaths = List.of(
                 ludoBoard.getRedPath(),

@@ -23,14 +23,14 @@ public class SnLBoardTest {
     private SnLBoard customBoard;
 
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         defaultBoard = new SnLBoard();
         customBoard = new SnLBoard(5, 5); 
     }
 
     @Test
     @DisplayName("Default constructor should create a 10x9 board (90 tiles)")
-    void defaultConstructorShouldCreateCorrectSizeBoard() {
+    public void defaultConstructorShouldCreateCorrectSizeBoard() {
         assertEquals(10, defaultBoard.getBoardWidth(), "Default board width should be 10");
         assertEquals(9, defaultBoard.getBoardHeight(), "Default board height should be 9");
         assertEquals(90, defaultBoard.getTileCount(), "Default board should have 90 tiles");
@@ -39,7 +39,7 @@ public class SnLBoardTest {
 
     @Test
     @DisplayName("Custom constructor should create a board with specified dimensions")
-    void customConstructorShouldCreateCorrectSizeBoard() {
+    public void customConstructorShouldCreateCorrectSizeBoard() {
         assertEquals(5, customBoard.getBoardWidth(), "Custom board width should be 5");
         assertEquals(5, customBoard.getBoardHeight(), "Custom board height should be 5");
         assertEquals(25, customBoard.getTileCount(), "Custom board should have 25 tiles");
@@ -48,7 +48,7 @@ public class SnLBoardTest {
 
     @Test
     @DisplayName("All tiles should be initialized with correct 1-based indices")
-    void allTilesShouldHaveCorrectIndices() {
+    public void allTilesShouldHaveCorrectIndices() {
         // Test default board
         List<Tile> defaultTiles = defaultBoard.getTiles();
         for (int i = 0; i < defaultBoard.getTileCount(); i++) {
@@ -64,7 +64,7 @@ public class SnLBoardTest {
 
     @Test
     @DisplayName("getTilesWithLadders should return only tiles with LadderEffect")
-    void getTilesWithLaddersShouldReturnCorrectTiles() {
+    public void getTilesWithLaddersShouldReturnCorrectTiles() {
         // Add some effects for testing
         defaultBoard.getTiles().get(5).setEffect(new LadderEffect(6, 20)); // Tile 6
         defaultBoard.getTiles().get(19).setEffect(new LadderEffect(20, 40)); // Tile 20
@@ -81,7 +81,7 @@ public class SnLBoardTest {
 
     @Test
     @DisplayName("getTilesWithSnakes should return only tiles with SnakeEffect")
-    void getTilesWithSnakesShouldReturnCorrectTiles() {
+    public void getTilesWithSnakesShouldReturnCorrectTiles() {
         // Add some effects for testing
         defaultBoard.getTiles().get(10).setEffect(new SnakeEffect(11, 5)); // Tile 11
         defaultBoard.getTiles().get(24).setEffect(new SnakeEffect(25, 15)); // Tile 25
@@ -98,14 +98,14 @@ public class SnLBoardTest {
 
     @Test
     @DisplayName("getTilesWithLadders should return empty list if no ladders exist")
-    void getTilesWithLaddersShouldReturnEmptyIfNone() {
+    public void getTilesWithLaddersShouldReturnEmptyIfNone() {
         List<Tile> ladders = defaultBoard.getTilesWithLadders();
         assertTrue(ladders.isEmpty(), "List of ladders should be empty");
     }
 
     @Test
     @DisplayName("getTilesWithSnakes should return empty list if no snakes exist")
-    void getTilesWithSnakesShouldReturnEmptyIfNone() {
+    public void getTilesWithSnakesShouldReturnEmptyIfNone() {
         List<Tile> snakes = defaultBoard.getTilesWithSnakes();
         assertTrue(snakes.isEmpty(), "List of snakes should be empty");
     }
